@@ -1,29 +1,64 @@
 ﻿namespace EducationalProject
 {
-    // Главный файл - точка входа в приложение
-    // 
-    // Структура проекта:
-    // 1. Program.cs - точка входа
-    // 2. MenuManager.cs - управление меню и навигацией
-    // 3. BaseService.cs - базовый класс для всех программ
-    // 4. ProgramsConfig.cs - конфигурация списка программ
-    // 5. ConsoleHelper.cs - утилиты для работы с консолью
-    // 6. InputValidator.cs - валидация пользовательского ввода
-    // 7. Services/ - папка с конкретными программами
-    // 
-    // Для добавления новой программы:
-    // 1. Создайте класс в папке Services
-    // 2. Наследуйтесь от BaseService
-    // 3. Добавьте программу в ProgramsConfig.cs
-
-    // Как использовать проект:
-    // 1. Запуск: Просто запустите проект как обычно
-    // 2. Добавление новой программы: Следуйте инструкциям в комментариях к BaseService.cs
-    // 3. Использование ConsoleHelper: Всегда используйте ConsoleHelper вместо прямого вывода в консоль
-    // 4. Кастомизация: Изменяйте цвета, ширину рамок и другие параметры в ConsoleHelper
-
+    /// <summary>
+    /// Главный класс приложения - точка входа в программу.
+    /// Отвечает за инициализацию и запуск системы меню образовательных программ.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Этот класс является отправной точкой приложения, который:
+    /// 1. Создает экземпляр <see cref="MenuManager"/>
+    /// 2. Запускает основной цикл управления меню
+    /// </para>
+    /// <para>
+    /// Структура проекта:
+    /// <list type="number">
+    /// <item><description><see cref="Program"/> - точка входа (текущий класс)</description></item>
+    /// <item><description><see cref="MenuManager"/> - управление меню и навигацией</description></item>
+    /// <item><description><see cref="BaseService"/> - базовый класс для всех программ</description></item>
+    /// <item><description><see cref="ProgramsConfig"/> - конфигурация списка программ</description></item>
+    /// <item><description><see cref="ConsoleHelper"/> - утилиты для работы с консолью</description></item>
+    /// <item><description><see cref="InputValidator"/> - валидация пользовательского ввода</description></item>
+    /// <item><description><see cref="Services"/> - папка с конкретными программами</description></item>
+    /// </list>
+    /// </para>
+    /// </remarks>
+    /// <example>
+    /// Пример запуска приложения:
+    /// <code>
+    /// // При компиляции и запуске проекта автоматически выполняется:
+    /// // 1. Program.Main() -> создание MenuManager
+    /// // 2. manager.Run() -> отображение главного меню
+    /// </code>
+    /// </example>
+    /// <seealso cref="MenuManager"/>
+    /// <seealso cref="BaseService"/>
+    /// <seealso cref="ProgramsConfig"/>
     class Program
     {
+        /// <summary>
+        /// Точка входа в приложение. Создает и запускает менеджер меню.
+        /// </summary>
+        /// <remarks>
+        /// Метод выполняет следующие действия:
+        /// <list type="number">
+        /// <item><description>Создает экземпляр класса <see cref="MenuManager"/></description></item>
+        /// <item><description>Вызывает метод <see cref="MenuManager.Run"/> для запуска основного цикла программы</description></item>
+        /// </list>
+        /// </remarks>
+        /// 
+        /// <example>
+        /// <code>
+        /// static void Main()
+        /// {
+        ///     // Инициализация менеджера меню
+        ///     var manager = new MenuManager();
+        ///     
+        ///     // Запуск основного цикла приложения
+        ///     manager.Run();
+        /// }
+        /// </code>
+        /// </example>
         static void Main()
         {
             // Создаем менеджер меню и запускаем его
