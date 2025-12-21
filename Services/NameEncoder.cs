@@ -33,17 +33,17 @@
 
             ConsoleHelper.ShowInfoBlock("Описание", infoLines);
 
-            string name = GetUserName();
-
-            if(!ValidateName(name))
-            {
-                ConsoleHelper.ShowError("Имя не может быть пустым и должно содержать хотя бы одну букву!");
-                ConsoleHelper.WaitForAnyKey();
-                return;
-            }
+            string name = InputValidator.GetValidText(
+                ">>> Введите ваше имя: ",
+                minLength: 1,
+                maxLength: 50,
+                allowDigits: false,
+                allowSpecialChars: false
+            ).ToUpper();
 
             ShowEncodingMethods();
-            int choice = ConsoleHelper.GetMenuChoice(1, 3, ">>> Выберите метод кодирования (1-3): ");
+
+            int choice = InputValidator.GetValidMenuChoice(1, 3, ">>> Выберите метод кодирования (1-3): ");
             string encodedName = EncodeName(name, choice);
             ShowResult(name, encodedName, choice);
 
@@ -98,15 +98,6 @@
         }
 
         /// <summary>
-        /// Получить имя пользователя
-        /// </summary>
-        private string GetUserName()
-        {
-            string input = ConsoleHelper.GetInput(">>> Введите ваше имя: ");
-            return input.ToUpper(); // Приводим к верхнему регистру
-        }
-
-        /// <summary>
         /// Показать результат кодирования
         /// </summary>
         private void ShowResult(string originalName, string encodedName, int methodChoice)
@@ -150,7 +141,6 @@
         /// </summary>
         private string GetAlphabetCode(string name)
         {
-            string result = "";
             List<string> codes = new List<string>();
 
             foreach(char c in name)
@@ -290,30 +280,6 @@
         #endregion
 
         #region ===== МЕТОДЫ-ЧЕКЕРЫ =====
-
-        /// <summary>
-        /// Проверить валидность имени
-        /// </summary>
-        private bool ValidateName(string name)
-        {
-            if(string.IsNullOrWhiteSpace(name))
-            {
-                return false;
-            }
-
-            // Проверяем, содержит ли имя хотя бы одну букву
-            bool hasLetters = false;
-            foreach(char c in name)
-            {
-                if(char.IsLetter(c))
-                {
-                    hasLetters = true;
-                    break;
-                }
-            }
-
-            return hasLetters;
-        }
 
         /// <summary>
         /// Проверить, является ли буква русской

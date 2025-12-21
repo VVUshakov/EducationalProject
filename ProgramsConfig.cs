@@ -2,7 +2,7 @@
 
 namespace EducationalProject
 {
-    // Простой класс для настройки списка программ
+    // Класс конфигуратор для настройки списка программ
     public static class ProgramsConfig
     {
         // Список всех доступных программ

@@ -23,7 +23,7 @@
             ConsoleHelper.ClearAndShowHeader(Name);
             ShowMenu();
 
-            int choice = ConsoleHelper.GetMenuChoice(1, 3, ">>> Введите номер демонстрации (1-3): ");
+            int choice = InputValidator.GetValidMenuChoice(1, 3, ">>> Введите номер демонстрации (1-3): ");
             ExecuteChoice(choice);
 
             ConsoleHelper.WaitForAnyKey("Нажмите любую клавишу для возврата в меню...");
@@ -160,7 +160,7 @@
 
             string[] infoLines = {
                 "Управление личным бюджетом",
-                "Симуляция финансовых операций\nс использованием операторов присваивания"
+                "Симуляция финансовых операций с использованием операторов присваивания"
             };
 
             ConsoleHelper.ShowInfoBlock("Описание", infoLines);

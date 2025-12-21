@@ -53,8 +53,13 @@
 
             ShowConversionOptions();
 
-            int choice = ConsoleHelper.GetMenuChoice(1, 2, ">>> Выберите тип конвертации (1 или 2): ");
-            string input = GetNumberInput(choice);
+            int choice = InputValidator.GetValidMenuChoice(1, 2, ">>> Выберите тип конвертации (1 или 2): ");
+
+            string input = choice == 1
+                ? InputValidator.GetValidIntegerInRange($">>> Введите десятичное число (от {MIN_VALUE} до {MAX_VALUE}): ",
+                    MIN_VALUE, MAX_VALUE, "Десятичное число").ToString()
+                : InputValidator.GetValidBinary($">>> Введите двоичное число (до {BITS_COUNT} бит): ", BITS_COUNT);
+
             string result = PerformConversion(choice, input);
             string explanation = GetConversionExplanation(choice, input, result);
 
@@ -80,21 +85,6 @@
 
             ConsoleHelper.ShowMenu("ВАРИАНТЫ КОНВЕРТАЦИИ", options);
             Console.WriteLine();
-        }
-
-        /// <summary>
-        /// Получить число для конвертации
-        /// </summary>
-        private string GetNumberInput(int choice)
-        {
-            if(choice == 1)
-            {
-                return ConsoleHelper.GetInput($">>> Введите десятичное число (от {MIN_VALUE} до {MAX_VALUE}): ");
-            }
-            else
-            {
-                return ConsoleHelper.GetInput($">>> Введите двоичное число (до {BITS_COUNT} бит): ");
-            }
         }
 
         /// <summary>
@@ -166,15 +156,12 @@
         /// </summary>
         private string PerformConversion(int choice, string input)
         {
-            switch(choice)
+            return choice switch
             {
-                case 1:
-                    return ConvertDecimalToBinary(input);
-                case 2:
-                    return ConvertBinaryToDecimal(input);
-                default:
-                    return ConvertDecimalToBinary(input);
-            }
+                1 => ConvertDecimalToBinary(input),
+                2 => ConvertBinaryToDecimal(input),
+                _ => ConvertDecimalToBinary(input)
+            };
         }
 
         /// <summary>
@@ -182,32 +169,20 @@
         /// </summary>
         private string ConvertDecimalToBinary(string input)
         {
-            // Проверка на пустой ввод
-            if(string.IsNullOrWhiteSpace(input))
+            if(int.TryParse(input, out int number))
             {
-                return "Ошибка: Введите число!";
+                var binaryResult = InputValidator.DecimalToBinary(number, BITS_COUNT);
+                if(binaryResult.IsValid)
+                {
+                    string binaryString = (string)binaryResult.Value;
+                    // Форматируем с разделителями для наглядности
+                    string formattedBinary = $"{binaryString.Substring(0, 4)} {binaryString.Substring(4)} ({binaryString}₂)";
+                    return formattedBinary;
+                }
+                return binaryResult.ErrorMessage;
             }
 
-            // Попытка преобразовать строку в число
-            if(!int.TryParse(input, out int number))
-            {
-                return $"Ошибка: '{input}' не является числом!";
-            }
-
-            // Проверка диапазона
-            if(number < MIN_VALUE || number > MAX_VALUE)
-            {
-                return $"Ошибка: Число должно быть от {MIN_VALUE} до {MAX_VALUE}!";
-            }
-
-            // Конвертация в двоичную систему
-            string binaryString = Convert.ToString(number, 2);
-
-            // Дополнение нулями слева до 8 бит
-            string paddedBinary = binaryString.PadLeft(BITS_COUNT, '0');
-
-            // Форматируем с разделителями для наглядности
-            return $"{paddedBinary.Substring(0, 4)} {paddedBinary.Substring(4)} ({paddedBinary}₂)";
+            return $"Ошибка: Не удалось преобразовать '{input}' в число";
         }
 
         /// <summary>
@@ -215,48 +190,13 @@
         /// </summary>
         private string ConvertBinaryToDecimal(string input)
         {
-            // Проверка на пустой ввод
-            if(string.IsNullOrWhiteSpace(input))
+            var decimalResult = InputValidator.BinaryToDecimal(input);
+            if(decimalResult.IsValid)
             {
-                return "Ошибка: Введите двоичное число!";
-            }
-
-            // Убираем пробелы для проверки
-            string cleanInput = input.Replace(" ", "");
-
-            // Проверка на допустимые символы (только 0 и 1)
-            foreach(char c in cleanInput)
-            {
-                if(c != '0' && c != '1')
-                {
-                    return $"Ошибка: '{input}' содержит недопустимые символы! Используйте только 0 и 1.";
-                }
-            }
-
-            // Проверка длины (не более 8 бит)
-            if(cleanInput.Length > BITS_COUNT)
-            {
-                return $"Ошибка: Слишком длинное число! Максимум {BITS_COUNT} бит.";
-            }
-
-            try
-            {
-                // Конвертация из двоичной системы
-                int decimalNumber = Convert.ToInt32(cleanInput, 2);
+                int decimalNumber = (int)decimalResult.Value;
                 return $"{decimalNumber} ({decimalNumber}₁₀)";
             }
-            catch(FormatException)
-            {
-                return "Ошибка: Неверный формат двоичного числа!";
-            }
-            catch(OverflowException)
-            {
-                return $"Ошибка: Число слишком большое! Максимум {BITS_COUNT} бит.";
-            }
-            catch
-            {
-                return "Ошибка: Неизвестная ошибка при конвертации!";
-            }
+            return decimalResult.ErrorMessage;
         }
 
         /// <summary>
@@ -269,22 +209,17 @@
                 return "";
             }
 
-            if(choice == 1)
+            if(choice == 1 && int.TryParse(input, out int decimalNumber))
             {
-                if(int.TryParse(input, out int number))
-                {
-                    string binaryResult = result.Split(' ')[0].Replace(" ", "");
-                    return $"{number}₁₀ → {binaryResult}₂";
-                }
+                string binaryResult = result.Split(' ')[0].Replace(" ", "");
+                return $"{decimalNumber}₁₀ → {binaryResult}₂";
             }
             else if(choice == 2)
             {
-                // Извлекаем десятичное число из результата
                 string decimalStr = result.Split(' ')[0];
                 if(int.TryParse(decimalStr, out int decimalResult))
                 {
-                    string cleanInput = input.Replace(" ", "");
-                    return $"{cleanInput}₂ → {decimalResult}₁₀";
+                    return $"{input}₂ → {decimalResult}₁₀";
                 }
             }
 

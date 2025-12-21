@@ -2,7 +2,7 @@
 {
     /// <summary>
     /// Программа 1: Калькулятор
-    /// Демонстрирует базовые арифметические операции и обработку ввода пользователя
+    /// Демонстрирует базовые арифметические операции
     /// </summary>
     public class Calculator : BaseService
     {
@@ -77,25 +77,9 @@
         /// <summary>
         /// Получить число от пользователя
         /// </summary>
-        /// <param name="numberName">Название числа (первое/второе)</param>
-        /// <returns>Введенное число или NaN при ошибке</returns>
         private double GetNumber(string numberName)
         {
-            string input = ConsoleHelper.GetInput($">>> Введите {numberName} число: ");
-
-            if(string.IsNullOrWhiteSpace(input))
-            {
-                ConsoleHelper.ShowError($"Вы не ввели {numberName} число!");
-                return double.NaN;
-            }
-
-            if(!double.TryParse(input, out double number))
-            {
-                ConsoleHelper.ShowError($"'{input}' не является допустимым числом!");
-                return double.NaN;
-            }
-
-            return number;
+            return InputValidator.GetValidNumber($">>> Введите {numberName} число: ");
         }
 
         /// <summary>
@@ -114,10 +98,7 @@
             ConsoleHelper.ShowMenu("ДОСТУПНЫЕ ОПЕРАЦИИ", operations);
             Console.WriteLine();
 
-            Console.Write(">>> Выберите операцию (+, -, *, /, %): ");
-            char operationChar = Console.ReadKey().KeyChar;
-            Console.WriteLine();
-
+            char operationChar = InputValidator.GetValidMathOperation();
             return ParseOperation(operationChar);
         }
 
@@ -126,17 +107,15 @@
         /// </summary>
         private MathOperation ParseOperation(char operationChar)
         {
-            switch(operationChar)
+            return operationChar switch
             {
-                case '+': return MathOperation.Addition;
-                case '-': return MathOperation.Subtraction;
-                case '*': return MathOperation.Multiplication;
-                case '/': return MathOperation.Division;
-                case '%': return MathOperation.Modulo;
-                default:
-                    ConsoleHelper.ShowError($"Операция '{operationChar}' не поддерживается!");
-                    return MathOperation.None;
-            }
+                '+' => MathOperation.Addition,
+                '-' => MathOperation.Subtraction,
+                '*' => MathOperation.Multiplication,
+                '/' => MathOperation.Division,
+                '%' => MathOperation.Modulo,
+                _ => MathOperation.None
+            };
         }
 
         /// <summary>
@@ -225,7 +204,7 @@
         /// </summary>
         private CalculationResult Calculate(double a, double b, MathOperation operation)
         {
-            CalculationResult result = new CalculationResult();
+            CalculationResult result = new();
 
             try
             {
@@ -247,10 +226,11 @@
                         break;
 
                     case MathOperation.Division:
-                        if(Math.Abs(b) < double.Epsilon)
+                        var divisionCheck = InputValidator.ValidateDivision(b, "деление");
+                        if(!divisionCheck.IsValid)
                         {
                             result.Success = false;
-                            result.ErrorMessage = "Деление на ноль невозможно!";
+                            result.ErrorMessage = divisionCheck.ErrorMessage;
                         }
                         else
                         {
@@ -260,10 +240,11 @@
                         break;
 
                     case MathOperation.Modulo:
-                        if(Math.Abs(b) < double.Epsilon)
+                        var moduloCheck = InputValidator.ValidateDivision(b, "операция модуля");
+                        if(!moduloCheck.IsValid)
                         {
                             result.Success = false;
-                            result.ErrorMessage = "Операция модуля с нулем невозможна!";
+                            result.ErrorMessage = moduloCheck.ErrorMessage;
                         }
                         else
                         {

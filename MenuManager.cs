@@ -54,8 +54,8 @@
             {
                 ShowMenu();
 
-                // Получить ввод от пользователя
-                int userChoice = GetUserChoice();
+                // Получить валидный ввод от пользователя
+                int userChoice = InputValidator.GetValidMenuChoice(EXIT, programs.Length, ">>> Введите номер программы: ");
 
                 // Проверить выбор "0" - выход
                 if(userChoice == EXIT)
@@ -86,7 +86,8 @@
 
             string[] infoLines = {
                 "Для школьников 7-11 классов",
-                "Автор: [Ваше имя/школа]"
+                "Используйте меню для навигации",
+                "Нажмите 0 для выхода из программы"
             };
 
             ConsoleHelper.ShowInfoBlock("Описание проекта", infoLines);
@@ -118,16 +119,6 @@
             menuItems.Add((0, "Выход"));
 
             ConsoleHelper.ShowMenuWithNumbers("ГЛАВНОЕ МЕНЮ", menuItems);
-        }
-
-        #endregion
-
-        #region ===== МЕТОД ПОЛУЧЕНИЯ ВВОДА =====
-
-        // Получить ввод пользователя
-        private int GetUserChoice()
-        {
-            return ConsoleHelper.GetMenuChoice(EXIT, programs.Length, ">>> Введите номер программы: ");
         }
 
         #endregion
