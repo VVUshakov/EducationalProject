@@ -39,7 +39,15 @@
         /// </summary>
         public override void Run()
         {
-            ShowHeader(); // Показать заголовок
+            ConsoleHelper.ClearAndShowHeader(Name);
+
+            string[] infoLines = {
+                "Программа выполняет базовые арифметические операции",
+                "с двумя числами: сложение, вычитание, умножение,",
+                "деление и нахождение остатка от деления."
+            };
+
+            ConsoleHelper.ShowInfoBlock("Описание", infoLines);
 
             // Получить первое число
             double firstNumber = GetNumber("первое");
@@ -59,27 +67,12 @@
             // Показать результат
             ShowCalculationResult(firstNumber, secondNumber, operation, result);
 
-            WaitForContinue(); // Ожидать подтверждения
+            ConsoleHelper.WaitForAnyKey("Нажмите любую клавишу для возврата в меню...");
         }
 
         #endregion
 
         #region ===== МЕТОДЫ ВЗАИМОДЕЙСТВИЯ С ПОЛЬЗОВАТЕЛЕМ =====
-
-        /// <summary>
-        /// Показать заголовок программы
-        /// </summary>
-        private void ShowHeader()
-        {
-            Console.Clear();
-            Console.WriteLine("═══════════════════════════════════════════════");
-            Console.WriteLine("                   КАЛЬКУЛЯТОР                ");
-            Console.WriteLine("═══════════════════════════════════════════════\n");
-
-            Console.WriteLine("Программа выполняет базовые арифметические операции");
-            Console.WriteLine("с двумя числами: сложение, вычитание, умножение,");
-            Console.WriteLine("деление и нахождение остатка от деления.\n");
-        }
 
         /// <summary>
         /// Получить число от пользователя
@@ -88,18 +81,17 @@
         /// <returns>Введенное число или NaN при ошибке</returns>
         private double GetNumber(string numberName)
         {
-            Console.Write($">>> Введите {numberName} число: ");
-            string input = Console.ReadLine()?.Trim() ?? "";
+            string input = ConsoleHelper.GetInput($">>> Введите {numberName} число: ");
 
             if(string.IsNullOrWhiteSpace(input))
             {
-                ShowErrorMessage($"Вы не ввели {numberName} число!");
+                ConsoleHelper.ShowError($"Вы не ввели {numberName} число!");
                 return double.NaN;
             }
 
             if(!double.TryParse(input, out double number))
             {
-                ShowErrorMessage($"'{input}' не является допустимым числом!");
+                ConsoleHelper.ShowError($"'{input}' не является допустимым числом!");
                 return double.NaN;
             }
 
@@ -111,13 +103,16 @@
         /// </summary>
         private MathOperation GetOperation()
         {
-            Console.WriteLine("\n════════════ ДОСТУПНЫЕ ОПЕРАЦИИ ════════════");
-            Console.WriteLine("+ : Сложение");
-            Console.WriteLine("- : Вычитание");
-            Console.WriteLine("* : Умножение");
-            Console.WriteLine("/ : Деление");
-            Console.WriteLine("% : Остаток от деления (модуль)");
-            Console.WriteLine("═══════════════════════════════════════════════\n");
+            string[] operations = {
+                "+ : Сложение",
+                "- : Вычитание",
+                "* : Умножение",
+                "/ : Деление",
+                "% : Остаток от деления (модуль)"
+            };
+
+            ConsoleHelper.ShowMenu("ДОСТУПНЫЕ ОПЕРАЦИИ", operations);
+            Console.WriteLine();
 
             Console.Write(">>> Выберите операцию (+, -, *, /, %): ");
             char operationChar = Console.ReadKey().KeyChar;
@@ -139,7 +134,7 @@
                 case '/': return MathOperation.Division;
                 case '%': return MathOperation.Modulo;
                 default:
-                    ShowErrorMessage($"Операция '{operationChar}' не поддерживается!");
+                    ConsoleHelper.ShowError($"Операция '{operationChar}' не поддерживается!");
                     return MathOperation.None;
             }
         }
@@ -149,20 +144,24 @@
         /// </summary>
         private void ShowCalculationResult(double a, double b, MathOperation operation, CalculationResult result)
         {
-            Console.WriteLine("\n════════════════ РЕЗУЛЬТАТ ════════════════");
+            Console.WriteLine();
 
             if(!result.Success)
             {
-                ShowErrorMessage(result.ErrorMessage);
+                ConsoleHelper.ShowError(result.ErrorMessage);
                 return;
             }
 
             string operationSymbol = GetOperationSymbol(operation);
             string operationName = GetOperationName(operation);
 
-            Console.WriteLine($"Операция: {operationName}");
-            Console.WriteLine($"Числа: {a:F2} {operationSymbol} {b:F2}");
-            Console.WriteLine($"Результат: {result.Value:F2}");
+            string[] resultLines = {
+                $"Операция: {operationName}",
+                $"Числа: {a:F2} {operationSymbol} {b:F2}",
+                $"Результат: {result.Value:F2}"
+            };
+
+            ConsoleHelper.ShowInfoBlock("РЕЗУЛЬТАТ РАСЧЕТА", resultLines, 45);
 
             // Дополнительная информация для деления
             if(operation == MathOperation.Division && b != 0)
@@ -170,11 +169,9 @@
                 double remainder = a % b;
                 if(Math.Abs(remainder) > 0.001)
                 {
-                    Console.WriteLine($"Остаток от деления: {remainder:F2}");
+                    ConsoleHelper.ShowKeyValueResult("Остаток от деления", $"{remainder:F2}");
                 }
             }
-
-            Console.WriteLine("═══════════════════════════════════════════════");
         }
 
         /// <summary>
@@ -207,26 +204,6 @@
                 MathOperation.Modulo => "Остаток от деления",
                 _ => "Неизвестная операция"
             };
-        }
-
-        /// <summary>
-        /// Показать сообщение об ошибке
-        /// </summary>
-        private void ShowErrorMessage(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"\nОШИБКА: {message}");
-            Console.ResetColor();
-        }
-
-        /// <summary>
-        /// Ожидать нажатия клавиши для продолжения
-        /// </summary>
-        private void WaitForContinue()
-        {
-            Console.WriteLine("\n═══════════════════════════════════════════════");
-            Console.WriteLine("Нажмите любую клавишу для возврата в меню...");
-            Console.ReadKey();
         }
 
         #endregion

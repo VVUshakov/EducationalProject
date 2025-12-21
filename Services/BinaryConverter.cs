@@ -41,20 +41,27 @@
         /// </summary>
         public override void Run()
         {
-            ShowHeader(); // Показать заголовок
-            ShowConversionOptions(); // Показать варианты конвертации
+            ConsoleHelper.ClearAndShowHeader(Name);
 
-            string choice = GetConversionChoice(); // Получить выбор пользователя
-            string input = GetNumberInput(choice); // Получить число для конвертации
+            string[] infoLines = {
+                "Программа демонстрирует преобразование чисел",
+                "между десятичной и двоичной системами счисления.",
+                $"Диапазон: {MIN_VALUE} - {MAX_VALUE} (8-битные числа)"
+            };
 
-            string result = PerformConversion(choice, input); // Выполнить конвертацию
-            string explanation = GetConversionExplanation(choice, input, result); // Получить объяснение
+            ConsoleHelper.ShowInfoBlock("Описание", infoLines);
 
-            ShowConversionResult(input, result, explanation); // Показать результат
+            ShowConversionOptions();
 
-            ShowAdditionalInfo(); // Показать дополнительную информацию
+            int choice = ConsoleHelper.GetMenuChoice(1, 2, ">>> Выберите тип конвертации (1 или 2): ");
+            string input = GetNumberInput(choice);
+            string result = PerformConversion(choice, input);
+            string explanation = GetConversionExplanation(choice, input, result);
 
-            WaitForContinue(); // Ожидать подтверждения
+            ShowConversionResult(input, result, explanation);
+            ShowAdditionalInfo();
+
+            ConsoleHelper.WaitForAnyKey("Нажмите любую клавишу для возврата в меню...");
         }
 
         #endregion
@@ -62,62 +69,32 @@
         #region ===== МЕТОДЫ ВЗАИМОДЕЙСТВИЯ С ПОЛЬЗОВАТЕЛЕМ =====
 
         /// <summary>
-        /// Показать заголовок программы
-        /// </summary>
-        private void ShowHeader()
-        {
-            Console.Clear();
-            Console.WriteLine("═══════════════════════════════════════════════");
-            Console.WriteLine("        КОНВЕРТЕР СИСТЕМ СЧИСЛЕНИЯ           ");
-            Console.WriteLine("═══════════════════════════════════════════════\n");
-
-            Console.WriteLine("Программа демонстрирует преобразование чисел");
-            Console.WriteLine("между десятичной и двоичной системами счисления.\n");
-        }
-
-        /// <summary>
         /// Показать варианты конвертации
         /// </summary>
         private void ShowConversionOptions()
         {
-            Console.WriteLine("════════════ ВАРИАНТЫ КОНВЕРТАЦИИ ════════════");
-            Console.WriteLine("1. Десятичное → Двоичное (0-255)");
-            Console.WriteLine("2. Двоичное → Десятичное (8 бит)");
-            Console.WriteLine("═══════════════════════════════════════════════\n");
-        }
+            string[] options = {
+                "Десятичное → Двоичное (0-255)",
+                "Двоичное → Десятичное (8 бит)"
+            };
 
-        /// <summary>
-        /// Получить выбор типа конвертации
-        /// </summary>
-        private string GetConversionChoice()
-        {
-            Console.Write(">>> Выберите тип конвертации (1 или 2): ");
-            string choice = Console.ReadLine()?.Trim() ?? "1";
-
-            if(choice != "1" && choice != "2")
-            {
-                Console.WriteLine("Неверный выбор. Используется конвертация 1 (десятичное → двоичное).");
-                choice = "1";
-            }
-
-            return choice;
+            ConsoleHelper.ShowMenu("ВАРИАНТЫ КОНВЕРТАЦИИ", options);
+            Console.WriteLine();
         }
 
         /// <summary>
         /// Получить число для конвертации
         /// </summary>
-        private string GetNumberInput(string choice)
+        private string GetNumberInput(int choice)
         {
-            if(choice == "1")
+            if(choice == 1)
             {
-                Console.Write($">>> Введите десятичное число (от {MIN_VALUE} до {MAX_VALUE}): ");
+                return ConsoleHelper.GetInput($">>> Введите десятичное число (от {MIN_VALUE} до {MAX_VALUE}): ");
             }
             else
             {
-                Console.Write($">>> Введите двоичное число (до {BITS_COUNT} бит): ");
+                return ConsoleHelper.GetInput($">>> Введите двоичное число (до {BITS_COUNT} бит): ");
             }
-
-            return Console.ReadLine()?.Trim() ?? "";
         }
 
         /// <summary>
@@ -125,24 +102,39 @@
         /// </summary>
         private void ShowConversionResult(string input, string result, string explanation)
         {
-            Console.WriteLine("\n════════════════ РЕЗУЛЬТАТ ════════════════");
+            Console.WriteLine();
 
             if(result.StartsWith("Ошибка"))
             {
-                ShowErrorMessage(result);
+                ConsoleHelper.ShowError(result.Substring(7)); // Убираем "Ошибка: "
+                return;
+            }
+
+            string[] resultLines;
+
+            if(explanation.Contains("→"))
+            {
+                // Форматируем как уравнение
+                string[] parts = explanation.Split(" = ");
+                resultLines = new string[] {
+                    $"Входные данные: {input}",
+                    $"Результат: {result}",
+                    "",
+                    parts[0],
+                    parts[1]
+                };
             }
             else
             {
-                Console.WriteLine($"Входные данные: {input}");
-                Console.WriteLine($"Результат: {result}");
-
-                if(!string.IsNullOrEmpty(explanation))
-                {
-                    Console.WriteLine($"\n{explanation}");
-                }
+                resultLines = new string[] {
+                    $"Входные данные: {input}",
+                    $"Результат: {result}",
+                    "",
+                    explanation
+                };
             }
 
-            Console.WriteLine("═══════════════════════════════════════════════");
+            ConsoleHelper.ShowInfoBlock("РЕЗУЛЬТАТ КОНВЕРТАЦИИ", resultLines, 45);
         }
 
         /// <summary>
@@ -150,34 +142,19 @@
         /// </summary>
         private void ShowAdditionalInfo()
         {
-            Console.WriteLine("\n════════════ ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ ════════════");
-            Console.WriteLine($"• Диапазон чисел: {MIN_VALUE} - {MAX_VALUE} (8-битное число)");
-            Console.WriteLine($"• Двоичное представление: {BITS_COUNT} бит");
-            Console.WriteLine($"• Максимальное значение: {MAX_VALUE} = 11111111₂");
-            Console.WriteLine($"• Системы счисления:");
-            Console.WriteLine($"  - Десятичная: основание 10 (0-9)");
-            Console.WriteLine($"  - Двоичная: основание 2 (0-1)");
-            Console.WriteLine("═══════════════════════════════════════════════");
-        }
+            string[] infoLines = {
+                $"• Диапазон чисел: {MIN_VALUE} - {MAX_VALUE} (8-битное число)",
+                $"• Двоичное представление: {BITS_COUNT} бит",
+                $"• Максимальное значение: {MAX_VALUE} = 11111111₂",
+                $"• Системы счисления:",
+                $"  - Десятичная: основание 10 (0-9)",
+                $"  - Двоичная: основание 2 (0-1)",
+                $"• Префиксы:",
+                $"  - ₂ - двоичная система",
+                $"  - ₁₀ - десятичная система"
+            };
 
-        /// <summary>
-        /// Показать сообщение об ошибке
-        /// </summary>
-        private void ShowErrorMessage(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"ОШИБКА: {message}");
-            Console.ResetColor();
-        }
-
-        /// <summary>
-        /// Ожидать нажатия клавиши для продолжения
-        /// </summary>
-        private void WaitForContinue()
-        {
-            Console.WriteLine("\n═══════════════════════════════════════════════");
-            Console.WriteLine("Нажмите любую клавишу для возврата в меню...");
-            Console.ReadKey();
+            ConsoleHelper.ShowInfoBlock("ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ", infoLines);
         }
 
         #endregion
@@ -187,13 +164,13 @@
         /// <summary>
         /// Выполнить конвертацию в зависимости от выбора
         /// </summary>
-        private string PerformConversion(string choice, string input)
+        private string PerformConversion(int choice, string input)
         {
             switch(choice)
             {
-                case "1":
+                case 1:
                     return ConvertDecimalToBinary(input);
-                case "2":
+                case 2:
                     return ConvertBinaryToDecimal(input);
                 default:
                     return ConvertDecimalToBinary(input);
@@ -227,7 +204,10 @@
             string binaryString = Convert.ToString(number, 2);
 
             // Дополнение нулями слева до 8 бит
-            return binaryString.PadLeft(BITS_COUNT, '0');
+            string paddedBinary = binaryString.PadLeft(BITS_COUNT, '0');
+
+            // Форматируем с разделителями для наглядности
+            return $"{paddedBinary.Substring(0, 4)} {paddedBinary.Substring(4)} ({paddedBinary}₂)";
         }
 
         /// <summary>
@@ -241,8 +221,11 @@
                 return "Ошибка: Введите двоичное число!";
             }
 
+            // Убираем пробелы для проверки
+            string cleanInput = input.Replace(" ", "");
+
             // Проверка на допустимые символы (только 0 и 1)
-            foreach(char c in input)
+            foreach(char c in cleanInput)
             {
                 if(c != '0' && c != '1')
                 {
@@ -251,7 +234,7 @@
             }
 
             // Проверка длины (не более 8 бит)
-            if(input.Length > BITS_COUNT)
+            if(cleanInput.Length > BITS_COUNT)
             {
                 return $"Ошибка: Слишком длинное число! Максимум {BITS_COUNT} бит.";
             }
@@ -259,8 +242,8 @@
             try
             {
                 // Конвертация из двоичной системы
-                int decimalNumber = Convert.ToInt32(input, 2);
-                return decimalNumber.ToString();
+                int decimalNumber = Convert.ToInt32(cleanInput, 2);
+                return $"{decimalNumber} ({decimalNumber}₁₀)";
             }
             catch(FormatException)
             {
@@ -279,25 +262,29 @@
         /// <summary>
         /// Получить объяснение конвертации
         /// </summary>
-        private string GetConversionExplanation(string choice, string input, string result)
+        private string GetConversionExplanation(int choice, string input, string result)
         {
             if(result.StartsWith("Ошибка"))
             {
                 return "";
             }
 
-            if(choice == "1")
+            if(choice == 1)
             {
                 if(int.TryParse(input, out int number))
                 {
-                    return $"Объяснение: {number}₁₀ = {result}₂";
+                    string binaryResult = result.Split(' ')[0].Replace(" ", "");
+                    return $"{number}₁₀ → {binaryResult}₂";
                 }
             }
-            else if(choice == "2")
+            else if(choice == 2)
             {
-                if(int.TryParse(result, out int decimalResult))
+                // Извлекаем десятичное число из результата
+                string decimalStr = result.Split(' ')[0];
+                if(int.TryParse(decimalStr, out int decimalResult))
                 {
-                    return $"Объяснение: {input}₂ = {decimalResult}₁₀";
+                    string cleanInput = input.Replace(" ", "");
+                    return $"{cleanInput}₂ → {decimalResult}₁₀";
                 }
             }
 

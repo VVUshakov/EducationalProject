@@ -2,14 +2,7 @@
 {
     /// <summary>
     /// Программа 4: Демонстрация операций присваивания
-    /// 
-    /// Демонстрирует различные типы операторов присваивания в языке C#:
-    /// 1. Базовые составные операторы (+=, -=, *=, /=, %=)
-    /// 2. Комбинированные операции с несколькими переменными
-    /// 3. Практическое применение в финансовых расчетах
-    /// 
-    /// Цель: наглядно показать как составные операторы присваивания
-    /// упрощают и сокращают код при работе с переменными.
+    /// Демонстрирует различные типы операторов присваивания в языке C#
     /// </summary>
     public class AssignmentDemo : BaseService
     {
@@ -27,76 +20,51 @@
         // Главный метод запуска программы
         public override void Run()
         {
-            ShowHeader(); // Показать заголовок
-            ShowMenu(); // Показать меню выбора
+            ConsoleHelper.ClearAndShowHeader(Name);
+            ShowMenu();
 
-            string choice = GetUserChoice(); // Получить выбор пользователя
+            int choice = ConsoleHelper.GetMenuChoice(1, 3, ">>> Введите номер демонстрации (1-3): ");
+            ExecuteChoice(choice);
 
-            ExecuteChoice(choice); // Выполнить выбранный вариант
+            ConsoleHelper.WaitForAnyKey("Нажмите любую клавишу для возврата в меню...");
         }
 
         #endregion
 
-        #region ===== МЕТОДЫ ВЗАИМОДЕЙСТВИЯ С ПОЛЬЗОВАТЕЛЕМ =====
-
-        // Показать заголовок программы
-        private void ShowHeader()
-        {
-            Console.Clear();
-            Console.WriteLine("╔═════════════════════════════════════════════╗");
-            Console.WriteLine("║     ДЕМОНСТРАЦИЯ ОПЕРАЦИЙ ПРИСВАИВАНИЯ      ║");
-            Console.WriteLine("╚═════════════════════════════════════════════╝");
-            Console.WriteLine();
-        }
+        #region ===== ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ =====
 
         // Показать меню выбора демонстраций        
         private void ShowMenu()
         {
-            Console.WriteLine("Доступные демонстрации:");
-            Console.WriteLine("1. Базовые операции присваивания");
-            Console.WriteLine("2. Комбинированные операции");
-            Console.WriteLine("3. Практический пример (бюджет)");
+            string[] menuItems = {
+                "Базовые операции присваивания",
+                "Комбинированные операции",
+                "Практический пример (бюджет)"
+            };
+
+            ConsoleHelper.ShowMenu("ДОСТУПНЫЕ ДЕМОНСТРАЦИИ", menuItems);
             Console.WriteLine();
         }
 
-        /// <summary>
-        /// Ожидать нажатия клавиши для продолжения
-        /// </summary>
-        private void WaitForContinue()
-        {
-            Console.WriteLine("\n═══════════════════════════════════════════════");
-            Console.WriteLine("Нажмите любую клавишу для возврата в меню...");
-            Console.ReadKey();
-        }
-
-        // Получить выбор пользователя
-        private string GetUserChoice()
-        {
-            Console.Write(">>> Введите номер демонстрации (1-3): ");
-            return Console.ReadLine()?.Trim() ?? "1";
-        }
-
         /// Выполнить выбранный вариант демонстрации
-        private void ExecuteChoice(string choice)
+        private void ExecuteChoice(int choice)
         {
             switch(choice)
             {
-                case "1":
+                case 1:
                     ShowBasicOperations();
                     break;
-                case "2":
+                case 2:
                     ShowCombinedOperations();
                     break;
-                case "3":
+                case 3:
                     ShowPracticalExample();
                     break;
                 default:
-                    Console.WriteLine("\nНеверный выбор. Показываем базовые операции...");
+                    ConsoleHelper.ShowWarning("Неверный выбор. Показываем базовые операции...");
                     ShowBasicOperations();
                     break;
             }
-
-            WaitForContinue(); // Ждать подтверждения
         }
 
         #endregion
@@ -106,101 +74,134 @@
         /// Демонстрация базовых операций присваивания
         private void ShowBasicOperations()
         {
-            Console.WriteLine("\n=== БАЗОВЫЕ ОПЕРАЦИИ ПРИСВАИВАНИЯ ===\n");
+            ConsoleHelper.ShowHeader("БАЗОВЫЕ ОПЕРАЦИИ ПРИСВАИВАНИЯ");
+
+            string[] infoLines = {
+                "Демонстрация составных операторов: +=, -=, *=, /=, %=",
+                "А также битовых сдвигов: <<=, >>="
+            };
+
+            ConsoleHelper.ShowInfoBlock("Описание", infoLines);
 
             int value = 100;
-            Console.WriteLine($"Начальное значение: {value}");
+            ConsoleHelper.ShowKeyValueResult("Начальное значение", value.ToString(), ConsoleColor.Yellow);
+            Console.WriteLine();
 
             // Демонстрация различных операторов присваивания
-            value += 10;
-            Console.WriteLine($"После 'value += 10':   {value}  // Увеличили на 10");
+            var operations = new List<(string operation, string description, int result)>
+            {
+                ("value += 10", "Увеличили на 10", value += 10),
+                ("value -= 5",  "Уменьшили на 5", value -= 5),
+                ("value *= 2",  "Умножили на 2", value *= 2),
+                ("value /= 3",  "Разделили на 3 (целочисленное деление)", value /= 3),
+                ("value %= 7",  "Взяли остаток от деления на 7", value %= 7),
+                ("value <<= 1", "Сдвиг влево (умножение на 2)", value <<= 1),
+                ("value >>= 1", "Сдвиг вправо (деление на 2)", value >>= 1)
+            };
 
-            value -= 5;
-            Console.WriteLine($"После 'value -= 5':    {value}  // Уменьшили на 5");
+            foreach(var op in operations)
+            {
+                ConsoleHelper.ShowKeyValueResult($"После '{op.operation}'",
+                    $"{op.result,3}  // {op.description}");
+            }
 
-            value *= 2;
-            Console.WriteLine($"После 'value *= 2':    {value}  // Умножили на 2");
-
-            value /= 3;
-            Console.WriteLine($"После 'value /= 3':    {value}  // Разделили на 3 (целочисленное деление)");
-
-            value %= 7;
-            Console.WriteLine($"После 'value %= 7':    {value}  // Взяли остаток от деления на 7");
-
-            value <<= 1;
-            Console.WriteLine($"После 'value <<= 1':   {value}  // Сдвиг влево (умножение на 2)");
-
-            value >>= 1;
-            Console.WriteLine($"После 'value >>= 1':   {value}  // Сдвиг вправо (деление на 2)");
+            ConsoleHelper.ShowSeparator(newLineAfter: true);
+            ConsoleHelper.ShowKeyValueResult("Итоговое значение", value.ToString(), ConsoleColor.Green);
         }
 
         /// Демонстрация комбинированных операций
         private void ShowCombinedOperations()
         {
-            Console.WriteLine("\n=== КОМБИНИРОВАННЫЕ ОПЕРАЦИИ ===\n");
+            ConsoleHelper.ShowHeader("КОМБИНИРОВАННЫЕ ОПЕРАЦИИ");
+
+            string[] infoLines = {
+                "Цепочка операций с несколькими переменными",
+                "Показывает взаимодействие переменных через операции"
+            };
+
+            ConsoleHelper.ShowInfoBlock("Описание", infoLines);
 
             // Инициализация переменных
             int a = 10, b = 20, c = 30;
 
-            Console.WriteLine("Начальные значения:");
-            Console.WriteLine($"a = {a}, b = {b}, c = {c}\n");
+            ConsoleHelper.ShowKeyValueResult("Начальные значения", $"a = {a}, b = {b}, c = {c}", ConsoleColor.Yellow);
+            Console.WriteLine();
 
             // Цепочка операций присваивания
-            Console.WriteLine("Выполняем цепочку операций:");
-            Console.WriteLine("c /= 2;   // c = 30 / 2 = 15");
-            c /= 2;
-            Console.WriteLine($"Текущие значения: a={a}, b={b}, c={c}\n");
+            var steps = new List<(string operation, string explanation)>
+            {
+                ("c /= 2", $"c = 30 / 2 = 15\n   Текущие: a={a}, b={b}, c={c/=2}"),
+                ("b -= c", $"b = 20 - 15 = 5\n   Текущие: a={a}, b={b-=c}, c={c}"),
+                ("a += b", $"a = 10 + 5 = 15\n   Текущие: a={a+=b}, b={b}, c={c}")
+            };
 
-            Console.WriteLine("b -= c;   // b = 20 - 15 = 5");
-            b -= c;
-            Console.WriteLine($"Текущие значения: a={a}, b={b}, c={c}\n");
+            ConsoleHelper.ShowInfo("Выполняем цепочку операций:");
+            Console.WriteLine();
 
-            Console.WriteLine("a += b;   // a = 10 + 5 = 15");
-            a += b;
-            Console.WriteLine($"Текущие значения: a={a}, b={b}, c={c}");
+            foreach(var step in steps)
+            {
+                ConsoleHelper.ShowKeyValueResult($"Шаг: {step.operation}", step.explanation);
+                Console.WriteLine();
+            }
 
-            Console.WriteLine("\nИтоговые значения:");
-            Console.WriteLine($"a = {a}, b = {b}, c = {c}");
+            ConsoleHelper.ShowSeparator(newLineAfter: true);
+            ConsoleHelper.ShowKeyValueResult("Итоговые значения", $"a = {a}, b = {b}, c = {c}", ConsoleColor.Green);
         }
 
         /// Практический пример использования операций присваивания
         private void ShowPracticalExample()
         {
-            const string currency = "руб."; // денежная единица валюты
-            const double salaryReceived = 50000; // полученная зарплата
-            const double spendingOnGroceries = 15000; // Расходы на продукты питания
-            const double entertainmentExpenses = 5000; // Расходы на развлечения
+            const string currency = "руб.";
+            const double salaryReceived = 50000;
+            const double spendingOnGroceries = 15000;
+            const double entertainmentExpenses = 5000;
 
-            Console.WriteLine("\n=== ПРАКТИЧЕСКИЙ ПРИМЕР: УПРАВЛЕНИЕ БЮДЖЕТОМ ===\n");
+            ConsoleHelper.ShowHeader("ПРАКТИЧЕСКИЙ ПРИМЕР");
+
+            string[] infoLines = {
+                "Управление личным бюджетом",
+                "Симуляция финансовых операций\nс использованием операторов присваивания"
+            };
+
+            ConsoleHelper.ShowInfoBlock("Описание", infoLines);
 
             double budget = 0;
-            Console.WriteLine($"💰 Начальный бюджет: {budget} {currency}\n");
+            ConsoleHelper.ShowKeyValueResult("💰 Начальный бюджет", $"{budget:F2} {currency}", ConsoleColor.Yellow);
+            Console.WriteLine();
 
-            // Симуляция операций с бюджетом
-            budget += 50000;
-            Console.WriteLine($"+ Получена зарплата:      {salaryReceived} {currency}");
-            Console.WriteLine($"  Текущий бюджет:         {budget} {currency}\n");
+            var transactions = new List<(string operation, double amount, string description)>
+            {
+                ("+", salaryReceived, "Получена зарплата"),
+                ("-", spendingOnGroceries, "Покупка продуктов"),
+                ("-", entertainmentExpenses, "Развлечения")
+            };
 
-            budget -= 15000;
-            Console.WriteLine($"- Покупка продуктов:      {spendingOnGroceries} {currency}");
-            Console.WriteLine($"  Текущий бюджет:         {budget} {currency}\n");
+            ConsoleHelper.ShowInfo("Финансовые операции:");
+            Console.WriteLine();
 
-            budget -= 5000;
-            Console.WriteLine($"- Развлечения:            {entertainmentExpenses} {currency}");
-            Console.WriteLine($"  Текущий бюджет:         {budget} {currency}\n");
+            foreach(var trans in transactions)
+            {
+                budget = trans.operation == "+" ? budget + trans.amount : budget - trans.amount;
+                ConsoleHelper.ShowKeyValueResult($"{trans.operation} {trans.description}",
+                    $"{trans.amount,8:F2} {currency}");
+                ConsoleHelper.ShowKeyValueResult("  Текущий бюджет", $"{budget,8:F2} {currency}");
+                Console.WriteLine();
+            }
+
+            // Инвестиции
+            ConsoleHelper.ShowInfo("Инвестиционные операции:");
+            Console.WriteLine();
 
             budget *= 1.1;
-            Console.WriteLine($"* Инвестиционный доход (+10%):");
-            Console.WriteLine($"  Текущий бюджет:         {budget} {currency}\n");
-
-            budget /= 2;
-            Console.WriteLine($"/ Поделили с семьёй (пополам):");
-            Console.WriteLine($"  Текущий бюджет:         {budget} {currency}");
-
+            ConsoleHelper.ShowKeyValueResult("* Инвестиционный доход (+10%)", $"{budget:F2} {currency}");
             Console.WriteLine();
-            Console.WriteLine("═══════════════════════════════════════════════");
-            Console.WriteLine($"📊 Итоговый бюджет: {budget} {currency}");
-            Console.WriteLine("═══════════════════════════════════════════════");
+
+            // Деление с семьей
+            budget /= 2;
+            ConsoleHelper.ShowKeyValueResult("/ Поделили с семьёй (пополам)", $"{budget:F2} {currency}");
+            Console.WriteLine();
+
+            ConsoleHelper.ShowResult("ИТОГОВЫЙ БЮДЖЕТ", $"📊 {budget:F2} {currency}", 35);
         }
 
         #endregion

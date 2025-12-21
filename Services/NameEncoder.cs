@@ -22,40 +22,60 @@
         /// </summary>
         public override void Run()
         {
-            ShowHeader(); // Показать заголовок
+            ConsoleHelper.ClearAndShowHeader(Name);
 
-            string name = GetUserName(); // Получить имя пользователя
+            string[] infoLines = {
+                "Программа демонстрирует различные методы кодирования текста:",
+                "1. Алфавитные позиции (А=1, Б=2, ...)",
+                "2. Азбука Морзе",
+                "3. Простой шифр (позиция × 3)"
+            };
 
-            if(!ValidateName(name)) // Если имя не валидно...
+            ConsoleHelper.ShowInfoBlock("Описание", infoLines);
+
+            string name = GetUserName();
+
+            if(!ValidateName(name))
             {
-                ShowErrorMessage("Имя не может быть пустым!");
-                WaitForContinue();
+                ConsoleHelper.ShowError("Имя не может быть пустым и должно содержать хотя бы одну букву!");
+                ConsoleHelper.WaitForAnyKey();
                 return;
             }
 
-            ShowEncodingMethods(); // Показать доступные методы кодирования
+            ShowEncodingMethods();
+            int choice = ConsoleHelper.GetMenuChoice(1, 3, ">>> Выберите метод кодирования (1-3): ");
+            string encodedName = EncodeName(name, choice);
+            ShowResult(name, encodedName, choice);
 
-            string choice = GetUserChoice(); // Получить выбор метода
-
-            string encodedName = EncodeName(name, choice); // Закодировать имя
-
-            ShowResult(name, encodedName, choice); // Показать результат
-
-            WaitForContinue(); // Ожидать подтверждения
+            ConsoleHelper.WaitForAnyKey("Нажмите любую клавишу для возврата в меню...");
         }
 
         /// <summary>
         /// Получить название метода по его номеру
         /// </summary>
-        private string GetMethodName(string choice)
+        private string GetMethodName(int choice)
         {
-            switch(choice)
+            return choice switch
             {
-                case "1": return "Алфавитные позиции";
-                case "2": return "Азбука Морзе";
-                case "3": return "Простой шифр";
-                default: return "Неизвестный метод";
-            }
+                1 => "Алфавитные позиции",
+                2 => "Азбука Морзе",
+                3 => "Простой шифр",
+                _ => "Неизвестный метод"
+            };
+        }
+
+        /// <summary>
+        /// Получить описание метода по его номеру
+        /// </summary>
+        private string GetMethodDescription(int choice)
+        {
+            return choice switch
+            {
+                1 => "Каждая буква заменяется её номером в алфавите (А=1, Б=2, ..., Я=33)",
+                2 => "Каждая буква заменяется соответствующей последовательностью точек и тире",
+                3 => "Каждая буква заменяется значением (позиция × 3)",
+                _ => "Неизвестный метод кодирования"
+            };
         }
 
         #endregion
@@ -63,27 +83,17 @@
         #region ===== МЕТОДЫ ВЗАИМОДЕЙСТВИЯ С ПОЛЬЗОВАТЕЛЕМ =====
 
         /// <summary>
-        /// Показать заголовок программы
-        /// </summary>
-        private void ShowHeader()
-        {
-            Console.Clear(); // Очистить консоль
-            Console.WriteLine("═══════════════════════════════════════════════");
-            Console.WriteLine("              КОДИРОВЩИК ИМЕНИ                 ");
-            Console.WriteLine("═══════════════════════════════════════════════");
-            Console.WriteLine();
-        }
-
-        /// <summary>
         /// Показать доступные методы кодирования
         /// </summary>
         private void ShowEncodingMethods()
         {
-            Console.WriteLine("\n════════════ МЕТОДЫ КОДИРОВАНИЯ ════════════");
-            Console.WriteLine("1. Алфавитные позиции (А=1, Б=2, ...)");
-            Console.WriteLine("2. Азбука Морзе");
-            Console.WriteLine("3. Простой шифр (позиция × 3)");
-            Console.WriteLine("═══════════════════════════════════════════════");
+            string[] methods = {
+                "Алфавитные позиции (А=1, Б=2, ...)",
+                "Азбука Морзе",
+                "Простой шифр (позиция × 3)"
+            };
+
+            ConsoleHelper.ShowMenu("МЕТОДЫ КОДИРОВАНИЯ", methods);
             Console.WriteLine();
         }
 
@@ -92,61 +102,29 @@
         /// </summary>
         private string GetUserName()
         {
-            Console.Write(">>> Введите ваше имя: ");
-            string input = Console.ReadLine()?.Trim() ?? "";
+            string input = ConsoleHelper.GetInput(">>> Введите ваше имя: ");
             return input.ToUpper(); // Приводим к верхнему регистру
-        }
-
-        /// <summary>
-        /// Получить выбор метода кодирования
-        /// </summary>
-        private string GetUserChoice()
-        {
-            Console.Write(">>> Выберите метод кодирования (1-3): ");
-            string choice = Console.ReadLine()?.Trim() ?? "1";
-
-            // Проверяем валидность выбора
-            if(choice != "1" && choice != "2" && choice != "3")
-            {
-                Console.WriteLine("Неверный выбор. Используем метод 1.");
-                choice = "1";
-            }
-
-            return choice;
         }
 
         /// <summary>
         /// Показать результат кодирования
         /// </summary>
-        private void ShowResult(string originalName, string encodedName, string methodChoice)
+        private void ShowResult(string originalName, string encodedName, int methodChoice)
         {
-            Console.WriteLine("\n════════════════ РЕЗУЛЬТАТ ════════════════");
-            Console.WriteLine($"Исходное имя: {originalName}");
-
             string methodName = GetMethodName(methodChoice);
-            Console.WriteLine($"Метод кодирования: {methodName}");
-            Console.WriteLine($"Закодированное имя: {encodedName}");
-            Console.WriteLine("═══════════════════════════════════════════════");
-        }
+            string methodDescription = GetMethodDescription(methodChoice);
 
-        /// <summary>
-        /// Показать сообщение об ошибке
-        /// </summary>
-        private void ShowErrorMessage(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"ОШИБКА: {message}");
-            Console.ResetColor();
-        }
+            string[] resultLines = {
+                $"Исходное имя: {originalName}",
+                $"Метод кодирования: {methodName}",
+                "",
+                methodDescription,
+                "",
+                $"Закодированное имя:",
+                $"  {encodedName}"
+            };
 
-        /// <summary>
-        /// Ожидать нажатия клавиши для продолжения
-        /// </summary>
-        private void WaitForContinue()
-        {
-            Console.WriteLine("\n═══════════════════════════════════════════════");
-            Console.WriteLine("Нажмите любую клавишу для возврата в меню...");
-            Console.ReadKey();
+            ConsoleHelper.ShowInfoBlock("РЕЗУЛЬТАТ КОДИРОВАНИЯ", resultLines, 50);
         }
 
         #endregion
@@ -156,19 +134,15 @@
         /// <summary>
         /// Закодировать имя выбранным методом
         /// </summary>
-        private string EncodeName(string name, string methodChoice)
+        private string EncodeName(string name, int methodChoice)
         {
-            switch(methodChoice)
+            return methodChoice switch
             {
-                case "1":
-                    return GetAlphabetCode(name);
-                case "2":
-                    return GetMorseCode(name);
-                case "3":
-                    return GetCipherCode(name);
-                default:
-                    return GetAlphabetCode(name);
-            }
+                1 => GetAlphabetCode(name),
+                2 => GetMorseCode(name),
+                3 => GetCipherCode(name),
+                _ => GetAlphabetCode(name)
+            };
         }
 
         /// <summary>
@@ -177,6 +151,7 @@
         private string GetAlphabetCode(string name)
         {
             string result = "";
+            List<string> codes = new List<string>();
 
             foreach(char c in name)
             {
@@ -184,17 +159,24 @@
                 {
                     // Для русских букв вычисляем позицию в алфавите
                     int position = c - 'А' + 1;
-                    result += $"{position}-";
+                    codes.Add($"{position:00}");
                 }
                 else if(char.IsLetter(c))
                 {
                     // Для латинских букв
-                    result += $"{char.ToUpper(c)}? ";
+                    codes.Add($"{c}?");
+                }
+                else if(char.IsWhiteSpace(c))
+                {
+                    codes.Add("[ПРОБЕЛ]");
+                }
+                else
+                {
+                    codes.Add($"{c}");
                 }
             }
 
-            // Убираем последний дефис, если он есть
-            return CleanResult(result, '-');
+            return string.Join("-", codes);
         }
 
         /// <summary>
@@ -202,19 +184,26 @@
         /// </summary>
         private string GetMorseCode(string name)
         {
-            string result = "";
+            List<string> codes = new List<string>();
 
             foreach(char c in name)
             {
                 if(char.IsLetter(c))
                 {
                     string morseSymbol = GetMorseSymbol(c);
-                    result += $"{morseSymbol} ";
+                    codes.Add(morseSymbol);
+                }
+                else if(char.IsWhiteSpace(c))
+                {
+                    codes.Add("/"); // Разделитель слов в азбуке Морзе
+                }
+                else
+                {
+                    codes.Add($"{c}");
                 }
             }
 
-            // Убираем последний пробел, если он есть
-            return CleanResult(result, ' ');
+            return string.Join(" ", codes);
         }
 
         /// <summary>
@@ -226,43 +215,43 @@
             char upperC = char.ToUpper(c);
 
             // Русский алфавит в азбуке Морзе
-            switch(upperC)
+            return upperC switch
             {
-                case 'А': return ".-";
-                case 'Б': return "-...";
-                case 'В': return ".--";
-                case 'Г': return "--.";
-                case 'Д': return "-..";
-                case 'Е': return ".";
-                case 'Ё': return ".";
-                case 'Ж': return "...-";
-                case 'З': return "--..";
-                case 'И': return "..";
-                case 'Й': return ".---";
-                case 'К': return "-.-";
-                case 'Л': return ".-..";
-                case 'М': return "--";
-                case 'Н': return "-.";
-                case 'О': return "---";
-                case 'П': return ".--.";
-                case 'Р': return ".-.";
-                case 'С': return "...";
-                case 'Т': return "-";
-                case 'У': return "..-";
-                case 'Ф': return "..-.";
-                case 'Х': return "....";
-                case 'Ц': return "-.-.";
-                case 'Ч': return "---.";
-                case 'Ш': return "----";
-                case 'Щ': return "--.-";
-                case 'Ъ': return "--.--";
-                case 'Ы': return "-.--";
-                case 'Ь': return "-..-";
-                case 'Э': return "..-..";
-                case 'Ю': return "..--";
-                case 'Я': return ".-.-";
-                default: return "?"; // Для не-русских букв
-            }
+                'А' => ".-",
+                'Б' => "-...",
+                'В' => ".--",
+                'Г' => "--.",
+                'Д' => "-..",
+                'Е' => ".",
+                'Ё' => ".",
+                'Ж' => "...-",
+                'З' => "--..",
+                'И' => "..",
+                'Й' => ".---",
+                'К' => "-.-",
+                'Л' => ".-..",
+                'М' => "--",
+                'Н' => "-.",
+                'О' => "---",
+                'П' => ".--.",
+                'Р' => ".-.",
+                'С' => "...",
+                'Т' => "-",
+                'У' => "..-",
+                'Ф' => "..-.",
+                'Х' => "....",
+                'Ц' => "-.-.",
+                'Ч' => "---.",
+                'Ш' => "----",
+                'Щ' => "--.-",
+                'Ъ' => "--.--",
+                'Ы' => "-.--",
+                'Ь' => "-..-",
+                'Э' => "..-..",
+                'Ю' => "..--",
+                'Я' => ".-.-",
+                _ => "?" // Для не-русских букв
+            };
         }
 
         /// <summary>
@@ -270,7 +259,7 @@
         /// </summary>
         private string GetCipherCode(string name)
         {
-            string result = "";
+            List<string> codes = new List<string>();
 
             foreach(char c in name)
             {
@@ -278,35 +267,24 @@
                 {
                     // (позиция в алфавите) × 3
                     int encodedValue = (c - 'А' + 1) * 3;
-                    result += $"{encodedValue} ";
+                    codes.Add($"{encodedValue:000}");
                 }
                 else if(char.IsLetter(c))
                 {
                     // Для латинских букв
-                    result += $"{char.ToUpper(c)}? ";
+                    codes.Add($"{c}?");
+                }
+                else if(char.IsWhiteSpace(c))
+                {
+                    codes.Add("[ПРОБЕЛ]");
+                }
+                else
+                {
+                    codes.Add($"{c}");
                 }
             }
 
-            // Убираем последний пробел, если он есть
-            return CleanResult(result, ' ');
-        }
-
-        /// <summary>
-        /// Очистить результат от последнего разделителя
-        /// </summary>
-        private string CleanResult(string result, char separator)
-        {
-            if(string.IsNullOrEmpty(result))
-            {
-                return "Пустой результат";
-            }
-
-            if(result.EndsWith($"{separator}"))
-            {
-                result = result.Substring(0, result.Length - 1);
-            }
-
-            return result;
+            return string.Join(" ", codes);
         }
 
         #endregion
