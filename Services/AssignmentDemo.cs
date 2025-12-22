@@ -50,6 +50,105 @@
 
         #endregion
 
+        #region ===== ТЕКСТОВЫЕ КОНСТАНТЫ =====
+
+        /// <summary>
+        /// Заголовок для меню доступных демонстраций
+        /// </summary>
+        private const string DEMONSTRATIONS_MENU_TITLE = "ДОСТУПНЫЕ ДЕМОНСТРАЦИИ";
+
+        /// <summary>
+        /// Заголовок для базовых операций присваивания
+        /// </summary>
+        private const string BASIC_OPERATIONS_TITLE = "БАЗОВЫЕ ОПЕРАЦИИ ПРИСВАИВАНИЯ";
+
+        /// <summary>
+        /// Заголовок для комбинированных операций
+        /// </summary>
+        private const string COMBINED_OPERATIONS_TITLE = "КОМБИНИРОВАННЫЕ ОПЕРАЦИИ";
+
+        /// <summary>
+        /// Заголовок для практического примера
+        /// </summary>
+        private const string PRACTICAL_EXAMPLE_TITLE = "ПРАКТИЧЕСКИЙ ПРИМЕР";
+
+        /// <summary>
+        /// Приглашение для выбора демонстрации
+        /// </summary>
+        private const string PROMPT_CHOOSE_DEMONSTRATION = ">>> Введите номер демонстрации (1-3): ";
+
+        /// <summary>
+        /// Метка для начального значения
+        /// </summary>
+        private const string LABEL_INITIAL_VALUE = "Начальное значение";
+
+        /// <summary>
+        /// Метка для значения после операции
+        /// </summary>
+        private const string LABEL_AFTER_OPERATION = "После '{0}'";
+
+        /// <summary>
+        /// Метка для итогового значения
+        /// </summary>
+        private const string LABEL_FINAL_VALUE = "Итоговое значение";
+
+        /// <summary>
+        /// Метка для начальных значений (множественных)
+        /// </summary>
+        private const string LABEL_INITIAL_VALUES = "Начальные значения";
+
+        /// <summary>
+        /// Метка для шага выполнения
+        /// </summary>
+        private const string LABEL_STEP = "Шаг";
+
+        /// <summary>
+        /// Метка для итоговых значений (множественных)
+        /// </summary>
+        private const string LABEL_FINAL_VALUES = "Итоговые значения";
+
+        /// <summary>
+        /// Метка для начального бюджета
+        /// </summary>
+        private const string LABEL_INITIAL_BUDGET = "💰 Начальный бюджет";
+
+        /// <summary>
+        /// Метка для текущего бюджета
+        /// </summary>
+        private const string LABEL_CURRENT_BUDGET = "Текущий бюджет";
+
+        /// <summary>
+        /// Сообщение о некорректном выборе
+        /// </summary>
+        private const string MESSAGE_INVALID_CHOICE = "Неверный выбор. Показываем базовые операции...";
+
+        /// <summary>
+        /// Текст для финансовых операций
+        /// </summary>
+        private const string FINANCIAL_OPERATIONS = "Финансовые операции";
+
+        /// <summary>
+        /// Текст для инвестиционных операций
+        /// </summary>
+        private const string INVESTMENT_OPERATIONS = "Инвестиционные операции";
+
+        /// <summary>
+        /// Текст для итогового бюджета
+        /// </summary>
+        private const string FINAL_BUDGET = "ИТОГОВЫЙ БЮДЖЕТ";
+
+        /// <summary>
+        /// Текст для цепочки операций
+        /// </summary>
+        private const string OPERATIONS_CHAIN = "Выполняем цепочку операций";
+
+        /// <summary>
+        /// Валюта для практического примера
+        /// </summary>
+        private const string CURRENCY = "руб.";
+
+        #endregion
+
         #region ===== ОСНОВНЫЕ МЕТОДЫ =====
 
         /// <summary>
@@ -84,10 +183,11 @@
             ConsoleHelper.ClearAndShowHeader(Name);
             ShowMenu();
 
-            int choice = InputValidator.GetValidMenuChoice(1, 3, ">>> Введите номер демонстрации (1-3): ");
+            int choice = InputValidator.GetValidMenuChoice(1, 3, PROMPT_CHOOSE_DEMONSTRATION);
             ExecuteChoice(choice);
 
-            ConsoleHelper.WaitForAnyKey("Нажмите любую клавишу для возврата в меню...");
+            // Используем константу из базового класса
+            ConsoleHelper.WaitForAnyKey(PRESS_ANY_KEY_TO_RETURN);
         }
 
         #endregion
@@ -120,7 +220,8 @@
                 "Практический пример (бюджет)"
             };
 
-            ConsoleHelper.ShowMenu("ДОСТУПНЫЕ ДЕМОНСТРАЦИИ", menuItems);
+            // Используем константу
+            ConsoleHelper.ShowMenu(DEMONSTRATIONS_MENU_TITLE, menuItems);
             Console.WriteLine();
         }
 
@@ -159,7 +260,8 @@
                     ShowPracticalExample();
                     break;
                 default:
-                    ConsoleHelper.ShowWarning("Неверный выбор. Показываем базовые операции...");
+                    // Используем константу
+                    ConsoleHelper.ShowWarning(MESSAGE_INVALID_CHOICE);
                     ShowBasicOperations();
                     break;
             }
@@ -230,17 +332,20 @@
         /// </example>
         private void ShowBasicOperations()
         {
-            ConsoleHelper.ShowHeader("БАЗОВЫЕ ОПЕРАЦИИ ПРИСВАИВАНИЯ");
+            // Используем константу
+            ConsoleHelper.ShowHeader(BASIC_OPERATIONS_TITLE);
 
             string[] infoLines = {
                 "Демонстрация составных операторов: +=, -=, *=, /=, %=",
                 "А также битовых сдвигов: <<=, >>="
             };
 
-            ConsoleHelper.ShowInfoBlock("Описание", infoLines);
+            // Используем константу из базового класса
+            ConsoleHelper.ShowInfoBlock(DESCRIPTION_TITLE, infoLines);
 
             int value = 100;
-            ConsoleHelper.ShowKeyValueResult("Начальное значение", value.ToString(), ConsoleColor.Yellow);
+            // Используем константу
+            ConsoleHelper.ShowKeyValueResult(LABEL_INITIAL_VALUE, value.ToString(), ConsoleColor.Yellow);
             Console.WriteLine();
 
             // Демонстрация различных операторов присваивания
@@ -257,12 +362,14 @@
 
             foreach(var op in operations)
             {
-                ConsoleHelper.ShowKeyValueResult($"После '{op.operation}'",
+                // Используем константу
+                ConsoleHelper.ShowKeyValueResult(string.Format(LABEL_AFTER_OPERATION, op.operation),
                     $"{op.result,3}  // {op.description}");
             }
 
             ConsoleHelper.ShowSeparator(newLineAfter: true);
-            ConsoleHelper.ShowKeyValueResult("Итоговое значение", value.ToString(), ConsoleColor.Green);
+            // Используем константу
+            ConsoleHelper.ShowKeyValueResult(LABEL_FINAL_VALUE, value.ToString(), ConsoleColor.Green);
         }
 
         /// <summary>
@@ -294,19 +401,22 @@
         /// </example>
         private void ShowCombinedOperations()
         {
-            ConsoleHelper.ShowHeader("КОМБИНИРОВАННЫЕ ОПЕРАЦИИ");
+            // Используем константу
+            ConsoleHelper.ShowHeader(COMBINED_OPERATIONS_TITLE);
 
             string[] infoLines = {
                 "Цепочка операций с несколькими переменными",
                 "Показывает взаимодействие переменных через операции"
             };
 
-            ConsoleHelper.ShowInfoBlock("Описание", infoLines);
+            // Используем константу из базового класса
+            ConsoleHelper.ShowInfoBlock(DESCRIPTION_TITLE, infoLines);
 
             // Инициализация переменных
             int a = 10, b = 20, c = 30;
 
-            ConsoleHelper.ShowKeyValueResult("Начальные значения", $"a = {a}, b = {b}, c = {c}", ConsoleColor.Yellow);
+            // Используем константу
+            ConsoleHelper.ShowKeyValueResult(LABEL_INITIAL_VALUES, $"a = {a}, b = {b}, c = {c}", ConsoleColor.Yellow);
             Console.WriteLine();
 
             // Цепочка операций присваивания
@@ -317,17 +427,20 @@
                 ("a += b", $"a = 10 + 5 = 15\n   Текущие: a={a+=b}, b={b}, c={c}")
             };
 
-            ConsoleHelper.ShowInfo("Выполняем цепочку операций:");
+            // Используем константу
+            ConsoleHelper.ShowInfo(OPERATIONS_CHAIN);
             Console.WriteLine();
 
             foreach(var step in steps)
             {
-                ConsoleHelper.ShowKeyValueResult($"Шаг: {step.operation}", step.explanation);
+                // Используем константу
+                ConsoleHelper.ShowKeyValueResult($"{LABEL_STEP}: {step.operation}", step.explanation);
                 Console.WriteLine();
             }
 
             ConsoleHelper.ShowSeparator(newLineAfter: true);
-            ConsoleHelper.ShowKeyValueResult("Итоговые значения", $"a = {a}, b = {b}, c = {c}", ConsoleColor.Green);
+            // Используем константу
+            ConsoleHelper.ShowKeyValueResult(LABEL_FINAL_VALUES, $"a = {a}, b = {b}, c = {c}", ConsoleColor.Green);
         }
 
         /// <summary>
@@ -368,22 +481,24 @@
         /// </example>
         private void ShowPracticalExample()
         {
-            const string currency = "руб.";
             const double salaryReceived = 50000;
             const double spendingOnGroceries = 15000;
             const double entertainmentExpenses = 5000;
 
-            ConsoleHelper.ShowHeader("ПРАКТИЧЕСКИЙ ПРИМЕР");
+            // Используем константу
+            ConsoleHelper.ShowHeader(PRACTICAL_EXAMPLE_TITLE);
 
             string[] infoLines = {
                 "Управление личным бюджетом",
-                "Симуляция финансовых операций с использованием операторов присваивания"
+                "Симуляция финансовых операций\nс использованием операторов присваивания"
             };
 
-            ConsoleHelper.ShowInfoBlock("Описание", infoLines);
+            // Используем константу из базового класса
+            ConsoleHelper.ShowInfoBlock(DESCRIPTION_TITLE, infoLines);
 
             double budget = 0;
-            ConsoleHelper.ShowKeyValueResult("💰 Начальный бюджет", $"{budget:F2} {currency}", ConsoleColor.Yellow);
+            // Используем константу
+            ConsoleHelper.ShowKeyValueResult(LABEL_INITIAL_BUDGET, $"{budget:F2} {CURRENCY}", ConsoleColor.Yellow);
             Console.WriteLine();
 
             var transactions = new List<(string operation, double amount, string description)>
@@ -393,32 +508,36 @@
                 ("-", entertainmentExpenses, "Развлечения")
             };
 
-            ConsoleHelper.ShowInfo("Финансовые операции:");
+            // Используем константу
+            ConsoleHelper.ShowInfo(FINANCIAL_OPERATIONS);
             Console.WriteLine();
 
             foreach(var trans in transactions)
             {
                 budget = trans.operation == "+" ? budget + trans.amount : budget - trans.amount;
                 ConsoleHelper.ShowKeyValueResult($"{trans.operation} {trans.description}",
-                    $"{trans.amount,8:F2} {currency}");
-                ConsoleHelper.ShowKeyValueResult("  Текущий бюджет", $"{budget,8:F2} {currency}");
+                    $"{trans.amount,8:F2} {CURRENCY}");
+                // Используем константу
+                ConsoleHelper.ShowKeyValueResult($"  {LABEL_CURRENT_BUDGET}", $"{budget,8:F2} {CURRENCY}");
                 Console.WriteLine();
             }
 
             // Инвестиции
-            ConsoleHelper.ShowInfo("Инвестиционные операции:");
+            // Используем константу
+            ConsoleHelper.ShowInfo(INVESTMENT_OPERATIONS);
             Console.WriteLine();
 
             budget *= 1.1;
-            ConsoleHelper.ShowKeyValueResult("* Инвестиционный доход (+10%)", $"{budget:F2} {currency}");
+            ConsoleHelper.ShowKeyValueResult("* Инвестиционный доход (+10%)", $"{budget:F2} {CURRENCY}");
             Console.WriteLine();
 
             // Деление с семьей
             budget /= 2;
-            ConsoleHelper.ShowKeyValueResult("/ Поделили с семьёй (пополам)", $"{budget:F2} {currency}");
+            ConsoleHelper.ShowKeyValueResult("/ Поделили с семьёй (пополам)", $"{budget:F2} {CURRENCY}");
             Console.WriteLine();
 
-            ConsoleHelper.ShowResult("ИТОГОВЫЙ БЮДЖЕТ", $"📊 {budget:F2} {currency}", 35);
+            // Используем константу
+            ConsoleHelper.ShowResult(FINAL_BUDGET, $"📊 {budget:F2} {CURRENCY}", 35);
         }
 
         #endregion

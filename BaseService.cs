@@ -85,6 +85,55 @@
     /// <seealso cref="InputValidator"/>
     public abstract class BaseService
     {
+        #region ===== ТЕКСТОВЫЕ КОНСТАНТЫ (общие для всех программ) =====
+
+        /// <summary>
+        /// Сообщение для ожидания нажатия клавиши перед возвратом в меню
+        /// </summary>
+        protected const string PRESS_ANY_KEY_TO_RETURN = "Нажмите любую клавишу для возврата в меню...";
+
+        /// <summary>
+        /// Сообщение для ожидания нажатия клавиши для продолжения
+        /// </summary>
+        protected const string PRESS_ANY_KEY_TO_CONTINUE = "Нажмите любую клавишу для продолжения...";
+
+        /// <summary>
+        /// Стандартное приглашение для ввода
+        /// </summary>
+        protected const string DEFAULT_INPUT_PROMPT = ">>> ";
+
+        /// <summary>
+        /// Приглашение для выбора из меню
+        /// </summary>
+        protected const string MENU_CHOICE_PROMPT = ">>> Введите номер: ";
+
+        /// <summary>
+        /// Заголовок для описания программы
+        /// </summary>
+        protected const string DESCRIPTION_TITLE = "Описание";
+
+        /// <summary>
+        /// Заголовок для отображения результата
+        /// </summary>
+        protected const string RESULT_TITLE = "Результат";
+
+        /// <summary>
+        /// Заголовок для отображения ошибки
+        /// </summary>
+        protected const string ERROR_TITLE = "Ошибка";
+
+        /// <summary>
+        /// Текст для некорректного выбора в меню
+        /// </summary>
+        protected const string INVALID_CHOICE_MESSAGE = "Неверный выбор";
+
+        /// <summary>
+        /// Текст для повтора попытки ввода
+        /// </summary>
+        protected const string TRY_AGAIN_MESSAGE = "Попробуйте ещё раз...";
+
+        #endregion
+
         /// <summary>
         /// Получает отображаемое название программы.
         /// </summary>

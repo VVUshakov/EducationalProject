@@ -60,6 +60,70 @@
 
         #endregion
 
+        #region ===== ТЕКСТОВЫЕ КОНСТАНТЫ =====
+
+        /// <summary>
+        /// Заголовок для меню методов кодирования
+        /// </summary>
+        private const string ENCODING_METHODS_TITLE = "МЕТОДЫ КОДИРОВАНИЯ";
+
+        /// <summary>
+        /// Заголовок для отображения результата кодирования
+        /// </summary>
+        private const string ENCODING_RESULT_TITLE = "РЕЗУЛЬТАТ КОДИРОВАНИЯ";
+
+        /// <summary>
+        /// Приглашение для ввода имени
+        /// </summary>
+        private const string PROMPT_ENTER_NAME = ">>> Введите ваше имя: ";
+
+        /// <summary>
+        /// Приглашение для выбора метода кодирования
+        /// </summary>
+        private const string PROMPT_CHOOSE_METHOD = ">>> Выберите метод кодирования (1-3): ";
+
+        /// <summary>
+        /// Метка для исходного имени
+        /// </summary>
+        private const string LABEL_ORIGINAL_NAME = "Исходное имя";
+
+        /// <summary>
+        /// Метка для метода кодирования
+        /// </summary>
+        private const string LABEL_ENCODING_METHOD = "Метод кодирования";
+
+        /// <summary>
+        /// Метка для закодированного имени
+        /// </summary>
+        private const string LABEL_ENCODED_NAME = "Закодированное имя";
+
+        /// <summary>
+        /// Текст для неизвестного метода
+        /// </summary>
+        private const string UNKNOWN_METHOD = "Неизвестный метод";
+
+        /// <summary>
+        /// Текст для латинских букв
+        /// </summary>
+        private const string LATIN_LETTER_SUFFIX = "?";
+
+        /// <summary>
+        /// Текст для пробела
+        /// </summary>
+        private const string SPACE_REPLACEMENT = "[ПРОБЕЛ]";
+
+        /// <summary>
+        /// Разделитель слов в азбуке Морзе
+        /// </summary>
+        private const string MORSE_WORD_SEPARATOR = "/";
+
+        /// <summary>
+        /// Неизвестный символ Морзе
+        /// </summary>
+        private const string MORSE_UNKNOWN_SYMBOL = "?";
+
+        #endregion
+
         #region ===== ОСНОВНЫЕ МЕТОДЫ =====
 
         /// <summary>
@@ -96,10 +160,11 @@
                 "3. Простой шифр (позиция × 3)"
             };
 
-            ConsoleHelper.ShowInfoBlock("Описание", infoLines);
+            // Используем константу из базового класса
+            ConsoleHelper.ShowInfoBlock(DESCRIPTION_TITLE, infoLines);
 
             string name = InputValidator.GetValidText(
-                ">>> Введите ваше имя: ",
+                PROMPT_ENTER_NAME,
                 minLength: 1,
                 maxLength: 50,
                 allowDigits: false,
@@ -108,11 +173,12 @@
 
             ShowEncodingMethods();
 
-            int choice = InputValidator.GetValidMenuChoice(1, 3, ">>> Выберите метод кодирования (1-3): ");
+            int choice = InputValidator.GetValidMenuChoice(1, 3, PROMPT_CHOOSE_METHOD);
             string encodedName = EncodeName(name, choice);
             ShowResult(name, encodedName, choice);
 
-            ConsoleHelper.WaitForAnyKey("Нажмите любую клавишу для возврата в меню...");
+            // Используем константу из базового класса
+            ConsoleHelper.WaitForAnyKey(PRESS_ANY_KEY_TO_RETURN);
         }
 
         /// <summary>
@@ -135,7 +201,7 @@
                 1 => "Алфавитные позиции",
                 2 => "Азбука Морзе",
                 3 => "Простой шифр",
-                _ => "Неизвестный метод"
+                _ => UNKNOWN_METHOD
             };
         }
 
@@ -173,7 +239,8 @@
                 "Простой шифр (позиция × 3)"
             };
 
-            ConsoleHelper.ShowMenu("МЕТОДЫ КОДИРОВАНИЯ", methods);
+            // Используем константу
+            ConsoleHelper.ShowMenu(ENCODING_METHODS_TITLE, methods);
             Console.WriteLine();
         }
 
@@ -192,16 +259,17 @@
             string methodDescription = GetMethodDescription(methodChoice);
 
             string[] resultLines = {
-                $"Исходное имя: {originalName}",
-                $"Метод кодирования: {methodName}",
+                $"{LABEL_ORIGINAL_NAME}: {originalName}",
+                $"{LABEL_ENCODING_METHOD}: {methodName}",
                 "",
                 methodDescription,
                 "",
-                $"Закодированное имя:",
+                $"{LABEL_ENCODED_NAME}:",
                 $"  {encodedName}"
             };
 
-            ConsoleHelper.ShowInfoBlock("РЕЗУЛЬТАТ КОДИРОВАНИЯ", resultLines, 50);
+            // Используем константу
+            ConsoleHelper.ShowInfoBlock(ENCODING_RESULT_TITLE, resultLines, 50);
         }
 
         #endregion
@@ -262,12 +330,13 @@
                 }
                 else if(char.IsLetter(c))
                 {
-                    // Для латинских букв
-                    codes.Add($"{c}?");
+                    // Для латинских букв - используем константу
+                    codes.Add($"{c}{LATIN_LETTER_SUFFIX}");
                 }
                 else if(char.IsWhiteSpace(c))
                 {
-                    codes.Add("[ПРОБЕЛ]");
+                    // Используем константу
+                    codes.Add(SPACE_REPLACEMENT);
                 }
                 else
                 {
@@ -311,7 +380,8 @@
                 }
                 else if(char.IsWhiteSpace(c))
                 {
-                    codes.Add("/"); // Разделитель слов в азбуке Морзе
+                    // Используем константу
+                    codes.Add(MORSE_WORD_SEPARATOR);
                 }
                 else
                 {
@@ -376,7 +446,7 @@
                 'Э' => "..-..",
                 'Ю' => "..--",
                 'Я' => ".-.-",
-                _ => "?" // Для не-русских букв
+                _ => MORSE_UNKNOWN_SYMBOL // Для не-русских букв
             };
         }
 
@@ -411,12 +481,13 @@
                 }
                 else if(char.IsLetter(c))
                 {
-                    // Для латинских букв
-                    codes.Add($"{c}?");
+                    // Для латинских букв - используем константу
+                    codes.Add($"{c}{LATIN_LETTER_SUFFIX}");
                 }
                 else if(char.IsWhiteSpace(c))
                 {
-                    codes.Add("[ПРОБЕЛ]");
+                    // Используем константу
+                    codes.Add(SPACE_REPLACEMENT);
                 }
                 else
                 {

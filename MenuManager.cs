@@ -51,6 +51,70 @@
         /// </remarks>
         private BaseService[] programs;
 
+        #region ===== ТЕКСТОВЫЕ КОНСТАНТЫ =====
+
+        /// <summary>
+        /// Заголовок для главного меню
+        /// </summary>
+        private const string MAIN_MENU_TITLE = "ГЛАВНОЕ МЕНЮ";
+
+        /// <summary>
+        /// Текст для загрузки программ
+        /// </summary>
+        private const string LOADING_PROGRAMS = "Загружено программ: {0}";
+
+        /// <summary>
+        /// Приглашение для ввода номера программы
+        /// </summary>
+        private const string PROMPT_PROGRAM_NUMBER = ">>> Введите номер программы: ";
+
+        /// <summary>
+        /// Текст для пункта "Выход"
+        /// </summary>
+        private const string EXIT_ITEM_TEXT = "Выход";
+
+        /// <summary>
+        /// Текст для запуска программы
+        /// </summary>
+        private const string LAUNCHING_PROGRAM = "Запускаем: {0}";
+
+        /// <summary>
+        /// Текст для прощального сообщения
+        /// </summary>
+        private const string FAREWELL_MESSAGE = "ДО СВИДАНИЯ!";
+
+        /// <summary>
+        /// Текст благодарности
+        /// </summary>
+        private const string THANK_YOU_MESSAGE = "Спасибо за использование программы!";
+
+        /// <summary>
+        /// Текст для пожелания новых встреч
+        /// </summary>
+        private const string SEE_YOU_AGAIN_MESSAGE = "До новых встреч! 👋";
+
+        /// <summary>
+        /// Заголовок приветственного сообщения
+        /// </summary>
+        private const string WELCOME_TITLE = "ОБУЧАЮЩИЙ ПРОЕКТ C#";
+
+        /// <summary>
+        /// Подзаголовок приветственного сообщения
+        /// </summary>
+        private const string WELCOME_SUBTITLE = "Демонстрация ООП подходов";
+
+        /// <summary>
+        /// Заголовок описания проекта
+        /// </summary>
+        private const string PROJECT_DESCRIPTION_TITLE = "Описание проекта";
+
+        /// <summary>
+        /// Текст для информационного сообщения
+        /// </summary>
+        private const string INFO_PREFIX = "🚀";
+
+        #endregion
+
         /// <summary>
         /// Константа, представляющая значение для выхода из программы.
         /// </summary>
@@ -113,7 +177,7 @@
             // Программы берутся из конфигурационного файла
             programs = ProgramsConfig.GetAllPrograms();
 
-            ConsoleHelper.ShowInfo($"Загружено программ: {programs.Length}");
+            ConsoleHelper.ShowInfo(string.Format(LOADING_PROGRAMS, programs.Length));
             ConsoleHelper.WaitForAnyKey();
             Console.Clear();
         }
@@ -153,7 +217,7 @@
 
             string programName = programs[number - 1].Name;
             ConsoleHelper.ShowHeader(programName);
-            ConsoleHelper.ShowInfo($"Запускаем: {programName}", "🚀");
+            ConsoleHelper.ShowInfo(string.Format(LAUNCHING_PROGRAM, programName), INFO_PREFIX);
 
             programs[number - 1].Run();
         }
@@ -207,7 +271,7 @@
                 ShowMenu();
 
                 // Получить валидный ввод от пользователя
-                int userChoice = InputValidator.GetValidMenuChoice(EXIT, programs.Length, ">>> Введите номер программы: ");
+                int userChoice = InputValidator.GetValidMenuChoice(EXIT, programs.Length, PROMPT_PROGRAM_NUMBER);
 
                 // Проверить выбор "0" - выход
                 if(userChoice == EXIT)
@@ -254,12 +318,8 @@
         /// </example>
         private void ShowWelcome()
         {
-            string[] welcomeLines = {
-                "ОБУЧАЮЩИЙ ПРОЕКТ C#",
-                "Демонстрация ООП подходов"
-            };
-
-            ConsoleHelper.ShowHeader(welcomeLines);
+            // Используем константы
+            ConsoleHelper.ShowHeader(WELCOME_TITLE, WELCOME_SUBTITLE);
 
             string[] infoLines = {
                 "Для школьников 7-11 классов",
@@ -267,7 +327,8 @@
                 "Нажмите 0 для выхода из программы"
             };
 
-            ConsoleHelper.ShowInfoBlock("Описание проекта", infoLines);
+            // Используем константу
+            ConsoleHelper.ShowInfoBlock(PROJECT_DESCRIPTION_TITLE, infoLines);
         }
 
         /// <summary>
@@ -293,10 +354,10 @@
         private void ShowFinalMessage()
         {
             string[] goodbyeLines = {
-                "ДО СВИДАНИЯ!",
+                FAREWELL_MESSAGE,
                 "",
-                "Спасибо за использование программы!",
-                "До новых встреч! 👋"
+                THANK_YOU_MESSAGE,
+                SEE_YOU_AGAIN_MESSAGE
             };
 
             ConsoleHelper.ShowHeader(goodbyeLines, 40);
@@ -343,9 +404,11 @@
                 menuItems.Add((i + 1, programs[i].Name));
             }
 
-            menuItems.Add((0, "Выход"));
+            // Используем константу
+            menuItems.Add((0, EXIT_ITEM_TEXT));
 
-            ConsoleHelper.ShowMenuWithNumbers("ГЛАВНОЕ МЕНЮ", menuItems);
+            // Используем константу
+            ConsoleHelper.ShowMenuWithNumbers(MAIN_MENU_TITLE, menuItems);
         }
 
         #endregion

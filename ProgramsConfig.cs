@@ -40,6 +40,60 @@ namespace EducationalProject
     /// <seealso cref="MenuManager"/>
     public static class ProgramsConfig
     {
+        #region ===== ТЕКСТОВЫЕ КОНСТАНТЫ =====
+
+        /// <summary>
+        /// Заголовок для программ по категориям
+        /// </summary>
+        private const string PROGRAMS_BY_CATEGORY_TITLE = "ПРОГРАММЫ ПО КАТЕГОРИЯМ";
+
+        /// <summary>
+        /// Заголовок для подробной информации о программах
+        /// </summary>
+        private const string DETAILED_PROGRAMS_INFO_TITLE = "ПОДРОБНАЯ ИНФОРМАЦИЯ О ПРОГРАММАХ";
+
+        /// <summary>
+        /// Метка для математических программ
+        /// </summary>
+        private const string MATH_PROGRAMS_LABEL = "Математические программы";
+
+        /// <summary>
+        /// Метка для текстовых программ
+        /// </summary>
+        private const string TEXT_PROGRAMS_LABEL = "Программы для работы с текстом";
+
+        /// <summary>
+        /// Метка для обучающих демонстраций
+        /// </summary>
+        private const string LEARNING_DEMOS_LABEL = "Обучающие демонстрации";
+
+        /// <summary>
+        /// Маркер для списка программ
+        /// </summary>
+        private const string LIST_MARKER = "•";
+
+        /// <summary>
+        /// Сообщение о ненайденной программе
+        /// </summary>
+        private const string PROGRAM_NOT_FOUND_MESSAGE = "Программа №{0} не описана";
+
+        /// <summary>
+        /// Метка для программы
+        /// </summary>
+        private const string PROGRAM_LABEL = "Программа {0}";
+
+        /// <summary>
+        /// Описания программ
+        /// </summary>
+        private static readonly string[] PROGRAM_DESCRIPTIONS = {
+            "1. Калькулятор - выполняет базовые арифметические операции: сложение, вычитание, умножение, деление и нахождение остатка",
+            "2. Конвертер систем счисления - переводит числа между десятичной и двоичной системами (8-битные числа)",
+            "3. Кодировщик имени - преобразует имя в разные коды: алфавитные позиции, азбуку Морзе, простой шифр",
+            "4. Демонстрация операций присваивания - показывает как работают составные операторы: +=, -=, *=, /=, %=, <<=, >>="
+        };
+
+        #endregion
+
         /// <summary>
         /// Возвращает массив всех доступных образовательных программ.
         /// </summary>
@@ -231,24 +285,24 @@ namespace EducationalProject
             /// </example>
             public static void ShowAllProgramsByCategory()
             {
-                ConsoleHelper.ClearAndShowHeader("ПРОГРАММЫ ПО КАТЕГОРИЯМ");
+                ConsoleHelper.ClearAndShowHeader(PROGRAMS_BY_CATEGORY_TITLE);
 
-                ConsoleHelper.ShowInfo("Математические программы:");
+                ConsoleHelper.ShowInfo(MATH_PROGRAMS_LABEL);
                 foreach(var program in Математика)
                 {
-                    Console.WriteLine($"  • {program.Name}");
+                    Console.WriteLine($"  {LIST_MARKER} {program.Name}");
                 }
 
-                ConsoleHelper.ShowInfo("\nПрограммы для работы с текстом:");
+                ConsoleHelper.ShowInfo($"\n{TEXT_PROGRAMS_LABEL}");
                 foreach(var program in Текст)
                 {
-                    Console.WriteLine($"  • {program.Name}");
+                    Console.WriteLine($"  {LIST_MARKER} {program.Name}");
                 }
 
-                ConsoleHelper.ShowInfo("\nОбучающие демонстрации:");
+                ConsoleHelper.ShowInfo($"\n{LEARNING_DEMOS_LABEL}");
                 foreach(var program in Обучение)
                 {
-                    Console.WriteLine($"  • {program.Name}");
+                    Console.WriteLine($"  {LIST_MARKER} {program.Name}");
                 }
             }
         }
@@ -282,20 +336,13 @@ namespace EducationalProject
         /// </example>
         public static string GetProgramInfo(int number)
         {
-            string[] descriptions = {
-                "1. Калькулятор - выполняет базовые арифметические операции: сложение, вычитание, умножение, деление и нахождение остатка",
-                "2. Конвертер систем счисления - переводит числа между десятичной и двоичной системами (8-битные числа)",
-                "3. Кодировщик имени - преобразует имя в разные коды: алфавитные позиции, азбуку Морзе, простой шифр",
-                "4. Демонстрация операций присваивания - показывает как работают составные операторы: +=, -=, *=, /=, %=, <<=, >>="
-            };
-
-            if(number >= 1 && number <= descriptions.Length)
+            if(number >= 1 && number <= PROGRAM_DESCRIPTIONS.Length)
             {
-                return descriptions[number - 1];
+                return PROGRAM_DESCRIPTIONS[number - 1];
             }
             else
             {
-                return $"Программа №{number} не описана";
+                return string.Format(PROGRAM_NOT_FOUND_MESSAGE, number);
             }
         }
 
@@ -335,7 +382,7 @@ namespace EducationalProject
         /// <seealso cref="ConsoleHelper.ShowKeyValueResult"/>
         public static void ShowAllProgramsInfo()
         {
-            ConsoleHelper.ClearAndShowHeader("ПОДРОБНАЯ ИНФОРМАЦИЯ О ПРОГРАММАХ");
+            ConsoleHelper.ClearAndShowHeader(DETAILED_PROGRAMS_INFO_TITLE);
 
             var programs = GetAllPrograms();
             for(int i = 0; i < programs.Length; i++)
@@ -343,7 +390,7 @@ namespace EducationalProject
                 string info = GetProgramInfo(i + 1);
                 string[] lines = info.Split(" - ");
 
-                ConsoleHelper.ShowKeyValueResult($"Программа {i + 1}", lines[0], ConsoleColor.Yellow);
+                ConsoleHelper.ShowKeyValueResult(string.Format(PROGRAM_LABEL, i + 1), lines[0], ConsoleColor.Yellow);
                 Console.WriteLine($"  {lines[1]}");
                 Console.WriteLine();
             }

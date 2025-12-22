@@ -131,6 +131,130 @@
             }
         }
 
+        #region ===== ТЕКСТОВЫЕ КОНСТАНТЫ =====
+
+        /// <summary>
+        /// Сообщение об ошибке при пустом вводе
+        /// </summary>
+        private const string ERROR_EMPTY_INPUT = "Вы ничего не ввели!";
+
+        /// <summary>
+        /// Сообщение об ошибке при некорректном числе
+        /// </summary>
+        private const string ERROR_INVALID_NUMBER = "'{0}' не является допустимым числом!";
+
+        /// <summary>
+        /// Сообщение об ошибке при отрицательных числах
+        /// </summary>
+        private const string ERROR_NEGATIVE_NUMBERS = "Отрицательные числа не разрешены!";
+
+        /// <summary>
+        /// Сообщение об ошибке при нулевом значении
+        /// </summary>
+        private const string ERROR_ZERO_NOT_ALLOWED = "Ноль не разрешен!";
+
+        /// <summary>
+        /// Сообщение об ошибке при нечисловом вводе
+        /// </summary>
+        private const string ERROR_NOT_A_NUMBER = "'{0}' - это не число! Пожалуйста, введите номер цифрами.";
+
+        /// <summary>
+        /// Сообщение об ошибке при недопустимом пункте меню
+        /// </summary>
+        private const string ERROR_INVALID_MENU_ITEM = "Нет пункта № {0}! Доступны номера от {1} до {2}.";
+
+        /// <summary>
+        /// Сообщение об ошибке при выходе за диапазон
+        /// </summary>
+        private const string ERROR_OUT_OF_RANGE = "{0} должно быть от {1} до {2}!";
+
+        /// <summary>
+        /// Сообщение об ошибке при некорректном целом числе
+        /// </summary>
+        private const string ERROR_NOT_AN_INTEGER = "'{0}' не является целым числом!";
+
+        /// <summary>
+        /// Сообщение об ошибке при слишком коротком тексте
+        /// </summary>
+        private const string ERROR_TEXT_TOO_SHORT = "Текст должен содержать не менее {0} символов!";
+
+        /// <summary>
+        /// Сообщение об ошибке при слишком длинном тексте
+        /// </summary>
+        private const string ERROR_TEXT_TOO_LONG = "Текст должен содержать не более {0} символов!";
+
+        /// <summary>
+        /// Сообщение об ошибке при отсутствии букв в тексте
+        /// </summary>
+        private const string ERROR_NO_LETTERS = "Текст должен содержать хотя бы одну букву!";
+
+        /// <summary>
+        /// Сообщение об ошибке при недопустимом символе
+        /// </summary>
+        private const string ERROR_INVALID_CHARACTER = "Символ '{0}' не разрешен!";
+
+        /// <summary>
+        /// Сообщение об ошибке при слишком длинном двоичном числе
+        /// </summary>
+        private const string ERROR_BINARY_TOO_LONG = "Слишком длинное число! Максимум {0} бит.";
+
+        /// <summary>
+        /// Сообщение об ошибке при недопустимых символах в двоичном числе
+        /// </summary>
+        private const string ERROR_INVALID_BINARY_CHARS = "'{0}' содержит недопустимые символы! Используйте только 0 и 1.";
+
+        /// <summary>
+        /// Сообщение об ошибке при неподдерживаемой математической операции
+        /// </summary>
+        private const string ERROR_UNSUPPORTED_OPERATION = "Операция '{0}' не поддерживается! Используйте: +, -, *, /, %";
+
+        /// <summary>
+        /// Сообщение об ошибке при делении на ноль
+        /// </summary>
+        private const string ERROR_DIVISION_BY_ZERO = "{0} на ноль невозможно!";
+
+        /// <summary>
+        /// Сообщение об ошибке при неверном формате двоичного числа
+        /// </summary>
+        private const string ERROR_INVALID_BINARY_FORMAT = "Неверный формат двоичного числа!";
+
+        /// <summary>
+        /// Сообщение об ошибке при переполнении числа
+        /// </summary>
+        private const string ERROR_NUMBER_OVERFLOW = "Число слишком большое!";
+
+        /// <summary>
+        /// Сообщение об ошибке при конвертации
+        /// </summary>
+        private const string ERROR_CONVERSION = "Ошибка при конвертации: {0}";
+
+        /// <summary>
+        /// Текст для повтора попытки ввода
+        /// </summary>
+        private const string TRY_AGAIN_MESSAGE = "Попробуйте ещё раз...";
+
+        /// <summary>
+        /// Стандартное наименование числа
+        /// </summary>
+        private const string DEFAULT_NUMBER_NAME = "Число";
+
+        /// <summary>
+        /// Стандартный префикс для ввода
+        /// </summary>
+        private const string DEFAULT_INPUT_PROMPT = ">>> Введите номер: ";
+
+        /// <summary>
+        /// Стандартный префикс для выбора операции
+        /// </summary>
+        private const string DEFAULT_OPERATION_PROMPT = ">>> Выберите операцию (+, -, *, /, %): ";
+
+        /// <summary>
+        /// Допустимые математические операции
+        /// </summary>
+        private static readonly char[] VALID_MATH_OPERATIONS = { '+', '-', '*', '/', '%' };
+
+        #endregion
+
         #endregion
 
         #region ===== МЕТОДЫ ВАЛИДАЦИИ МЕНЮ =====
@@ -171,19 +295,19 @@
             // Проверка на пустой ввод
             if(string.IsNullOrWhiteSpace(input))
             {
-                return ValidationResult.Error("Вы ничего не ввели!");
+                return ValidationResult.Error(ERROR_EMPTY_INPUT);
             }
 
             // Проверка на число
             if(!int.TryParse(input, out int number))
             {
-                return ValidationResult.Error($"'{input}' - это не число! Пожалуйста, введите номер цифрами.");
+                return ValidationResult.Error(string.Format(ERROR_NOT_A_NUMBER, input));
             }
 
             // Проверка диапазона
             if(number < minValue || number > maxValue)
             {
-                return ValidationResult.Error($"Нет пункта № {number}! Доступны номера от {minValue} до {maxValue}.");
+                return ValidationResult.Error(string.Format(ERROR_INVALID_MENU_ITEM, number, minValue, maxValue));
             }
 
             return ValidationResult.Success(number);
@@ -220,7 +344,7 @@
         /// <seealso cref="ValidateMenuChoice"/>
         /// <seealso cref="ConsoleHelper.GetInput"/>
         /// <seealso cref="ConsoleHelper.ShowError"/>
-        public static int GetValidMenuChoice(int minValue, int maxValue, string prompt = ">>> Введите номер: ")
+        public static int GetValidMenuChoice(int minValue, int maxValue, string prompt = DEFAULT_INPUT_PROMPT)
         {
             while(true)
             {
@@ -233,7 +357,7 @@
                 }
 
                 ConsoleHelper.ShowError(result.ErrorMessage);
-                Console.WriteLine("Попробуйте ещё раз...\n");
+                Console.WriteLine($"{TRY_AGAIN_MESSAGE}\n");
             }
         }
 
@@ -277,22 +401,22 @@
         {
             if(string.IsNullOrWhiteSpace(input))
             {
-                return ValidationResult.Error("Вы ничего не ввели!");
+                return ValidationResult.Error(ERROR_EMPTY_INPUT);
             }
 
             if(!double.TryParse(input, out double number))
             {
-                return ValidationResult.Error($"'{input}' не является допустимым числом!");
+                return ValidationResult.Error(string.Format(ERROR_INVALID_NUMBER, input));
             }
 
             if(!allowNegative && number < 0)
             {
-                return ValidationResult.Error("Отрицательные числа не разрешены!");
+                return ValidationResult.Error(ERROR_NEGATIVE_NUMBERS);
             }
 
             if(!allowZero && Math.Abs(number) < double.Epsilon)
             {
-                return ValidationResult.Error("Ноль не разрешен!");
+                return ValidationResult.Error(ERROR_ZERO_NOT_ALLOWED);
             }
 
             return ValidationResult.Success(number);
@@ -327,7 +451,7 @@
         /// </code>
         /// </example>
         /// <seealso cref="ValidateNumber"/>
-        public static ValidationResult ValidateNumberInRange(string input, double minValue, double maxValue, string valueName = "Число")
+        public static ValidationResult ValidateNumberInRange(string input, double minValue, double maxValue, string valueName = DEFAULT_NUMBER_NAME)
         {
             var basicResult = ValidateNumber(input);
             if(!basicResult.IsValid)
@@ -339,7 +463,7 @@
 
             if(number < minValue || number > maxValue)
             {
-                return ValidationResult.Error($"{valueName} должно быть от {minValue} до {maxValue}!");
+                return ValidationResult.Error(string.Format(ERROR_OUT_OF_RANGE, valueName, minValue, maxValue));
             }
 
             return ValidationResult.Success(number);
@@ -371,21 +495,21 @@
         /// ValidateIntegerInRange("25.5", 0, 120, "Возраст"); // Ошибка: "не является целым числом!"
         /// </code>
         /// </example>
-        public static ValidationResult ValidateIntegerInRange(string input, int minValue, int maxValue, string valueName = "Число")
+        public static ValidationResult ValidateIntegerInRange(string input, int minValue, int maxValue, string valueName = DEFAULT_NUMBER_NAME)
         {
             if(string.IsNullOrWhiteSpace(input))
             {
-                return ValidationResult.Error("Вы ничего не ввели!");
+                return ValidationResult.Error(ERROR_EMPTY_INPUT);
             }
 
             if(!int.TryParse(input, out int number))
             {
-                return ValidationResult.Error($"'{input}' не является целым числом!");
+                return ValidationResult.Error(string.Format(ERROR_NOT_AN_INTEGER, input));
             }
 
             if(number < minValue || number > maxValue)
             {
-                return ValidationResult.Error($"{valueName} должно быть от {minValue} до {maxValue}!");
+                return ValidationResult.Error(string.Format(ERROR_OUT_OF_RANGE, valueName, minValue, maxValue));
             }
 
             return ValidationResult.Success(number);
@@ -423,7 +547,7 @@
                 }
 
                 ConsoleHelper.ShowError(result.ErrorMessage);
-                Console.WriteLine("Попробуйте ещё раз...\n");
+                Console.WriteLine($"{TRY_AGAIN_MESSAGE}\n");
             }
         }
 
@@ -445,7 +569,7 @@
         /// </code>
         /// </example>
         /// <seealso cref="ValidateNumberInRange"/>
-        public static double GetValidNumberInRange(string prompt, double minValue, double maxValue, string valueName = "Число")
+        public static double GetValidNumberInRange(string prompt, double minValue, double maxValue, string valueName = DEFAULT_NUMBER_NAME)
         {
             while(true)
             {
@@ -458,7 +582,7 @@
                 }
 
                 ConsoleHelper.ShowError(result.ErrorMessage);
-                Console.WriteLine("Попробуйте ещё раз...\n");
+                Console.WriteLine($"{TRY_AGAIN_MESSAGE}\n");
             }
         }
 
@@ -480,7 +604,7 @@
         /// </code>
         /// </example>
         /// <seealso cref="ValidateIntegerInRange"/>
-        public static int GetValidIntegerInRange(string prompt, int minValue, int maxValue, string valueName = "Число")
+        public static int GetValidIntegerInRange(string prompt, int minValue, int maxValue, string valueName = DEFAULT_NUMBER_NAME)
         {
             while(true)
             {
@@ -493,7 +617,7 @@
                 }
 
                 ConsoleHelper.ShowError(result.ErrorMessage);
-                Console.WriteLine("Попробуйте ещё раз...\n");
+                Console.WriteLine($"{TRY_AGAIN_MESSAGE}\n");
             }
         }
 
@@ -540,19 +664,19 @@
         {
             if(string.IsNullOrWhiteSpace(input))
             {
-                return ValidationResult.Error("Вы ничего не ввели!");
+                return ValidationResult.Error(ERROR_EMPTY_INPUT);
             }
 
             string trimmedInput = input.Trim();
 
             if(trimmedInput.Length < minLength)
             {
-                return ValidationResult.Error($"Текст должен содержать не менее {minLength} символов!");
+                return ValidationResult.Error(string.Format(ERROR_TEXT_TOO_SHORT, minLength));
             }
 
             if(trimmedInput.Length > maxLength)
             {
-                return ValidationResult.Error($"Текст должен содержать не более {maxLength} символов!");
+                return ValidationResult.Error(string.Format(ERROR_TEXT_TOO_LONG, maxLength));
             }
 
             // Проверка на наличие хотя бы одной буквы
@@ -568,7 +692,7 @@
 
             if(!hasLetters)
             {
-                return ValidationResult.Error("Текст должен содержать хотя бы одну букву!");
+                return ValidationResult.Error(ERROR_NO_LETTERS);
             }
 
             // Проверка разрешенных символов
@@ -579,7 +703,7 @@
                 if(allowSpecialChars && char.IsWhiteSpace(c)) continue;
                 if(allowSpecialChars && char.IsPunctuation(c)) continue;
 
-                return ValidationResult.Error($"Символ '{c}' не разрешен!");
+                return ValidationResult.Error(string.Format(ERROR_INVALID_CHARACTER, c));
             }
 
             return ValidationResult.Success(trimmedInput);
@@ -620,7 +744,7 @@
         {
             if(string.IsNullOrWhiteSpace(input))
             {
-                return ValidationResult.Error("Вы ничего не ввели!");
+                return ValidationResult.Error(ERROR_EMPTY_INPUT);
             }
 
             // Убираем пробелы для проверки
@@ -628,7 +752,7 @@
 
             if(cleanInput.Length > maxBits)
             {
-                return ValidationResult.Error($"Слишком длинное число! Максимум {maxBits} бит.");
+                return ValidationResult.Error(string.Format(ERROR_BINARY_TOO_LONG, maxBits));
             }
 
             // Проверка на допустимые символы (только 0 и 1)
@@ -636,7 +760,7 @@
             {
                 if(c != '0' && c != '1')
                 {
-                    return ValidationResult.Error($"'{input}' содержит недопустимые символы! Используйте только 0 и 1.");
+                    return ValidationResult.Error(string.Format(ERROR_INVALID_BINARY_CHARS, input));
                 }
             }
 
@@ -677,7 +801,7 @@
                 }
 
                 ConsoleHelper.ShowError(result.ErrorMessage);
-                Console.WriteLine("Попробуйте ещё раз...\n");
+                Console.WriteLine($"{TRY_AGAIN_MESSAGE}\n");
             }
         }
 
@@ -712,7 +836,7 @@
                 }
 
                 ConsoleHelper.ShowError(result.ErrorMessage);
-                Console.WriteLine("Попробуйте ещё раз...\n");
+                Console.WriteLine($"{TRY_AGAIN_MESSAGE}\n");
             }
         }
 
@@ -747,11 +871,9 @@
         /// </example>
         public static ValidationResult ValidateMathOperation(char operationChar)
         {
-            char[] validOperations = { '+', '-', '*', '/', '%' };
-
-            if(Array.IndexOf(validOperations, operationChar) == -1)
+            if(Array.IndexOf(VALID_MATH_OPERATIONS, operationChar) == -1)
             {
-                return ValidationResult.Error($"Операция '{operationChar}' не поддерживается! Используйте: +, -, *, /, %");
+                return ValidationResult.Error(string.Format(ERROR_UNSUPPORTED_OPERATION, operationChar));
             }
 
             return ValidationResult.Success(operationChar);
@@ -774,7 +896,7 @@
         /// </code>
         /// </example>
         /// <seealso cref="ValidateMathOperation"/>
-        public static char GetValidMathOperation(string prompt = ">>> Выберите операцию (+, -, *, /, %): ")
+        public static char GetValidMathOperation(string prompt = DEFAULT_OPERATION_PROMPT)
         {
             while(true)
             {
@@ -790,7 +912,7 @@
                 }
 
                 ConsoleHelper.ShowError(result.ErrorMessage);
-                Console.WriteLine("Попробуйте ещё раз...\n");
+                Console.WriteLine($"{TRY_AGAIN_MESSAGE}\n");
             }
         }
 
@@ -836,15 +958,15 @@
             }
             catch(FormatException)
             {
-                return ValidationResult.Error("Неверный формат двоичного числа!");
+                return ValidationResult.Error(ERROR_INVALID_BINARY_FORMAT);
             }
             catch(OverflowException)
             {
-                return ValidationResult.Error("Число слишком большое!");
+                return ValidationResult.Error(ERROR_NUMBER_OVERFLOW);
             }
             catch(Exception ex)
             {
-                return ValidationResult.Error($"Ошибка при конвертации: {ex.Message}");
+                return ValidationResult.Error(string.Format(ERROR_CONVERSION, ex.Message));
             }
         }
 
@@ -886,7 +1008,7 @@
             }
             catch(Exception ex)
             {
-                return ValidationResult.Error($"Ошибка при конвертации: {ex.Message}");
+                return ValidationResult.Error(string.Format(ERROR_CONVERSION, ex.Message));
             }
         }
 
@@ -920,7 +1042,7 @@
         {
             if(Math.Abs(divisor) < double.Epsilon)
             {
-                return ValidationResult.Error($"{operationName.FirstCharToUpper()} на ноль невозможно!");
+                return ValidationResult.Error(string.Format(ERROR_DIVISION_BY_ZERO, operationName.FirstCharToUpper()));
             }
 
             return ValidationResult.Success(true);

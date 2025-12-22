@@ -64,6 +64,65 @@
 
         #endregion
 
+        #region ===== ТЕКСТОВЫЕ КОНСТАНТЫ =====
+
+        /// <summary>
+        /// Заголовок для отображения доступных демонстраций
+        /// </summary>
+        private const string CONVERSION_OPTIONS_TITLE = "ВАРИАНТЫ КОНВЕРТАЦИИ";
+
+        /// <summary>
+        /// Заголовок для отображения результата конвертации
+        /// </summary>
+        private const string CONVERSION_RESULT_TITLE = "РЕЗУЛЬТАТ КОНВЕРТАЦИИ";
+
+        /// <summary>
+        /// Заголовок для дополнительной информации
+        /// </summary>
+        private const string ADDITIONAL_INFO_TITLE = "ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ";
+
+        /// <summary>
+        /// Приглашение для выбора типа конвертации
+        /// </summary>
+        private const string PROMPT_CONVERSION_TYPE = ">>> Выберите тип конвертации (1 или 2): ";
+
+        /// <summary>
+        /// Приглашение для ввода десятичного числа
+        /// </summary>
+        private const string PROMPT_DECIMAL_NUMBER = ">>> Введите десятичное число (от {0} до {1}): ";
+
+        /// <summary>
+        /// Приглашение для ввода двоичного числа
+        /// </summary>
+        private const string PROMPT_BINARY_NUMBER = ">>> Введите двоичное число (до {0} бит): ";
+
+        /// <summary>
+        /// Метка для входных данных
+        /// </summary>
+        private const string LABEL_INPUT_DATA = "Входные данные";
+
+        /// <summary>
+        /// Метка для результата
+        /// </summary>
+        private const string LABEL_RESULT = "Результат";
+
+        /// <summary>
+        /// Текст ошибки при неудачной конвертации
+        /// </summary>
+        private const string ERROR_CONVERSION_FAILED = "Не удалось преобразовать '{0}' в число";
+
+        /// <summary>
+        /// Текст для начальных значений
+        /// </summary>
+        private const string LABEL_INITIAL_VALUES = "Начальные значения";
+
+        /// <summary>
+        /// Текст для итоговых значений
+        /// </summary>
+        private const string LABEL_FINAL_VALUES = "Итоговые значения";
+
+        #endregion
+
         #region ===== СВОЙСТВА =====
 
         /// <summary>
@@ -116,16 +175,19 @@
                 $"Диапазон: {MIN_VALUE} - {MAX_VALUE} (8-битные числа)"
             };
 
-            ConsoleHelper.ShowInfoBlock("Описание", infoLines);
+            // Используем константу из базового класса
+            ConsoleHelper.ShowInfoBlock(DESCRIPTION_TITLE, infoLines);
 
             ShowConversionOptions();
 
-            int choice = InputValidator.GetValidMenuChoice(1, 2, ">>> Выберите тип конвертации (1 или 2): ");
+            int choice = InputValidator.GetValidMenuChoice(1, 2, PROMPT_CONVERSION_TYPE);
 
             string input = choice == 1
-                ? InputValidator.GetValidIntegerInRange($">>> Введите десятичное число (от {MIN_VALUE} до {MAX_VALUE}): ",
+                ? InputValidator.GetValidIntegerInRange(
+                    string.Format(PROMPT_DECIMAL_NUMBER, MIN_VALUE, MAX_VALUE),
                     MIN_VALUE, MAX_VALUE, "Десятичное число").ToString()
-                : InputValidator.GetValidBinary($">>> Введите двоичное число (до {BITS_COUNT} бит): ", BITS_COUNT);
+                : InputValidator.GetValidBinary(
+                    string.Format(PROMPT_BINARY_NUMBER, BITS_COUNT), BITS_COUNT);
 
             string result = PerformConversion(choice, input);
             string explanation = GetConversionExplanation(choice, input, result);
@@ -133,7 +195,8 @@
             ShowConversionResult(input, result, explanation);
             ShowAdditionalInfo();
 
-            ConsoleHelper.WaitForAnyKey("Нажмите любую клавишу для возврата в меню...");
+            // Используем константу из базового класса
+            ConsoleHelper.WaitForAnyKey(PRESS_ANY_KEY_TO_RETURN);
         }
 
         #endregion
@@ -164,7 +227,8 @@
                 "Двоичное → Десятичное (8 бит)"
             };
 
-            ConsoleHelper.ShowMenu("ВАРИАНТЫ КОНВЕРТАЦИИ", options);
+            // Используем константу
+            ConsoleHelper.ShowMenu(CONVERSION_OPTIONS_TITLE, options);
             Console.WriteLine();
         }
 
@@ -205,7 +269,8 @@
 
             if(result.StartsWith("Ошибка"))
             {
-                ConsoleHelper.ShowError(result.Substring(7)); // Убираем "Ошибка: "
+                // Используем константу из базового класса
+                ConsoleHelper.ShowError(result.Substring(7), ERROR_TITLE); // Убираем "Ошибка: "
                 return;
             }
 
@@ -216,8 +281,8 @@
                 // Форматируем как уравнение
                 string[] parts = explanation.Split(" = ");
                 resultLines = new string[] {
-                    $"Входные данные: {input}",
-                    $"Результат: {result}",
+                    $"{LABEL_INPUT_DATA}: {input}",
+                    $"{LABEL_RESULT}: {result}",
                     "",
                     parts[0],
                     parts[1]
@@ -226,14 +291,15 @@
             else
             {
                 resultLines = new string[] {
-                    $"Входные данные: {input}",
-                    $"Результат: {result}",
+                    $"{LABEL_INPUT_DATA}: {input}",
+                    $"{LABEL_RESULT}: {result}",
                     "",
                     explanation
                 };
             }
 
-            ConsoleHelper.ShowInfoBlock("РЕЗУЛЬТАТ КОНВЕРТАЦИИ", resultLines, 45);
+            // Используем константу
+            ConsoleHelper.ShowInfoBlock(CONVERSION_RESULT_TITLE, resultLines, 45);
         }
 
         /// <summary>
@@ -275,7 +341,8 @@
                 $"  - ₁₀ - десятичная система"
             };
 
-            ConsoleHelper.ShowInfoBlock("ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ", infoLines);
+            // Используем константу
+            ConsoleHelper.ShowInfoBlock(ADDITIONAL_INFO_TITLE, infoLines);
         }
 
         #endregion
@@ -357,7 +424,8 @@
                 return binaryResult.ErrorMessage;
             }
 
-            return $"Ошибка: Не удалось преобразовать '{input}' в число";
+            // Используем константу
+            return string.Format(ERROR_CONVERSION_FAILED, input);
         }
 
         /// <summary>

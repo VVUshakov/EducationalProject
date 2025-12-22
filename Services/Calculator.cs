@@ -85,6 +85,50 @@
 
         #endregion
 
+        #region ===== ТЕКСТОВЫЕ КОНСТАНТЫ (специфичные для калькулятора) =====
+
+        /// <summary>
+        /// Заголовок меню доступных операций
+        /// </summary>
+        private const string OPERATIONS_MENU_TITLE = "ДОСТУПНЫЕ ОПЕРАЦИИ";
+
+        /// <summary>
+        /// Заголовок для отображения результата расчета
+        /// </summary>
+        private const string CALCULATION_RESULT_TITLE = "РЕЗУЛЬТАТ РАСЧЕТА";
+
+        /// <summary>
+        /// Текст для остатка от деления
+        /// </summary>
+        private const string REMAINDER_LABEL = "Остаток от деления";
+
+        /// <summary>
+        /// Сообщение об ошибке при неизвестной операции
+        /// </summary>
+        private const string ERROR_UNKNOWN_OPERATION = "Неизвестная операция!";
+
+        /// <summary>
+        /// Сообщение об ошибке при вычислении
+        /// </summary>
+        private const string ERROR_CALCULATION = "Ошибка при вычислении: ";
+
+        /// <summary>
+        /// Подсказка для ввода первого числа
+        /// </summary>
+        private const string PROMPT_FIRST_NUMBER = ">>> Введите первое число: ";
+
+        /// <summary>
+        /// Подсказка для ввода второго числа
+        /// </summary>
+        private const string PROMPT_SECOND_NUMBER = ">>> Введите второе число: ";
+
+        /// <summary>
+        /// Приглашение для выбора операции
+        /// </summary>
+        private const string PROMPT_OPERATION = ">>> Выберите операцию (+, -, *, /, %): ";
+
+        #endregion
+
         #region ===== ПЕРЕЧИСЛЕНИЯ =====
 
         /// <summary>
@@ -159,7 +203,9 @@
                 "с двумя числами: сложение, вычитание, умножение,",
                 "деление и нахождение остатка от деления."
             };
-            ConsoleHelper.ShowInfoBlock("Описание", infoLines);
+
+            // Используем константу из базового класса
+            ConsoleHelper.ShowInfoBlock(DESCRIPTION_TITLE, infoLines);
 
             // Получение первого числа с проверкой на отмену
             double firstNumber = GetNumber("первое");
@@ -180,7 +226,8 @@
             ShowCalculationResult(firstNumber, secondNumber, operation, result);
 
             // Ожидание пользователя перед возвратом в меню
-            ConsoleHelper.WaitForAnyKey("Нажмите любую клавишу для возврата в меню...");
+            // Используем константу из базового класса
+            ConsoleHelper.WaitForAnyKey(PRESS_ANY_KEY_TO_RETURN);
         }
 
         #endregion
@@ -208,7 +255,8 @@
         /// </example>
         private double GetNumber(string numberName)
         {
-            return InputValidator.GetValidNumber($">>> Введите {numberName} число: ");
+            // Используем константу из базового класса
+            return InputValidator.GetValidNumber($"{DEFAULT_INPUT_PROMPT}Введите {numberName} число: ");
         }
 
         /// <summary>
@@ -250,12 +298,12 @@
                 "% : Остаток от деления (модуль)"
             };
 
-            // Отображение меню операций
-            ConsoleHelper.ShowMenu("ДОСТУПНЫЕ ОПЕРАЦИИ", operations);
+            // Отображение меню операций - используем константу
+            ConsoleHelper.ShowMenu(OPERATIONS_MENU_TITLE, operations);
             Console.WriteLine();
 
-            // Получение валидного символа операции
-            char operationChar = InputValidator.GetValidMathOperation();
+            // Получение валидного символа операции - используем константу
+            char operationChar = InputValidator.GetValidMathOperation(PROMPT_OPERATION);
 
             // Преобразование символа в значение перечисления
             return ParseOperation(operationChar);
@@ -329,7 +377,8 @@
             // Обработка ошибки вычисления
             if(!result.Success)
             {
-                ConsoleHelper.ShowError(result.ErrorMessage);
+                // Используем константу из базового класса
+                ConsoleHelper.ShowError(result.ErrorMessage, ERROR_TITLE);
                 return;
             }
 
@@ -344,8 +393,8 @@
                 $"Результат: {result.Value:F2}"
             };
 
-            // Отображение результата в блоке
-            ConsoleHelper.ShowInfoBlock("РЕЗУЛЬТАТ РАСЧЕТА", resultLines, 45);
+            // Отображение результата в блоке - используем константу
+            ConsoleHelper.ShowInfoBlock(CALCULATION_RESULT_TITLE, resultLines, 45);
 
             // Дополнительная информация для операции деления
             if(operation == MathOperation.Division && b != 0)
@@ -354,7 +403,8 @@
                 // Проверка, что остаток существенен (не близок к нулю)
                 if(Math.Abs(remainder) > 0.001)
                 {
-                    ConsoleHelper.ShowKeyValueResult("Остаток от деления", $"{remainder:F2}");
+                    // Используем константу
+                    ConsoleHelper.ShowKeyValueResult(REMAINDER_LABEL, $"{remainder:F2}");
                 }
             }
         }
@@ -545,15 +595,16 @@
 
                     default:
                         result.Success = false;
-                        result.ErrorMessage = "Неизвестная операция!";
+                        // Используем константу
+                        result.ErrorMessage = ERROR_UNKNOWN_OPERATION;
                         break;
                 }
             }
             catch(Exception ex)
             {
-                // Обработка неожиданных исключений
+                // Обработка неожиданных исключений - используем константу
                 result.Success = false;
-                result.ErrorMessage = $"Ошибка при вычислении: {ex.Message}";
+                result.ErrorMessage = $"{ERROR_CALCULATION}{ex.Message}";
             }
 
             return result;
