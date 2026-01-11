@@ -12,8 +12,9 @@ namespace EducationalProject
             try
             {
                 // Создаем необходимые зависимости
+                IConsoleHelper consoleHelper = new ConsoleHelper();
                 IAppConfigProvider configApp = new AppConfigProvider();
-                IControllerFactory factory = new ControllerFactory(configApp);
+                IControllerFactory factory = new ControllerFactory(configApp, consoleHelper);
 
                 // Создаем главное меню с внедренными зависимостями
                 var mainMenu = new MainMenuController(factory, consoleHelper, configApp);

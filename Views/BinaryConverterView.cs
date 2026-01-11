@@ -7,7 +7,9 @@ namespace EducationalProject.Views
     {
         public int GetConversionChoice()
         {
-            ConsoleHelper.ShowMenu(
+            IConsoleHelper consoleHelper = new ConsoleHelper(); // TO DO
+
+            consoleHelper.ShowMenu(
                 AppConfig.BinaryConverterConfig.Messages.Title,
                 new string[] {
                     AppConfig.BinaryConverterConfig.Messages.DecimalToBinary,
@@ -36,6 +38,8 @@ namespace EducationalProject.Views
 
         public string GetBinaryInput()
         {
+            IConsoleHelper consoleHelper = new ConsoleHelper(); // TO DO
+
             Console.WriteLine("\nВВОД ДВОИЧНОГО ЧИСЛА:");
             Console.WriteLine(new string('-', 30));
 
@@ -44,18 +48,18 @@ namespace EducationalProject.Views
 
             while(true)
             {
-                string input = ConsoleHelper.GetInput(">>> ");
+                string input = consoleHelper.GetInput(">>> ");
                 string cleanInput = input.Replace(" ", "");
 
                 if(string.IsNullOrWhiteSpace(cleanInput))
                 {
-                    ConsoleHelper.ShowError("Пожалуйста, введите число!");
+                    consoleHelper.ShowError("Пожалуйста, введите число!");
                     continue;
                 }
 
                 if(cleanInput.Length > AppConfig.BinaryConverterConfig.BitsCount)
                 {
-                    ConsoleHelper.ShowError($"Слишком длинное число! Максимум {AppConfig.BinaryConverterConfig.BitsCount} бит.");
+                    consoleHelper.ShowError($"Слишком длинное число! Максимум {AppConfig.BinaryConverterConfig.BitsCount} бит.");
                     continue;
                 }
 
@@ -63,7 +67,7 @@ namespace EducationalProject.Views
                 {
                     if(c != '0' && c != '1')
                     {
-                        ConsoleHelper.ShowError("Двоичное число должно содержать только 0 и 1!");
+                        consoleHelper.ShowError("Двоичное число должно содержать только 0 и 1!");
                         continue;
                     }
                 }
@@ -74,11 +78,13 @@ namespace EducationalProject.Views
 
         public void ShowResult(BinaryConversion conversion, int choice)
         {
+            IConsoleHelper consoleHelper = new ConsoleHelper(); // TO DO
+
             Console.WriteLine("\n" + new string('=', 40));
 
             if(!conversion.IsValid)
             {
-                ConsoleHelper.ShowError("Ошибка преобразования!");
+                consoleHelper.ShowError("Ошибка преобразования!");
                 return;
             }
 
@@ -95,7 +101,7 @@ namespace EducationalProject.Views
             }
 
             Console.WriteLine(new string('-', 40));
-            ConsoleHelper.ShowSuccess("Преобразование выполнено успешно!");
+            consoleHelper.ShowSuccess("Преобразование выполнено успешно!");
             Console.WriteLine(new string('=', 40));
         }
 

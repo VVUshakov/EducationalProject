@@ -6,20 +6,20 @@ namespace EducationalProject.Factories
 {
     public class ControllerFactory : IControllerFactory
     {
-        private readonly IAppConfigProvider _configProvider;
+        private readonly IAppConfigProvider _configApp;
         private readonly IConsoleHelper _consoleHelper;
 
-        public ControllerFactory(IAppConfigProvider configProvider, IConsoleHelper consoleHelper)
+        public ControllerFactory(IAppConfigProvider configApp, IConsoleHelper consoleHelper)
         {
-            _configProvider = configProvider;
+            _configApp = configApp;
             _consoleHelper = consoleHelper;
         }
 
         public List<BaseController> CreateControllers()
         {
             var controllers = new List<BaseController>();
-            string[] controllerTypes = _configProvider.GetControllerTypes();
-            string controllersNamespace = _configProvider.GetControllersNamespace();
+            string[] controllerTypes = _configApp.GetControllerTypes();
+            string controllersNamespace = _configApp.GetControllersNamespace();
 
             foreach(string controllerTypeName in controllerTypes)
             {
@@ -39,12 +39,12 @@ namespace EducationalProject.Factories
                     }
                     else
                     {
-                        ConsoleHelper.ShowError($"Контроллер '{controllerTypeName}' не найден!");
+                        _consoleHelper.ShowError($"Контроллер '{controllerTypeName}' не найден!");
                     }
                 }
                 catch(Exception ex)
                 {
-                    ConsoleHelper.ShowError($"Ошибка создания контроллера '{controllerTypeName}': {ex.Message}");
+                    _consoleHelper.ShowError($"Ошибка создания контроллера '{controllerTypeName}': {ex.Message}");
                 }
             }
 

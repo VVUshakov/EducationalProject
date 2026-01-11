@@ -7,7 +7,9 @@ namespace EducationalProject.Views
     {
         public string GetNameInput()
         {
-            ConsoleHelper.ShowInfoBlock(
+            IConsoleHelper consoleHelper = new ConsoleHelper(); // TO DO
+
+            consoleHelper.ShowInfoBlock(
                 "ВВОД ИМЕНИ",
                 new string[] {
                     "Введите имя или текст для кодирования.",
@@ -25,7 +27,9 @@ namespace EducationalProject.Views
 
         public int GetEncodingMethod()
         {
-            ConsoleHelper.ShowMenu(
+            IConsoleHelper consoleHelper = new ConsoleHelper(); // TO DO
+
+            consoleHelper.ShowMenu(
                 "Выберите метод кодирования",
                 new string[] {
                     "Алфавитный код (А=1, Б=2...)",
@@ -39,6 +43,8 @@ namespace EducationalProject.Views
 
         public void ShowResult(EncodingResult result)
         {
+            IConsoleHelper consoleHelper = new ConsoleHelper(); // TO DO
+
             Console.WriteLine("\n" + new string('=', 50));
             Console.WriteLine("РЕЗУЛЬТАТ КОДИРОВАНИЯ");
             Console.WriteLine(new string('-', 50));
@@ -49,7 +55,7 @@ namespace EducationalProject.Views
 
             if(!result.IsValid)
             {
-                ConsoleHelper.ShowError("Ошибка кодирования!");
+                consoleHelper.ShowError("Ошибка кодирования!");
                 return;
             }
 

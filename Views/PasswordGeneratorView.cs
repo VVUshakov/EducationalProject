@@ -7,7 +7,9 @@ namespace EducationalProject.Views
     {
         public int GetPasswordLength()
         {
-            ConsoleHelper.ShowMenu(
+            IConsoleHelper consoleHelper = new ConsoleHelper(); // TO DO
+
+            consoleHelper.ShowMenu(
                 "Выберите длину пароля",
                 new string[] {
                     $"Короткий (6-8 символов)",
@@ -37,24 +39,26 @@ namespace EducationalProject.Views
         {
             while(true)
             {
-                string input = ConsoleHelper.GetInput(
+                IConsoleHelper consoleHelper = new ConsoleHelper(); // TO DO
+
+                string input = consoleHelper.GetInput(
                     $"Введите длину пароля ({AppConfig.PasswordGeneratorConfig.MinLength}-{AppConfig.PasswordGeneratorConfig.MaxLength}): ");
 
                 if(!int.TryParse(input, out int length))
                 {
-                    ConsoleHelper.ShowError("Пожалуйста, введите число!");
+                    consoleHelper.ShowError("Пожалуйста, введите число!");
                     continue;
                 }
 
                 if(length < AppConfig.PasswordGeneratorConfig.MinLength)
                 {
-                    ConsoleHelper.ShowError($"Длина должна быть не менее {AppConfig.PasswordGeneratorConfig.MinLength}!");
+                    consoleHelper.ShowError($"Длина должна быть не менее {AppConfig.PasswordGeneratorConfig.MinLength}!");
                     continue;
                 }
 
                 if(length > AppConfig.PasswordGeneratorConfig.MaxLength)
                 {
-                    ConsoleHelper.ShowError($"Длина должна быть не более {AppConfig.PasswordGeneratorConfig.MaxLength}!");
+                    consoleHelper.ShowError($"Длина должна быть не более {AppConfig.PasswordGeneratorConfig.MaxLength}!");
                     continue;
                 }
 
@@ -64,6 +68,8 @@ namespace EducationalProject.Views
 
         public PasswordSettings GetPasswordSettings()
         {
+            IConsoleHelper consoleHelper = new ConsoleHelper(); // TO DO
+
             var settings = new PasswordSettings();
 
             Console.WriteLine("\n" + new string('=', 40));
@@ -75,7 +81,7 @@ namespace EducationalProject.Views
                 Console.WriteLine("\nТекущие настройки:");
                 ShowCurrentSettings(settings);
 
-                ConsoleHelper.ShowMenu(
+                consoleHelper.ShowMenu(
                     "Изменить настройки",
                     new string[] {
                         $"Строчные буквы (a-z) [{GetStatusText(settings.UseLower)}]",
@@ -92,7 +98,7 @@ namespace EducationalProject.Views
                 {
                     if(!settings.HasAnySetting)
                     {
-                        ConsoleHelper.ShowError("Должен быть выбран хотя бы один тип символов!");
+                        consoleHelper.ShowError("Должен быть выбран хотя бы один тип символов!");
                         continue;
                     }
                     break;
@@ -107,7 +113,7 @@ namespace EducationalProject.Views
                     case 4: settings.UseSpecial = !settings.UseSpecial; break;
                 }
 
-                ConsoleHelper.ShowInfo($"Настройка изменена!");
+                consoleHelper.ShowInfo($"Настройка изменена!");
             }
 
             return settings;
@@ -115,13 +121,15 @@ namespace EducationalProject.Views
 
         public void ShowResult(PasswordResult result)
         {
+            IConsoleHelper consoleHelper = new ConsoleHelper(); // TO DO
+
             Console.WriteLine("\n" + new string('=', 50));
             Console.WriteLine("СГЕНЕРИРОВАННЫЙ ПАРОЛЬ");
             Console.WriteLine(new string('=', 50));
 
             if(!result.IsValid)
             {
-                ConsoleHelper.ShowError("Ошибка генерации пароля!");
+                consoleHelper.ShowError("Ошибка генерации пароля!");
                 return;
             }
 

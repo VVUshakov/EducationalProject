@@ -7,7 +7,9 @@ namespace EducationalProject.Views
     {
         public int GetDemoChoice()
         {
-            ConsoleHelper.ShowMenu(
+            IConsoleHelper consoleHelper = new ConsoleHelper(); // TO DO
+
+            consoleHelper.ShowMenu(
                 "Демонстрация операций присваивания",
                 new string[] {
                     "Базовые операции (+=, -=, *=, /=, %=, <<=, >>=)",

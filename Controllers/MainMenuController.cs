@@ -7,7 +7,7 @@ namespace EducationalProject.Controllers
     {
         private readonly List<BaseController> _controllers;
         private readonly IConsoleHelper _consoleHelper;
-        private readonly IAppConfigProvider _configProvider;
+        private readonly IAppConfigProvider _configApp;
 
         public MainMenuController(
             IControllerFactory factory,
@@ -16,7 +16,7 @@ namespace EducationalProject.Controllers
         {
             _controllers = factory.CreateControllers();
             _consoleHelper = consoleHelper;
-            _configProvider = configProvider;
+            _configApp = configProvider;
         }
 
         public void Run()
@@ -47,7 +47,7 @@ namespace EducationalProject.Controllers
 
         private void ShowWelcome()
         {
-            ConsoleHelper.ClearAndShowHeader(
+            _consoleHelper.ClearAndShowHeader(
                 "УЧЕБНЫЙ ПРОЕКТ C#",
                 "Для школьников 7-9 классов"
             );
@@ -61,12 +61,12 @@ namespace EducationalProject.Controllers
                 Console.WriteLine($"  {i + 1}. {_controllers[i].Name}");
             }
 
-            ConsoleHelper.WaitForAnyKey();
+            _consoleHelper.WaitForAnyKey();
         }
 
         private void ShowMainMenu()
         {
-            ConsoleHelper.ClearAndShowHeader("ГЛАВНОЕ МЕНЮ");
+            _consoleHelper.ClearAndShowHeader("ГЛАВНОЕ МЕНЮ");
 
             Console.WriteLine("\n" + new string('=', 40));
             Console.WriteLine("ВЫБЕРИТЕ ПРОГРАММУ:");
@@ -90,20 +90,20 @@ namespace EducationalProject.Controllers
             }
             catch(Exception ex)
             {
-                ConsoleHelper.ShowError($"Ошибка: {ex.Message}");
-                ConsoleHelper.WaitForAnyKey();
+                _consoleHelper.ShowError($"Ошибка: {ex.Message}");
+                _consoleHelper.WaitForAnyKey();
             }
         }
 
         private void ShowGoodbye()
         {
-            ConsoleHelper.ClearAndShowHeader("ДО СВИДАНИЯ!");
+            _consoleHelper.ClearAndShowHeader("ДО СВИДАНИЯ!");
 
             Console.WriteLine("\nСпасибо за использование учебного проекта!");
             Console.WriteLine("Надеемся, вы узнали что-то новое!");
             Console.WriteLine("\nУдачи в изучении программирования! 🚀");
 
-            ConsoleHelper.WaitForAnyKey("Нажмите любую клавишу для выхода...");
+            _consoleHelper.WaitForAnyKey("Нажмите любую клавишу для выхода...");
         }
     }
 }

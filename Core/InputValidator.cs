@@ -40,19 +40,21 @@
         // Проверка числа
         public static double GetValidNumber(string prompt = "Введите число: ")
         {
+            IConsoleHelper consoleHelper = new ConsoleHelper(); // TO DO
+
             while(true)
             {
-                string input = ConsoleHelper.GetInput(prompt);
+                string input = consoleHelper.GetInput(prompt);
 
                 if(string.IsNullOrWhiteSpace(input))
                 {
-                    ConsoleHelper.ShowError("Пожалуйста, введите число!");
+                    consoleHelper.ShowError("Пожалуйста, введите число!");
                     continue;
                 }
 
                 if(!double.TryParse(input, out double number))
                 {
-                    ConsoleHelper.ShowError($"'{input}' - не число!");
+                    consoleHelper.ShowError($"'{input}' - не число!");
                     continue;
                 }
 
@@ -63,25 +65,27 @@
         // Проверка целого числа в диапазоне
         public static int GetValidIntegerInRange(int minValue, int maxValue, string prompt)
         {
+            IConsoleHelper consoleHelper = new ConsoleHelper(); // TO DO
+
             while(true)
             {
-                string input = ConsoleHelper.GetInput(prompt);
+                string input = consoleHelper.GetInput(prompt);
 
                 if(string.IsNullOrWhiteSpace(input))
                 {
-                    ConsoleHelper.ShowError("Пожалуйста, введите число!");
+                    consoleHelper.ShowError("Пожалуйста, введите число!");
                     continue;
                 }
 
                 if(!int.TryParse(input, out int number))
                 {
-                    ConsoleHelper.ShowError($"'{input}' - не число!");
+                    consoleHelper.ShowError($"'{input}' - не число!");
                     continue;
                 }
 
                 if(number < minValue || number > maxValue)
                 {
-                    ConsoleHelper.ShowError($"Число должно быть от {minValue} до {maxValue}!");
+                    consoleHelper.ShowError($"Число должно быть от {minValue} до {maxValue}!");
                     continue;
                 }
 
@@ -92,26 +96,28 @@
         // Проверка текста
         public static string GetValidText(string prompt, int minLength = 1, int maxLength = 100)
         {
+            IConsoleHelper consoleHelper = new ConsoleHelper(); // TO DO
+
             while(true)
             {
-                string input = ConsoleHelper.GetInput(prompt);
+                string input = consoleHelper.GetInput(prompt);
                 string trimmedInput = input.Trim();
 
                 if(string.IsNullOrWhiteSpace(trimmedInput))
                 {
-                    ConsoleHelper.ShowError("Пожалуйста, введите текст!");
+                    consoleHelper.ShowError("Пожалуйста, введите текст!");
                     continue;
                 }
 
                 if(trimmedInput.Length < minLength)
                 {
-                    ConsoleHelper.ShowError($"Текст должен быть не менее {minLength} символов!");
+                    consoleHelper.ShowError($"Текст должен быть не менее {minLength} символов!");
                     continue;
                 }
 
                 if(trimmedInput.Length > maxLength)
                 {
-                    ConsoleHelper.ShowError($"Текст должен быть не более {maxLength} символов!");
+                    consoleHelper.ShowError($"Текст должен быть не более {maxLength} символов!");
                     continue;
                 }
 
@@ -122,6 +128,8 @@
         // Проверка математической операции
         public static char GetValidMathOperation(string prompt = "Выберите операцию (+, -, *, /, %): ")
         {
+            IConsoleHelper consoleHelper = new ConsoleHelper(); // TO DO
+
             char[] validOperations = { '+', '-', '*', '/', '%' };
 
             while(true)
@@ -132,7 +140,7 @@
 
                 if(!validOperations.Contains(operationChar))
                 {
-                    ConsoleHelper.ShowError($"Недопустимая операция '{operationChar}'! Допустимо: +, -, *, /, %");
+                    consoleHelper.ShowError($"Недопустимая операция '{operationChar}'! Допустимо: +, -, *, /, %");
                     continue;
                 }
 
@@ -143,13 +151,15 @@
         // Проверка двоичного числа
         public static string GetValidBinary(string prompt = "Введите двоичное число: ", int maxBits = 8)
         {
+            IConsoleHelper consoleHelper = new ConsoleHelper(); // TO DO
+
             while(true)
             {
-                string input = ConsoleHelper.GetInput(prompt);
+                string input = consoleHelper.GetInput(prompt);
 
                 if(string.IsNullOrWhiteSpace(input))
                 {
-                    ConsoleHelper.ShowError("Пожалуйста, введите число!");
+                    consoleHelper.ShowError("Пожалуйста, введите число!");
                     continue;
                 }
 
@@ -157,7 +167,7 @@
 
                 if(cleanInput.Length > maxBits)
                 {
-                    ConsoleHelper.ShowError($"Слишком длинное число! Максимум {maxBits} бит.");
+                    consoleHelper.ShowError($"Слишком длинное число! Максимум {maxBits} бит.");
                     continue;
                 }
 
@@ -166,7 +176,7 @@
                 {
                     if(c != '0' && c != '1')
                     {
-                        ConsoleHelper.ShowError($"Двоичное число должно содержать только 0 и 1!");
+                        consoleHelper.ShowError($"Двоичное число должно содержать только 0 и 1!");
                         isValid = false;
                         break;
                     }
@@ -251,19 +261,21 @@
         // Проверка возраста
         public static int GetValidAge(string prompt = "Введите возраст: ", int minAge = 0, int maxAge = 150)
         {
+            IConsoleHelper consoleHelper = new ConsoleHelper(); // TO DO
+
             while(true)
             {
-                string input = ConsoleHelper.GetInput(prompt);
+                string input = consoleHelper.GetInput(prompt);
 
                 if(!int.TryParse(input, out int age))
                 {
-                    ConsoleHelper.ShowError("Пожалуйста, введите число!");
+                    consoleHelper.ShowError("Пожалуйста, введите число!");
                     continue;
                 }
 
                 if(age < minAge || age > maxAge)
                 {
-                    ConsoleHelper.ShowError($"Возраст должен быть от {minAge} до {maxAge} лет!");
+                    consoleHelper.ShowError($"Возраст должен быть от {minAge} до {maxAge} лет!");
                     continue;
                 }
 
@@ -274,25 +286,29 @@
         // Проверка даты
         public static DateTime GetValidDate(string prompt = "Введите дату (дд.мм.гггг): ")
         {
+            IConsoleHelper consoleHelper = new ConsoleHelper(); // TO DO
+
             while(true)
             {
-                string input = ConsoleHelper.GetInput(prompt);
+                string input = consoleHelper.GetInput(prompt);
 
                 if(DateTime.TryParse(input, out DateTime date))
                 {
                     return date;
                 }
 
-                ConsoleHelper.ShowError("Неверный формат даты! Используйте дд.мм.гггг");
+                consoleHelper.ShowError("Неверный формат даты! Используйте дд.мм.гггг");
             }
         }
 
         // Получить ответ Да/Нет
         public static bool GetYesNoAnswer(string prompt = "Выберите (д/н): ")
         {
+            IConsoleHelper consoleHelper = new ConsoleHelper(); // TO DO
+
             while(true)
             {
-                string input = ConsoleHelper.GetInput(prompt).ToLower();
+                string input = consoleHelper.GetInput(prompt).ToLower();
 
                 if(input == "д" || input == "да" || input == "y" || input == "yes")
                     return true;
@@ -300,42 +316,44 @@
                 if(input == "н" || input == "нет" || input == "n" || input == "no")
                     return false;
 
-                ConsoleHelper.ShowError("Пожалуйста, введите 'д' или 'н'!");
+                consoleHelper.ShowError("Пожалуйста, введите 'д' или 'н'!");
             }
         }
 
         // Проверка диапазона чисел
         public static (double, double) GetValidRange(string prompt, double minValue = double.MinValue, double maxValue = double.MaxValue)
         {
+            IConsoleHelper consoleHelper = new ConsoleHelper(); // TO DO
+
             while(true)
             {
                 Console.WriteLine(prompt);
                 Console.WriteLine("Введите два числа через пробел:");
 
-                string input = ConsoleHelper.GetInput();
+                string input = consoleHelper.GetInput();
                 string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
                 if(parts.Length != 2)
                 {
-                    ConsoleHelper.ShowError("Нужно ввести два числа через пробел!");
+                    consoleHelper.ShowError("Нужно ввести два числа через пробел!");
                     continue;
                 }
 
                 if(!double.TryParse(parts[0], out double num1) || !double.TryParse(parts[1], out double num2))
                 {
-                    ConsoleHelper.ShowError("Оба значения должны быть числами!");
+                    consoleHelper.ShowError("Оба значения должны быть числами!");
                     continue;
                 }
 
                 if(num1 >= num2)
                 {
-                    ConsoleHelper.ShowError("Первое число должно быть меньше второго!");
+                    consoleHelper.ShowError("Первое число должно быть меньше второго!");
                     continue;
                 }
 
                 if(num1 < minValue || num2 > maxValue)
                 {
-                    ConsoleHelper.ShowError($"Числа должны быть в диапазоне от {minValue} до {maxValue}!");
+                    consoleHelper.ShowError($"Числа должны быть в диапазоне от {minValue} до {maxValue}!");
                     continue;
                 }
 
