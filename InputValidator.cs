@@ -63,7 +63,7 @@ namespace EducationalProject
         }
 
         // Метод для получения целого числа в заданном диапазоне
-        public static int GetValidIntegerInRange(string prompt, int minValue, int maxValue)
+        public static int GetValidIntegerInRange(int minValue, int maxValue, string prompt)
         {
             while(true)
             {
@@ -71,7 +71,7 @@ namespace EducationalProject
 
                 if(string.IsNullOrWhiteSpace(input))
                 {
-                    ConsoleHelper.ShowError("Вы ничего не ввели!");
+                    ConsoleHelper.ShowError("Вы ничего не ввели! Пожалуйста, введите число!");
                     continue;
                 }
 
