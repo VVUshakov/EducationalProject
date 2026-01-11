@@ -15,7 +15,8 @@ namespace EducationalProject.Controllers
                 new BinaryConverterController(),
                 new NameEncoderController(),
                 new PasswordGeneratorController(),
-                // Остальные контроллеры добавим позже
+                new AssignmentDemoController(),
+                // Остальные контроллеры добавляются по мере включения новых программ в Меню
             };
         }
 
