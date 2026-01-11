@@ -9,12 +9,20 @@
             ShowHeader(title);
         }
 
+        // Перегруженный метод с подзаголовком
+        public static void ClearAndShowHeader(string title, string subtitle)
+        {
+            Console.Clear();
+            ShowHeader(title, subtitle);
+        }
+
         // Показ заголовка с рамкой
         public static void ShowHeader(string title, string subtitle = null)
         {
             int width = AppConfig.FrameWidth;
             string horizontalLine = new string(AppConfig.FrameHorizontal, width);
 
+            // Верхняя рамка
             Console.WriteLine($"{AppConfig.FrameTopLeft}{horizontalLine}{AppConfig.FrameTopRight}");
 
             // Заголовок
@@ -28,6 +36,7 @@
                 Console.WriteLine($"{AppConfig.FrameVertical}{centeredSubtitle}{AppConfig.FrameVertical}");
             }
 
+            // Нижняя рамка
             Console.WriteLine($"{AppConfig.FrameBottomLeft}{horizontalLine}{AppConfig.FrameBottomRight}");
             Console.WriteLine();
         }
@@ -36,10 +45,12 @@
         public static void ShowMenu(string title, string[] items)
         {
             Console.WriteLine($"\n=== {title.ToUpper()} ===");
+
             for(int i = 0; i < items.Length; i++)
             {
                 Console.WriteLine($"{i + 1}. {items[i]}");
             }
+
             Console.WriteLine(new string('=', 20));
         }
 
@@ -47,10 +58,12 @@
         public static void ShowInfoBlock(string title, string[] lines)
         {
             ShowHeader(title);
+
             foreach(string line in lines)
             {
                 Console.WriteLine($"  {line}");
             }
+
             Console.WriteLine(new string('-', AppConfig.FrameWidth));
         }
 
@@ -101,6 +114,60 @@
 
             int padding = (width - text.Length) / 2;
             return text.PadLeft(padding + text.Length).PadRight(width);
+        }
+
+        // Показать разделитель
+        public static void ShowSeparator(int length = 40)
+        {
+            Console.WriteLine(new string('-', length));
+        }
+
+        // Показать заголовок раздела
+        public static void ShowSectionTitle(string title)
+        {
+            Console.WriteLine($"\n{title}");
+            Console.WriteLine(new string('-', title.Length));
+        }
+
+        // Очистка экрана
+        public static void ClearScreen()
+        {
+            Console.Clear();
+        }
+
+        // Показать цветной текст
+        public static void WriteColor(string text, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.Write(text);
+            Console.ResetColor();
+        }
+
+        // Показать цветную строку
+        public static void WriteLineColor(string text, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.WriteLine(text);
+            Console.ResetColor();
+        }
+
+        // Запросить подтверждение
+        public static bool GetConfirmation(string question)
+        {
+            Console.Write($"{question} (д/н): ");
+            string response = Console.ReadLine()?.Trim().ToLower();
+
+            return response == "д" || response == "да" || response == "y" || response == "yes";
+        }
+
+        // Показать прогресс
+        public static void ShowProgress(int current, int total, string message = "Выполнение")
+        {
+            int percentage = (int)((double)current / total * 100);
+            Console.Write($"\r{message}: [{new string('#', percentage / 2)}{new string('.', 50 - percentage / 2)}] {percentage}%");
+
+            if(current == total)
+                Console.WriteLine();
         }
     }
 }

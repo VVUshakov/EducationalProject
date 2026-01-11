@@ -134,6 +134,45 @@
             }
         }
 
+        // Проверка двоичного числа
+        public static string GetValidBinary(string prompt = "Введите двоичное число: ", int maxBits = 8)
+        {
+            while(true)
+            {
+                string input = ConsoleHelper.GetInput(prompt);
+
+                if(string.IsNullOrWhiteSpace(input))
+                {
+                    ConsoleHelper.ShowError("Пожалуйста, введите число!");
+                    continue;
+                }
+
+                string cleanInput = input.Replace(" ", ""); // Удаляем пробелы
+
+                if(cleanInput.Length > maxBits)
+                {
+                    ConsoleHelper.ShowError($"Слишком длинное число! Максимум {maxBits} бит.");
+                    continue;
+                }
+
+                bool isValid = true;
+                foreach(char c in cleanInput)
+                {
+                    if(c != '0' && c != '1')
+                    {
+                        ConsoleHelper.ShowError($"Двоичное число должно содержать только 0 и 1!");
+                        isValid = false;
+                        break;
+                    }
+                }
+
+                if(!isValid)
+                    continue;
+
+                return cleanInput;
+            }
+        }
+
         // Преобразование двоичного в десятичное
         public static int BinaryToDecimal(string binaryString)
         {
@@ -143,7 +182,7 @@
             }
             catch
             {
-                return -1;
+                return -1; // Ошибка преобразования
             }
         }
 
@@ -159,6 +198,165 @@
             {
                 return "";
             }
+        }
+
+        // Проверка пароля на соответствие требованиям
+        public static bool IsPasswordValid(string password, int minLength = 8)
+        {
+            if(string.IsNullOrEmpty(password) || password.Length < minLength)
+                return false;
+
+            bool hasLower = false;
+            bool hasUpper = false;
+            bool hasDigit = false;
+            bool hasSpecial = false;
+
+            foreach(char c in password)
+            {
+                if(char.IsLower(c)) hasLower = true;
+                else if(char.IsUpper(c)) hasUpper = true;
+                else if(char.IsDigit(c)) hasDigit = true;
+                else hasSpecial = true;
+
+                if(hasLower && hasUpper && hasDigit && hasSpecial)
+                    break;
+            }
+
+            return hasLower && hasUpper && hasDigit;
+        }
+
+        // Проверка email
+        public static bool IsValidEmail(string email)
+        {
+            if(string.IsNullOrWhiteSpace(email))
+                return false;
+
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        // Проверка возраста
+        public static int GetValidAge(string prompt = "Введите возраст: ", int minAge = 0, int maxAge = 150)
+        {
+            while(true)
+            {
+                string input = ConsoleHelper.GetInput(prompt);
+
+                if(!int.TryParse(input, out int age))
+                {
+                    ConsoleHelper.ShowError("Пожалуйста, введите число!");
+                    continue;
+                }
+
+                if(age < minAge || age > maxAge)
+                {
+                    ConsoleHelper.ShowError($"Возраст должен быть от {minAge} до {maxAge} лет!");
+                    continue;
+                }
+
+                return age;
+            }
+        }
+
+        // Проверка даты
+        public static DateTime GetValidDate(string prompt = "Введите дату (дд.мм.гггг): ")
+        {
+            while(true)
+            {
+                string input = ConsoleHelper.GetInput(prompt);
+
+                if(DateTime.TryParse(input, out DateTime date))
+                {
+                    return date;
+                }
+
+                ConsoleHelper.ShowError("Неверный формат даты! Используйте дд.мм.гггг");
+            }
+        }
+
+        // Получить ответ Да/Нет
+        public static bool GetYesNoAnswer(string prompt = "Выберите (д/н): ")
+        {
+            while(true)
+            {
+                string input = ConsoleHelper.GetInput(prompt).ToLower();
+
+                if(input == "д" || input == "да" || input == "y" || input == "yes")
+                    return true;
+
+                if(input == "н" || input == "нет" || input == "n" || input == "no")
+                    return false;
+
+                ConsoleHelper.ShowError("Пожалуйста, введите 'д' или 'н'!");
+            }
+        }
+
+        // Проверка диапазона чисел
+        public static (double, double) GetValidRange(string prompt, double minValue = double.MinValue, double maxValue = double.MaxValue)
+        {
+            while(true)
+            {
+                Console.WriteLine(prompt);
+                Console.WriteLine("Введите два числа через пробел:");
+
+                string input = ConsoleHelper.GetInput();
+                string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+                if(parts.Length != 2)
+                {
+                    ConsoleHelper.ShowError("Нужно ввести два числа через пробел!");
+                    continue;
+                }
+
+                if(!double.TryParse(parts[0], out double num1) || !double.TryParse(parts[1], out double num2))
+                {
+                    ConsoleHelper.ShowError("Оба значения должны быть числами!");
+                    continue;
+                }
+
+                if(num1 >= num2)
+                {
+                    ConsoleHelper.ShowError("Первое число должно быть меньше второго!");
+                    continue;
+                }
+
+                if(num1 < minValue || num2 > maxValue)
+                {
+                    ConsoleHelper.ShowError($"Числа должны быть в диапазоне от {minValue} до {maxValue}!");
+                    continue;
+                }
+
+                return (num1, num2);
+            }
+        }
+
+        // Генерация случайного числа в диапазоне
+        public static int GetRandomNumber(int min, int max)
+        {
+            Random random = new Random();
+            return random.Next(min, max + 1);
+        }
+
+        // Форматирование числа
+        public static string FormatNumber(double number, int decimals = 2)
+        {
+            return number.ToString($"F{decimals}");
+        }
+
+        // Очистка строки от лишних пробелов
+        public static string CleanString(string input)
+        {
+            if(string.IsNullOrEmpty(input))
+                return input;
+
+            return string.Join(" ", input.Split(' ', StringSplitOptions.RemoveEmptyEntries));
         }
     }
 }

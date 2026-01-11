@@ -1,4 +1,6 @@
-﻿namespace EducationalProject.Controllers
+﻿using EducationalProject.Core;
+
+namespace EducationalProject.Controllers
 {
     public class MainMenuController
     {

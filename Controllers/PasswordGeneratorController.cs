@@ -1,4 +1,5 @@
-﻿using EducationalProject.Services;
+﻿using EducationalProject.Core;
+using EducationalProject.Services;
 using EducationalProject.Views;
 
 namespace EducationalProject.Controllers

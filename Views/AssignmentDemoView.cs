@@ -1,4 +1,5 @@
-﻿using EducationalProject.Models;
+﻿using EducationalProject.Core;
+using EducationalProject.Models;
 
 namespace EducationalProject.Views
 {
