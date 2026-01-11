@@ -10,10 +10,14 @@ namespace EducationalProject.Controllers
         private readonly CalculatorView _view;
         public override string Name => AppConfig.CalculatorConfig.Name;
 
-        public CalculatorController()
+        // Конструктор по умолчанию для обратной совместимости
+        public CalculatorController() : this(new ConsoleHelper()) { }
+
+        // Конструктор с внедрением зависимости
+        public CalculatorController(IConsoleHelper consoleHelper) : base(consoleHelper)
         {
             _service = new CalculatorService();
-            _view = new CalculatorView();
+            _view = new CalculatorView(consoleHelper);
         }
 
         public override void Run()
