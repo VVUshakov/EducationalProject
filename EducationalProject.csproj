@@ -7,14 +7,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Core\Interfaces\" />
-    <Folder Include="Core\Models\" />
-    <Folder Include="Core\Enums\" />
-    <Folder Include="Infrastructure\Validators\" />
-    <Folder Include="Infrastructure\ConsoleUI\" />
-    <Folder Include="Infrastructure\Helpers\" />
-    <Folder Include="Presentation\" />
-  </ItemGroup>
-
 </Project>
