@@ -8,11 +8,18 @@ namespace EducationalProject.Views
         public int GetConversionChoice()
         {
             ConsoleHelper.ShowMenu(
-                "Выберите тип преобразования",
-                new string[] { "Десятичное → Двоичное", "Двоичное → Десятичное" }
+                AppConfig.BinaryConverterConfig.Messages.Title,
+                new string[] {
+                    AppConfig.BinaryConverterConfig.Messages.DecimalToBinary,
+                    AppConfig.BinaryConverterConfig.Messages.BinaryToDecimal
+                }
             );
 
-            return InputValidator.GetValidMenuChoice(1, 2, ">>> Выберите (1-2): ");
+            return InputValidator.GetValidMenuChoice(
+                minValue: 1,
+                maxValue: 2,
+                prompt: ">>> (1-2): "
+            );
         }
 
         public int GetDecimalInput()

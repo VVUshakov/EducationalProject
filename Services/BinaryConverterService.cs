@@ -5,12 +5,14 @@ namespace EducationalProject.Services
 {
     public class BinaryConverterService
     {
+        private int bitsCount = AppConfig.BinaryConverterConfig.BitsCount;
+
         public BinaryConversion ConvertToBinary(int decimalNumber)
         {
             var result = new BinaryConversion
             {
                 DecimalValue = decimalNumber,
-                BinaryValue = InputValidator.DecimalToBinary(decimalNumber, AppConfig.BinaryConverterConfig.BitsCount)
+                BinaryValue = InputValidator.DecimalToBinary(decimalNumber, bitsCount)
             };
 
             return result;
@@ -20,12 +22,21 @@ namespace EducationalProject.Services
         {
             int decimalValue = InputValidator.BinaryToDecimal(binaryString);
 
+            string binaryValue;
+
+            if(decimalValue >= 0)
+            {
+                binaryValue = InputValidator.DecimalToBinary(decimalValue, bitsCount);
+            }
+            else
+            {
+                binaryValue = null;
+            }
+
             var result = new BinaryConversion
             {
                 DecimalValue = decimalValue,
-                BinaryValue = decimalValue >= 0
-                    ? InputValidator.DecimalToBinary(decimalValue, AppConfig.BinaryConverterConfig.BitsCount)
-                    : null
+                BinaryValue = binaryValue
             };
 
             return result;
@@ -33,8 +44,11 @@ namespace EducationalProject.Services
 
         public string GetBinaryInfo()
         {
-            return $"Диапазон: {AppConfig.BinaryConverterConfig.MinValue} - {AppConfig.BinaryConverterConfig.MaxValue} (8 бит)\n" +
-                   $"Биты: {AppConfig.BinaryConverterConfig.BitsCount}\n" +
+            int minValue = AppConfig.BinaryConverterConfig.MinValue;
+            int maxValue = AppConfig.BinaryConverterConfig.MaxValue;
+
+            return $"Диапазон: {minValue} - {maxValue} ({bitsCount} бит)\n" +
+                   $"Биты: {bitsCount}\n" +
                    $"Максимальное значение: 11111111 (255)";
         }
     }
