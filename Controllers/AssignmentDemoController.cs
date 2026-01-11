@@ -8,6 +8,7 @@ namespace EducationalProject.Controllers
     {
         private readonly AssignmentDemoService _service;
         private readonly AssignmentDemoView _view;
+        public override string Name => AppConfig.AssignmentDemoConfig.Name;
 
         public AssignmentDemoController()
         {
@@ -15,14 +16,12 @@ namespace EducationalProject.Controllers
             _view = new AssignmentDemoView();
         }
 
-        public override string Name => "Демонстрация операторов присваивания";
-
         public override void Run()
         {
-            ConsoleHelper.ClearAndShowHeader(Name);
+            ShowHeader(); // Используем метод из базового класса
 
-            // Показать описание программы
-            ConsoleHelper.ShowInfoBlock(
+            // Показать описание программы - используем метод из базового класса
+            ShowDescription(
                 "О ПРОГРАММЕ",
                 new string[] {
                     "Эта программа демонстрирует операции присваивания в C#.",
@@ -44,12 +43,10 @@ namespace EducationalProject.Controllers
                     var basicData = _service.GetBasicOperations();
                     _view.ShowBasicOperations(basicData);
                     break;
-
                 case 2:
                     var combinedData = _service.GetCombinedOperations();
                     _view.ShowCombinedOperations(combinedData);
                     break;
-
                 case 3:
                     var practicalExample = _service.GetPracticalExample();
                     _view.ShowPracticalExample(practicalExample);

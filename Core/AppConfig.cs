@@ -27,7 +27,7 @@
             public const char FrameHorizontal = '═';
         }
 
-        // Настройки калькулятора
+        // Настройки "Калькулятора"
         public static class CalculatorConfig
         {
             public const string Name = "Калькулятор";
@@ -49,7 +49,7 @@
             };
         }
 
-        // Настройки двоичного калькулятора
+        // Настройки "Двоичного калькулятора"
         public static class BinaryConverterConfig
         {
             // Основная информация
@@ -107,13 +107,20 @@
             }
         }
 
+        // Настройки "Кодировщика имени"
         public static class NameEncoderConfig
         {
             public const string Name = "Кодировщик имен";
             public const int MaxNameLength = 50;
         }
 
-        // Настройки генератора паролей        
+        // Настройки "Демонстратора присваивания"
+        public static class AssignmentDemoConfig
+        {
+            public const string Name = "Демонстрация операторов присваивания";
+        }
+
+        // Настройки "Генератора паролей"        
         public static class PasswordGeneratorConfig
         {
             public const string Name = "Генератор паролей";

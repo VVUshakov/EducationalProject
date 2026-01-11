@@ -9,6 +9,7 @@ namespace EducationalProject.Controllers
     {
         private readonly BinaryConverterService _service;
         private readonly BinaryConverterView _view;
+        public override string Name => AppConfig.BinaryConverterConfig.Name;
 
         public BinaryConverterController()
         {
@@ -16,11 +17,13 @@ namespace EducationalProject.Controllers
             _view = new BinaryConverterView();
         }
 
-        public override string Name => AppConfig.BinaryConverterConfig.Name;
-
         public override void Run()
         {
             ConsoleHelper.ClearAndShowHeader(Name);
+
+            int minValue = AppConfig.BinaryConverterConfig.MinValue;
+            int maxValue = AppConfig.BinaryConverterConfig.MaxValue;
+            int bitsCount = AppConfig.BinaryConverterConfig.BitsCount;
 
             // Показать информацию о двоичной системе
             ConsoleHelper.ShowInfoBlock(
@@ -30,8 +33,8 @@ namespace EducationalProject.Controllers
                     "две цифры: 0 и 1. Она является основной для",
                     "работы компьютеров и цифровой техники.",
                     "",
-                    $"Диапазон преобразования: {AppConfig.BinaryConverterConfig.MinValue}-{AppConfig.BinaryConverterConfig.MaxValue}",
-                    $"Количество бит: {AppConfig.BinaryConverterConfig.BitsCount}"
+                    $"Диапазон преобразования: {minValue}-{maxValue}",
+                    $"Количество бит: {bitsCount}"
                 }
             );
 

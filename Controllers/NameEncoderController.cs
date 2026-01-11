@@ -9,6 +9,7 @@ namespace EducationalProject.Controllers
     {
         private readonly NameEncoderService _service;
         private readonly NameEncoderView _view;
+        public override string Name => AppConfig.NameEncoderConfig.Name;
 
         public NameEncoderController()
         {
@@ -16,14 +17,12 @@ namespace EducationalProject.Controllers
             _view = new NameEncoderView();
         }
 
-        public override string Name => AppConfig.NameEncoderConfig.Name;
-
         public override void Run()
         {
-            ConsoleHelper.ClearAndShowHeader(Name);
+            ShowHeader(); // Используем метод из базового класса
 
-            // Показать описание программы
-            ConsoleHelper.ShowInfoBlock(
+            // Показать описание программы - используем метод из базового класса
+            ShowDescription(
                 "О ПРОГРАММЕ",
                 new string[] {
                     "Эта программа кодирует имена тремя способами:",
@@ -51,7 +50,7 @@ namespace EducationalProject.Controllers
             _view.ShowEncodingInfo();
 
             // 6. Ожидание нажатия клавиши
-            ConsoleHelper.WaitForAnyKey();
+            WaitForAnyKey();
         }
     }
 }

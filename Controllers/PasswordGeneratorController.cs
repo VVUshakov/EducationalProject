@@ -8,14 +8,13 @@ namespace EducationalProject.Controllers
     {
         private readonly PasswordGeneratorService _service;
         private readonly PasswordGeneratorView _view;
+        public override string Name => AppConfig.PasswordGeneratorConfig.Name;
 
         public PasswordGeneratorController()
         {
             _service = new PasswordGeneratorService();
             _view = new PasswordGeneratorView();
         }
-
-        public override string Name => AppConfig.PasswordGeneratorConfig.Name;
 
         public override void Run()
         {

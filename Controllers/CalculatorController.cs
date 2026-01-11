@@ -8,6 +8,7 @@ namespace EducationalProject.Controllers
     {
         private readonly CalculatorService _service;
         private readonly CalculatorView _view;
+        public override string Name => AppConfig.CalculatorConfig.Name;
 
         public CalculatorController()
         {
@@ -15,11 +16,9 @@ namespace EducationalProject.Controllers
             _view = new CalculatorView();
         }
 
-        public override string Name => AppConfig.CalculatorConfig.Name;
-
         public override void Run()
         {
-            ConsoleHelper.ClearAndShowHeader(Name);
+            ShowHeader(); // Используем метод из базового класса
 
             // 1. Получить данные от пользователя через View
             var inputData = _view.GetInput();
@@ -31,7 +30,7 @@ namespace EducationalProject.Controllers
             _view.ShowResult(resultData);
 
             // 4. Ожидание нажатия клавиши
-            ConsoleHelper.WaitForAnyKey();
+            WaitForAnyKey(); // Используем метод из базового класса
         }
     }
 }
