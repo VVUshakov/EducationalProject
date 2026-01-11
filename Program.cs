@@ -1,17 +1,25 @@
-﻿// Объявляем пространство имен для нашего проекта
+﻿using EducationalProject.Controllers;
+using EducationalProject.Core;
+
 namespace EducationalProject
 {
-    // Главный класс программы - точка входа
     class Program
     {
-        // Главный метод, который запускается первым при старте программы
         static void Main()
         {
-            // Создаем менеджер меню - он будет управлять всеми программами
-            var manager = new MenuManager();
+            // Показываем приветствие
+            ConsoleHelper.ClearAndShowHeader("УЧЕБНЫЙ ПРОЕКТ C#");
+            Console.WriteLine(AppConfig.WelcomeMessage);
+            ConsoleHelper.WaitForAnyKey("Нажмите любую клавишу для продолжения...");
 
-            // Запускаем менеджер - начинается работа программы
-            manager.Run();
+            // Создаем и запускаем контроллер калькулятора
+            var calculatorController = new CalculatorController();
+            calculatorController.Run();
+
+            // Прощание
+            ConsoleHelper.ClearAndShowHeader("СПАСИБО!");
+            Console.WriteLine(AppConfig.GoodbyeMessage);
+            ConsoleHelper.WaitForAnyKey();
         }
     }
 }
