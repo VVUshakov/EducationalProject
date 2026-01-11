@@ -12,6 +12,7 @@ namespace EducationalProject.Controllers
             _controllers = new List<BaseController>
             {
                 new CalculatorController(),
+                new BinaryConverterController(),
                 // Остальные контроллеры добавим позже
             };
         }
