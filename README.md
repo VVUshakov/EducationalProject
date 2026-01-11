@@ -1,4 +1,48 @@
 ﻿EducationalProject/
+├── Program.cs                           # Точка входа
+├── Controllers/                         # Контроллеры (координаторы)
+│   ├── MainMenuController.cs
+│   ├── CalculatorController.cs
+│   ├── BinaryConverterController.cs
+│   ├── NameEncoderController.cs
+│   ├── AssignmentDemoController.cs
+│   └── PasswordGeneratorController.cs
+├── Models/                              # Модели данных
+│   ├── PasswordSettings.cs
+│   ├── PasswordResult.cs
+│   ├── CalculationData.cs
+│   ├── BinaryConversion.cs
+│   ├── EncodingResult.cs
+│   └── AssignmentData.cs
+├── Services/                            # Бизнес-логика
+│   ├── CalculatorService.cs
+│   ├── BinaryConverterService.cs
+│   ├── NameEncoderService.cs
+│   ├── AssignmentDemoService.cs
+│   └── PasswordGeneratorService.cs
+├── Views/                               # Представления (ввод/вывод)
+│   ├── ConsoleView.cs
+│   ├── CalculatorView.cs
+│   ├── BinaryConverterView.cs
+│   ├── NameEncoderView.cs
+│   ├── AssignmentDemoView.cs
+│   └── PasswordGeneratorView.cs
+├── Core/                                # Базовые классы и утилиты
+│   ├── AppConfig.cs                     # ВСЕ настройки в одном месте!
+│   ├── InputValidator.cs
+│   └── ConsoleHelper.cs
+└── Utilities/                           # Вспомогательные утилиты
+    ├── PasswordHelper.cs
+    └── StringHelper.cs
+
+
+
+
+
+
+
+
+EducationalProject/
 │
 ├── Program.cs                     (Главная точка входа)
 │
