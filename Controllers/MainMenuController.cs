@@ -1,61 +1,22 @@
 ﻿using EducationalProject.Core;
-using System.Reflection;
+using EducationalProject.Factories;
 
 namespace EducationalProject.Controllers
 {
     public class MainMenuController
     {
         private readonly List<BaseController> _controllers;
+        private readonly IConsoleHelper _consoleHelper;
+        private readonly IAppConfigProvider _configProvider;
 
-        public MainMenuController()
+        public MainMenuController(
+            IControllerFactory factory,
+            IConsoleHelper consoleHelper,
+            IAppConfigProvider configProvider)
         {
-            // Автоматически создаем все контроллеры из конфигурации
-            _controllers = CreateControllersFromConfig();
-        }
-
-        private List<BaseController> CreateControllersFromConfig()
-        {
-            // Создаем массив для формирования списка всех контроллеров
-            var controllers = new List<BaseController>();
-
-            // Получаем перечень названий всех контроллеров из файла конфигурации
-            string[] controllerTypes = AppConfig.MenuConfig.ControllerTypes;
-
-            foreach(string controllerTypeName in controllerTypes)
-            {
-                try
-                {
-                    // Формируем полное имя типа
-                    string controllersNamespace = AppConfig.MenuConfig.ControllersNamespace;
-                    string fullTypeName = $"{controllersNamespace}.{controllerTypeName}";
-
-                    // Получаем текущую сборку (где находятся контроллеры)
-                    Assembly currentAssembly = Assembly.GetExecutingAssembly();
-
-                    // Ищем тип в сборке
-                    Type controllerType = currentAssembly.GetType(fullTypeName);
-
-                    if(controllerType != null)
-                    {
-                        // Создаем экземпляр контроллера
-                        BaseController controller = (BaseController)Activator.CreateInstance(controllerType);
-                        controllers.Add(controller);
-
-                        // TO DO: Для отладки (нужно удалить)
-                        Console.WriteLine($"✓ Контроллер '{controllerTypeName}' успешно создан");
-                    }
-                    else
-                    {
-                        ConsoleHelper.ShowError($"Контроллер '{controllerTypeName}' не найден!");
-                    }
-                }
-                catch(Exception ex)
-                {
-                    ConsoleHelper.ShowError($"Ошибка создания контроллера '{controllerTypeName}': {ex.Message}");
-                }
-            }
-
-            return controllers;
+            _controllers = factory.CreateControllers();
+            _consoleHelper = consoleHelper;
+            _configProvider = configProvider;
         }
 
         public void Run()
@@ -67,17 +28,20 @@ namespace EducationalProject.Controllers
                 ShowMainMenu();
 
                 int choice = InputValidator.GetValidMenuChoice(
-                    0, _controllers.Count,
-                    $">>> Выберите программу (0 - выход): ");
+                    minValue: 0,
+                    maxValue: _controllers.Count,
+                    prompt: $">>> Выберите программу (0 - выход): "
+                );
 
                 if(choice == 0)
                 {
                     ShowGoodbye();
-                    break;
                 }
-
-                // Запускаем выбранный контроллер
-                RunController(choice - 1);
+                else
+                {
+                    // Запускаем выбранный контроллер
+                    RunController(choice - 1);
+                }
             }
         }
 
