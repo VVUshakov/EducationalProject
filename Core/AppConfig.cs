@@ -3,11 +3,51 @@
     // Настройки приложения
     public static class AppConfig
     {
+        // Настройки главного меню и контроллеров
+        public static class MenuConfig
+        {
+            public const string WelcomeTitle = "УЧЕБНЫЙ ПРОЕКТ C#";
+            public const string WelcomeSubtitle = "Для школьников 7-9 классов";
+            public const string MenuTitle = "ГЛАВНОЕ МЕНЮ";
+            public const string GoodbyeTitle = "ДО СВИДАНИЯ!";
+
+            public static readonly string[] ProgramNames = {
+                CalculatorConfig.Name,
+                BinaryConverterConfig.Name,
+                NameEncoderConfig.Name,
+                PasswordGeneratorConfig.Name,
+                AssignmentDemoConfig.Name
+
+                // Чтобы добавить новую программу:
+                // 1. Создать новый класс *Config (например, NewProgramConfig)
+                // 2. Добавить сюда NewProgramConfig.Name
+                // 3. Создать NewProgramController
+            };
+
+            // Массив ВСЕХ контроллеров в формате: "ИмяКонтроллера"
+            // Эти имена должны точно соответствовать именам классов контроллеров
+            public static readonly string[] ControllerTypes = {
+                "CalculatorController",
+                "BinaryConverterController",
+                "NameEncoderController",
+                "PasswordGeneratorController",
+                "AssignmentDemoController",
+
+                // Чтобы добавить новую программу:
+                // 1. Создать NewProgramController
+                // 2. Добавить сюда "NewProgramController"
+                // MainMenuController менять не нужно!
+            };
+
+            // Настройки пространства имен для поиска контроллеров
+            public const string ControllersNamespace = "EducationalProject.Controllers";
+        }
+
         // Настройки сообщений приложения
         public static class MessagesConfig
         {
-            public const string WelcomeMessage = "Добро пожаловать в учебный проект!";
-            public const string GoodbyeMessage = "Спасибо за использование программы!";
+            //public const string WelcomeMessage = "Добро пожаловать в учебный проект!";
+            //public const string GoodbyeMessage = "Спасибо за использование программы!";
             public const string PressAnyKey = "Нажмите любую клавишу для продолжения...";
             public const string ErrorTitle = "ОШИБКА";
             public const string SuccessTitle = "УСПЕХ";

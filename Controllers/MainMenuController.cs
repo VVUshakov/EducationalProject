@@ -1,4 +1,5 @@
 ﻿using EducationalProject.Core;
+using System.Reflection;
 
 namespace EducationalProject.Controllers
 {
@@ -8,17 +9,50 @@ namespace EducationalProject.Controllers
 
         public MainMenuController()
         {
-            // Все контроллеры в одном месте
-            _controllers = new List<BaseController>
-            {
-                new CalculatorController(),
-                new BinaryConverterController(),
-                new NameEncoderController(),
-                new PasswordGeneratorController(),
-                new AssignmentDemoController(),
-                // Остальные контроллеры добавляются по мере включения новых программ в Меню
+            // Автоматически создаем все контроллеры из конфигурации
+            _controllers = CreateControllersFromConfig();
+        }
 
-            };
+        private List<BaseController> CreateControllersFromConfig()
+        {
+            // Создаем массив для формирования списка всех контроллеров
+            var controllers = new List<BaseController>();
+
+            // Получаем перечень названий всех контроллеров из файла конфигурации
+            string[] controllerTypes = AppConfig.MenuConfig.ControllerTypes;
+
+            foreach(string controllerTypeName in controllerTypes)
+            {
+                try
+                {
+                    // Формируем полное имя типа
+                    string controllersNamespace = AppConfig.MenuConfig.ControllersNamespace;
+                    string fullTypeName = $"{controllersNamespace}.{controllerTypeName}";
+
+                    // Получаем текущую сборку (где находятся контроллеры)
+                    Assembly currentAssembly = Assembly.GetExecutingAssembly();
+
+                    // Ищем тип в сборке
+                    Type controllerType = currentAssembly.GetType(fullTypeName);
+
+                    if(controllerType != null)
+                    {
+                        // Создаем экземпляр контроллера
+                        BaseController controller = (BaseController)Activator.CreateInstance(controllerType);
+                        controllers.Add(controller);
+                    }
+                    else
+                    {
+                        ConsoleHelper.ShowError($"Контроллер '{controllerTypeName}' не найден!");
+                    }
+                }
+                catch(Exception ex)
+                {
+                    ConsoleHelper.ShowError($"Ошибка создания контроллера '{controllerTypeName}': {ex.Message}");
+                }
+            }
+
+            return controllers;
         }
 
         public void Run()
