@@ -15,7 +15,7 @@ namespace EducationalProject.Controllers
             _view = new CalculatorView();
         }
 
-        public override string Name => AppConfig.Calculator.Name;
+        public override string Name => AppConfig.CalculatorConfig.Name;
 
         public override void Run()
         {

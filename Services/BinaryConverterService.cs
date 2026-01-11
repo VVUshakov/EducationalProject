@@ -10,7 +10,7 @@ namespace EducationalProject.Services
             var result = new BinaryConversion
             {
                 DecimalValue = decimalNumber,
-                BinaryValue = InputValidator.DecimalToBinary(decimalNumber, AppConfig.Binary.BitsCount)
+                BinaryValue = InputValidator.DecimalToBinary(decimalNumber, AppConfig.BinaryConverterConfig.BitsCount)
             };
 
             return result;
@@ -24,7 +24,7 @@ namespace EducationalProject.Services
             {
                 DecimalValue = decimalValue,
                 BinaryValue = decimalValue >= 0
-                    ? InputValidator.DecimalToBinary(decimalValue, AppConfig.Binary.BitsCount)
+                    ? InputValidator.DecimalToBinary(decimalValue, AppConfig.BinaryConverterConfig.BitsCount)
                     : null
             };
 
@@ -33,8 +33,8 @@ namespace EducationalProject.Services
 
         public string GetBinaryInfo()
         {
-            return $"Диапазон: {AppConfig.Binary.MinValue} - {AppConfig.Binary.MaxValue} (8 бит)\n" +
-                   $"Биты: {AppConfig.Binary.BitsCount}\n" +
+            return $"Диапазон: {AppConfig.BinaryConverterConfig.MinValue} - {AppConfig.BinaryConverterConfig.MaxValue} (8 бит)\n" +
+                   $"Биты: {AppConfig.BinaryConverterConfig.BitsCount}\n" +
                    $"Максимальное значение: 11111111 (255)";
         }
     }

@@ -1,69 +1,81 @@
 ﻿namespace EducationalProject.Core
 {
-    public static class AppConfig // TO DO: Требуется рефакторин повторяющегося кода
+    // Настройки приложения
+    public static class AppConfig
     {
-        // Общие настройки
-        public const string PressAnyKeyMessage = "Нажмите любую клавишу для продолжения...";
-        public const string WelcomeMessage = "Добро пожаловать в учебный проект!";
-        public const string GoodbyeMessage = "Спасибо за использование программы!";
-        public const string ErrorTitle = "ОШИБКА";
-        public const string SuccessTitle = "УСПЕХ";
-        public const string DescriptionTitle = "ОПИСАНИЕ";
+        // Настройки сообщений приложения
+        public static class MessagesConfig
+        {
+            public const string WelcomeMessage = "Добро пожаловать в учебный проект!";
+            public const string GoodbyeMessage = "Спасибо за использование программы!";
+            public const string PressAnyKey = "Нажмите любую клавишу для продолжения...";
+            public const string ErrorTitle = "ОШИБКА";
+            public const string SuccessTitle = "УСПЕХ";
+            public const string InfoTitle = "ИНФОРМАЦИЯ";
+            public const string DescriptionTitle = "ОПИСАНИЕ";
+        }
 
-        // Консольное оформление
-        public const int FrameWidth = 35;
-        public const char FrameTopLeft = '╔';
-        public const char FrameTopRight = '╗';
-        public const char FrameBottomLeft = '╚';
-        public const char FrameBottomRight = '╝';
-        public const char FrameVertical = '║';
-        public const char FrameHorizontal = '═';
+        // Настройки отображения рамок
+        public static class DisplayConfig
+        {
+            public const int FrameWidth = 35;
+            public const char FrameTopLeft = '╔';
+            public const char FrameTopRight = '╗';
+            public const char FrameBottomLeft = '╚';
+            public const char FrameBottomRight = '╝';
+            public const char FrameVertical = '║';
+            public const char FrameHorizontal = '═';
+        }
 
         // Настройки калькулятора
-        public static class Calculator
+        public static class CalculatorConfig
         {
             public const string Name = "Калькулятор";
-            public static readonly string[] OperationNames = { "Сложение", "Вычитание", "Умножение", "Деление", "Остаток от деления" };
-            public static readonly char[] OperationSymbols = { '+', '-', '*', '/', '%' };
+
+            public static readonly string[] OperationsNames = {
+                "Сложение",
+                "Вычитание",
+                "Умножение",
+                "Деление",
+                "Остаток от деления"
+            };
+
+            public static readonly char[] OperationsSymbols = {
+                '+',
+                '-',
+                '*',
+                '/',
+                '%'
+            };
         }
 
-        // Настройки пароля
-        public static class Password
+        // Настройки двоичного калькулятора
+        public static class BinaryConverterConfig
         {
-            public const int MinLength = 4;
-            public const int MaxLength = 50;
-            public const int DefaultLength = 12;
-            public const string LowerCase = "abcdefghijklmnopqrstuvwxyz";
-            public const string UpperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            public const string Digits = "0123456789";
-            public const string SpecialChars = "!@#$%^&*()-_=+[]{}|;:,.<>?";
-        }
-
-        // Настройки двоичного преобразователя
-        public static class Binary
-        {
+            public const string Name = "Конвертер двоичных чисел";
             public const int MinValue = 0;
             public const int MaxValue = 255;
             public const int BitsCount = 8;
         }
 
-        // Настройки названий пунктов Главного меню
-        public static class MenuTitles
+        public static class NameEncoderConfig
         {
-            public const string Calculator = "Калькулятор";
-            public const string BinaryConverter = "Двоичный преобразователь";
-            public const string NameEncoder = "Кодировщик имён";
-            public const string PasswordGenerator = "Генератор паролей";
-            public const string AssignmentDemo = "Демо: Операции присваивания";
+            public const string Name = "Кодировщик имен";
+            public const int MaxNameLength = 50;
         }
 
-        // Настройки общих сообщений
-        public static class AppMessages
+        // Настройки генератора паролей        
+        public static class PasswordGeneratorConfig
         {
-            public const string SelectProgram = "Выберите программу для запуска:";
-            public const string InvalidChoice = "Неверный выбор! Попробуйте еще раз.";
-            public const string PressToContinue = "Нажмите любую клавишу для продолжения...";
-            public const string Exiting = "Выход из программы...";
+            public const string Name = "Генератор паролей";
+            public const int MinLength = 4;
+            public const int MaxLength = 50;
+            public const int DefaultLength = 12;
+
+            public const string LowerCase = "abcdefghijklmnopqrstuvwxyz";
+            public const string UpperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            public const string Digits = "0123456789";
+            public const string SpecialChars = "!@#$%^&*()-_=+[]{}|;:,.<>?";
         }
     }
 }

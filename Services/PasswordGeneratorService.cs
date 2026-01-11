@@ -15,7 +15,7 @@ namespace EducationalProject.Services
 
         public PasswordResult GeneratePassword(PasswordSettings settings, int length)
         {
-            if(!settings.HasAnySetting || length < AppConfig.Password.MinLength)
+            if(!settings.HasAnySetting || length < AppConfig.PasswordGeneratorConfig.MinLength)
             {
                 return new PasswordResult { Password = null };
             }
@@ -24,16 +24,16 @@ namespace EducationalProject.Services
             StringBuilder password = new StringBuilder();
 
             if(settings.UseLower)
-                password.Append(GetRandomChar(AppConfig.Password.LowerCase));
+                password.Append(GetRandomChar(AppConfig.PasswordGeneratorConfig.LowerCase));
 
             if(settings.UseUpper)
-                password.Append(GetRandomChar(AppConfig.Password.UpperCase));
+                password.Append(GetRandomChar(AppConfig.PasswordGeneratorConfig.UpperCase));
 
             if(settings.UseDigits)
-                password.Append(GetRandomChar(AppConfig.Password.Digits));
+                password.Append(GetRandomChar(AppConfig.PasswordGeneratorConfig.Digits));
 
             if(settings.UseSpecial)
-                password.Append(GetRandomChar(AppConfig.Password.SpecialChars));
+                password.Append(GetRandomChar(AppConfig.PasswordGeneratorConfig.SpecialChars));
 
             // 2. Добавляем оставшиеся символы
             string allChars = GetAllChars(settings);
@@ -73,16 +73,16 @@ namespace EducationalProject.Services
             StringBuilder allChars = new StringBuilder();
 
             if(settings.UseLower)
-                allChars.Append(AppConfig.Password.LowerCase);
+                allChars.Append(AppConfig.PasswordGeneratorConfig.LowerCase);
 
             if(settings.UseUpper)
-                allChars.Append(AppConfig.Password.UpperCase);
+                allChars.Append(AppConfig.PasswordGeneratorConfig.UpperCase);
 
             if(settings.UseDigits)
-                allChars.Append(AppConfig.Password.Digits);
+                allChars.Append(AppConfig.PasswordGeneratorConfig.Digits);
 
             if(settings.UseSpecial)
-                allChars.Append(AppConfig.Password.SpecialChars);
+                allChars.Append(AppConfig.PasswordGeneratorConfig.SpecialChars);
 
             return allChars.ToString();
         }

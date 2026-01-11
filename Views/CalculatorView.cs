@@ -62,7 +62,7 @@ namespace EducationalProject.Views
         {
             ConsoleHelper.ShowMenu(
                 "Выберите операцию",
-                AppConfig.Calculator.OperationNames
+                AppConfig.CalculatorConfig.OperationsNames
             );
         }
     }

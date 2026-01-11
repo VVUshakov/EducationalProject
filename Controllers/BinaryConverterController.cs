@@ -30,8 +30,8 @@ namespace EducationalProject.Controllers
                     "две цифры: 0 и 1. Она является основной для",
                     "работы компьютеров и цифровой техники.",
                     "",
-                    $"Диапазон преобразования: {AppConfig.Binary.MinValue}-{AppConfig.Binary.MaxValue}",
-                    $"Количество бит: {AppConfig.Binary.BitsCount}"
+                    $"Диапазон преобразования: {AppConfig.BinaryConverterConfig.MinValue}-{AppConfig.BinaryConverterConfig.MaxValue}",
+                    $"Количество бит: {AppConfig.BinaryConverterConfig.BitsCount}"
                 }
             );
 

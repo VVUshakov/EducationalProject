@@ -21,9 +21,9 @@ namespace EducationalProject.Views
             Console.WriteLine(new string('-', 30));
 
             return InputValidator.GetValidIntegerInRange(
-                AppConfig.Binary.MinValue,
-                AppConfig.Binary.MaxValue,
-                $"Введите число от {AppConfig.Binary.MinValue} до {AppConfig.Binary.MaxValue}: "
+                AppConfig.BinaryConverterConfig.MinValue,
+                AppConfig.BinaryConverterConfig.MaxValue,
+                $"Введите число от {AppConfig.BinaryConverterConfig.MinValue} до {AppConfig.BinaryConverterConfig.MaxValue}: "
             );
         }
 
@@ -32,7 +32,7 @@ namespace EducationalProject.Views
             Console.WriteLine("\nВВОД ДВОИЧНОГО ЧИСЛА:");
             Console.WriteLine(new string('-', 30));
 
-            Console.WriteLine($"Введите двоичное число (до {AppConfig.Binary.BitsCount} бит):");
+            Console.WriteLine($"Введите двоичное число (до {AppConfig.BinaryConverterConfig.BitsCount} бит):");
             Console.WriteLine("Пример: 10101010 или 1010 1010");
 
             while(true)
@@ -46,9 +46,9 @@ namespace EducationalProject.Views
                     continue;
                 }
 
-                if(cleanInput.Length > AppConfig.Binary.BitsCount)
+                if(cleanInput.Length > AppConfig.BinaryConverterConfig.BitsCount)
                 {
-                    ConsoleHelper.ShowError($"Слишком длинное число! Максимум {AppConfig.Binary.BitsCount} бит.");
+                    ConsoleHelper.ShowError($"Слишком длинное число! Максимум {AppConfig.BinaryConverterConfig.BitsCount} бит.");
                     continue;
                 }
 
@@ -99,7 +99,7 @@ namespace EducationalProject.Views
             Console.WriteLine(new string('-', 40));
             Console.WriteLine("• Десятичная система: цифры 0-9");
             Console.WriteLine("• Двоичная система: цифры 0 и 1");
-            Console.WriteLine($"• 1 байт = {AppConfig.Binary.BitsCount} бит");
+            Console.WriteLine($"• 1 байт = {AppConfig.BinaryConverterConfig.BitsCount} бит");
             Console.WriteLine($"• Максимальное значение: 11111111 = 255");
             Console.WriteLine("• 1010 1010 = 170 (пример)");
             Console.WriteLine(new string('*', 40));

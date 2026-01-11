@@ -14,7 +14,7 @@ namespace EducationalProject.Views
                     $"Средний (9-12 символов)",
                     $"Длинный (13-16 символов)",
                     $"Очень длинный (17-20 символов)",
-                    $"Своя длина (от {AppConfig.Password.MinLength} до {AppConfig.Password.MaxLength})"
+                    $"Своя длина (от {AppConfig.PasswordGeneratorConfig.MinLength} до {AppConfig.PasswordGeneratorConfig.MaxLength})"
                 }
             );
 
@@ -29,7 +29,7 @@ namespace EducationalProject.Views
                 3 => random.Next(13, 17),   // 13-16
                 4 => random.Next(17, 21),   // 17-20
                 5 => GetCustomLength(),
-                _ => AppConfig.Password.DefaultLength
+                _ => AppConfig.PasswordGeneratorConfig.DefaultLength
             };
         }
 
@@ -38,7 +38,7 @@ namespace EducationalProject.Views
             while(true)
             {
                 string input = ConsoleHelper.GetInput(
-                    $"Введите длину пароля ({AppConfig.Password.MinLength}-{AppConfig.Password.MaxLength}): ");
+                    $"Введите длину пароля ({AppConfig.PasswordGeneratorConfig.MinLength}-{AppConfig.PasswordGeneratorConfig.MaxLength}): ");
 
                 if(!int.TryParse(input, out int length))
                 {
@@ -46,15 +46,15 @@ namespace EducationalProject.Views
                     continue;
                 }
 
-                if(length < AppConfig.Password.MinLength)
+                if(length < AppConfig.PasswordGeneratorConfig.MinLength)
                 {
-                    ConsoleHelper.ShowError($"Длина должна быть не менее {AppConfig.Password.MinLength}!");
+                    ConsoleHelper.ShowError($"Длина должна быть не менее {AppConfig.PasswordGeneratorConfig.MinLength}!");
                     continue;
                 }
 
-                if(length > AppConfig.Password.MaxLength)
+                if(length > AppConfig.PasswordGeneratorConfig.MaxLength)
                 {
-                    ConsoleHelper.ShowError($"Длина должна быть не более {AppConfig.Password.MaxLength}!");
+                    ConsoleHelper.ShowError($"Длина должна быть не более {AppConfig.PasswordGeneratorConfig.MaxLength}!");
                     continue;
                 }
 

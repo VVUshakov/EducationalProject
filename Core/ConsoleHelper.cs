@@ -19,25 +19,41 @@
         // Показ заголовка с рамкой
         public static void ShowHeader(string title, string subtitle = null)
         {
-            int width = AppConfig.FrameWidth;
-            string horizontalLine = new string(AppConfig.FrameHorizontal, width);
+            int width = AppConfig.DisplayConfig.FrameWidth;
+            string horizontalLine = new string(AppConfig.DisplayConfig.FrameHorizontal, width);
 
             // Верхняя рамка
-            Console.WriteLine($"{AppConfig.FrameTopLeft}{horizontalLine}{AppConfig.FrameTopRight}");
+            Console.WriteLine(
+                $"{AppConfig.DisplayConfig.FrameTopLeft}" +
+                $"{horizontalLine}" +
+                $"{AppConfig.DisplayConfig.FrameTopRight}"
+            );
 
             // Заголовок
             string centeredTitle = CenterText(title, width);
-            Console.WriteLine($"{AppConfig.FrameVertical}{centeredTitle}{AppConfig.FrameVertical}");
+            Console.WriteLine(
+                $"{AppConfig.DisplayConfig.FrameVertical}" +
+                $"{centeredTitle}" +
+                $"{AppConfig.DisplayConfig.FrameVertical}"
+            );
 
             // Подзаголовок (если есть)
             if(!string.IsNullOrEmpty(subtitle))
             {
                 string centeredSubtitle = CenterText(subtitle, width);
-                Console.WriteLine($"{AppConfig.FrameVertical}{centeredSubtitle}{AppConfig.FrameVertical}");
+                Console.WriteLine(
+                    $"{AppConfig.DisplayConfig.FrameVertical}" +
+                    $"{centeredSubtitle}" +
+                    $"{AppConfig.DisplayConfig.FrameVertical}"
+                );
             }
 
             // Нижняя рамка
-            Console.WriteLine($"{AppConfig.FrameBottomLeft}{horizontalLine}{AppConfig.FrameBottomRight}");
+            Console.WriteLine(
+                $"{AppConfig.DisplayConfig.FrameBottomLeft}" +
+                $"{horizontalLine}" +
+                $"{AppConfig.DisplayConfig.FrameBottomRight}"
+            );
             Console.WriteLine();
         }
 
@@ -64,14 +80,14 @@
                 Console.WriteLine($"  {line}");
             }
 
-            Console.WriteLine(new string('-', AppConfig.FrameWidth));
+            Console.WriteLine(new string('-', AppConfig.DisplayConfig.FrameWidth));
         }
 
         // Показать ошибку
         public static void ShowError(string message)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"[{AppConfig.ErrorTitle}] {message}");
+            Console.WriteLine($"[{AppConfig.MessagesConfig.ErrorTitle}] {message}");
             Console.ResetColor();
         }
 
@@ -87,15 +103,15 @@
         public static void ShowSuccess(string message)
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"[{AppConfig.SuccessTitle}] {message}");
+            Console.WriteLine($"[{AppConfig.MessagesConfig.SuccessTitle}] {message}");
             Console.ResetColor();
         }
 
         // Ожидание нажатия клавиши
         public static void WaitForAnyKey(string message = null)
         {
-            Console.WriteLine("\n" + new string('-', AppConfig.FrameWidth));
-            Console.WriteLine(message ?? AppConfig.PressAnyKeyMessage);
+            Console.WriteLine("\n" + new string('-', AppConfig.DisplayConfig.FrameWidth));
+            Console.WriteLine(message ?? AppConfig.MessagesConfig.PressAnyKey);
             Console.ReadKey();
         }
 
