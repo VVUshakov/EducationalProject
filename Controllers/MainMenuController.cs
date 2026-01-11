@@ -13,6 +13,7 @@ namespace EducationalProject.Controllers
             {
                 new CalculatorController(),
                 new BinaryConverterController(),
+                new NameEncoderController(),
                 // Остальные контроллеры добавим позже
             };
         }
