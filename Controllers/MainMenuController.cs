@@ -41,7 +41,7 @@ namespace EducationalProject.Controllers
                         BaseController controller = (BaseController)Activator.CreateInstance(controllerType);
                         controllers.Add(controller);
 
-                        // Для отладки (можно удалить)
+                        // TO DO: Для отладки (нужно удалить)
                         Console.WriteLine($"✓ Контроллер '{controllerTypeName}' успешно создан");
                     }
                     else
