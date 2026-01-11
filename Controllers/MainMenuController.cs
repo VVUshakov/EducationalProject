@@ -14,6 +14,7 @@ namespace EducationalProject.Controllers
                 new CalculatorController(),
                 new BinaryConverterController(),
                 new NameEncoderController(),
+                new PasswordGeneratorController(),
                 // Остальные контроллеры добавим позже
             };
         }
