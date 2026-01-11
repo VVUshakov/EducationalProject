@@ -1,6 +1,6 @@
 ﻿namespace EducationalProject.Core
 {
-    public static class AppConfig
+    public static class AppConfig // TO DO: Требуется рефакторин повторяющегося кода
     {
         // Общие настройки
         public const string PressAnyKeyMessage = "Нажмите любую клавишу для продолжения...";
@@ -45,6 +45,25 @@
             public const int MinValue = 0;
             public const int MaxValue = 255;
             public const int BitsCount = 8;
+        }
+
+        // Настройки названий пунктов Главного меню
+        public static class MenuTitles
+        {
+            public const string Calculator = "Калькулятор";
+            public const string BinaryConverter = "Двоичный преобразователь";
+            public const string NameEncoder = "Кодировщик имён";
+            public const string PasswordGenerator = "Генератор паролей";
+            public const string AssignmentDemo = "Демо: Операции присваивания";
+        }
+
+        // Настройки общих сообщений
+        public static class AppMessages
+        {
+            public const string SelectProgram = "Выберите программу для запуска:";
+            public const string InvalidChoice = "Неверный выбор! Попробуйте еще раз.";
+            public const string PressToContinue = "Нажмите любую клавишу для продолжения...";
+            public const string Exiting = "Выход из программы...";
         }
     }
 }
