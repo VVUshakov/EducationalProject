@@ -15,7 +15,7 @@ namespace EducationalProject.Controllers
             _view = new AssignmentDemoView();
         }
 
-        public override string Name => "Демо: Операции присваивания";
+        public override string Name => "Демонстрация операторов присваивания";
 
         public override void Run()
         {

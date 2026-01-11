@@ -16,7 +16,7 @@ namespace EducationalProject.Controllers
             _view = new NameEncoderView();
         }
 
-        public override string Name => "Кодировщик имён";
+        public override string Name => AppConfig.NameEncoderConfig.Name;
 
         public override void Run()
         {

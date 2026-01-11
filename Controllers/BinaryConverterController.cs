@@ -16,7 +16,7 @@ namespace EducationalProject.Controllers
             _view = new BinaryConverterView();
         }
 
-        public override string Name => "Двоичный преобразователь";
+        public override string Name => AppConfig.BinaryConverterConfig.Name;
 
         public override void Run()
         {

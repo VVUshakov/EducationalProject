@@ -15,7 +15,7 @@ namespace EducationalProject.Controllers
             _view = new PasswordGeneratorView();
         }
 
-        public override string Name => "Генератор паролей";
+        public override string Name => AppConfig.PasswordGeneratorConfig.Name;
 
         public override void Run()
         {
