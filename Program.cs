@@ -1,4 +1,7 @@
-﻿using EducationalProject.Controllers;
+﻿// EducationalProject/Program.cs (обновленная версия)
+using EducationalProject.Controllers;
+using EducationalProject.Core;
+using EducationalProject.Factories;
 
 namespace EducationalProject
 {
@@ -8,8 +11,12 @@ namespace EducationalProject
         {
             try
             {
-                // Запускаем главное меню
-                var mainMenu = new MainMenuController();
+                // Создаем необходимые зависимости
+                IAppConfigProvider configApp = new AppConfigProvider();
+                IControllerFactory factory = new ControllerFactory(configApp);
+
+                // Создаем главное меню с внедренными зависимостями
+                var mainMenu = new MainMenuController(factory, consoleHelper, configApp);
                 mainMenu.Run();
             }
             catch(Exception ex)
