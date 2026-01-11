@@ -163,25 +163,23 @@ namespace EducationalProject
         }
 
         // Метод для получения правильной математической операции
-        public static char GetValidMathOperation(string prompt)
+        public static char GetValidMathOperation(string prompt = "Введите операцию (+, -, *, /, %): ")
         {
-            // Массив допустимых операций
             char[] validOperations = { '+', '-', '*', '/', '%' };
 
             while(true)
             {
-                Console.Write(prompt);  // Выводим приглашение без перевода строки
-                char operationChar = Console.ReadKey().KeyChar;  // Читаем один символ без Enter
-                Console.WriteLine();    // Переходим на новую строку
+                Console.Write(prompt);
+                char operationChar = Console.ReadKey().KeyChar;
+                Console.WriteLine();
 
-                // Проверяем, есть ли введенный символ в списке допустимых
-                if(!validOperations.Contains(operationChar))  // Если нет
+                if(!validOperations.Contains(operationChar))
                 {
-                    ConsoleHelper.ShowError($"Операция '{operationChar}' не поддерживается! Используйте: +, -, *, /, %");
-                    continue;  // Продолжаем цикл
+                    ConsoleHelper.ShowError($"Недопустимая операция '{operationChar}'! Допустимо: +, -, *, /, %");
+                    continue;
                 }
 
-                return operationChar;  // Возвращаем правильный символ операции
+                return operationChar;
             }
         }
 
