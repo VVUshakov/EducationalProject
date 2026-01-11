@@ -7,10 +7,12 @@ namespace EducationalProject.Factories
     public class ControllerFactory : IControllerFactory
     {
         private readonly IAppConfigProvider _configProvider;
+        private readonly IConsoleHelper _consoleHelper;
 
-        public ControllerFactory(IAppConfigProvider configProvider)
+        public ControllerFactory(IAppConfigProvider configProvider, IConsoleHelper consoleHelper)
         {
             _configProvider = configProvider;
+            _consoleHelper = consoleHelper;
         }
 
         public List<BaseController> CreateControllers()
