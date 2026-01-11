@@ -5,24 +5,31 @@ namespace EducationalProject.Views
 {
     public class CalculatorView
     {
+        private readonly IConsoleHelper _consoleHelper;
+
+        public CalculatorView(IConsoleHelper consoleHelper)
+        {
+            _consoleHelper = consoleHelper;
+        }
+
         // Получить данные от пользователя
         public CalculationData GetInput()
         {
-            ConsoleHelper.ShowInfoBlock(
-                "ИНСТРУКЦИЯ",
+            _consoleHelper.ShowInfoBlock(
+                "КАЛЬКУЛЯТОР",
                 new string[] {
-                    "Калькулятор выполняет основные операции:",
+                    "Поддерживаемые операции:",
                     "- Сложение (+)",
                     "- Вычитание (-)",
                     "- Умножение (*)",
                     "- Деление (/)",
-                    "- Остаток от деления (%)"
+                    "- Остаток (%)"
                 }
             );
 
             var data = new CalculationData();
 
-            Console.WriteLine("\nВВОД ДАННЫХ:");
+            Console.WriteLine("\nВведите числа:");
             Console.WriteLine(new string('-', 20));
 
             data.FirstNumber = InputValidator.GetValidNumber("Первое число: ");
@@ -39,7 +46,7 @@ namespace EducationalProject.Views
 
             if(!data.IsValid)
             {
-                ConsoleHelper.ShowError("Ошибка вычисления!");
+                _consoleHelper.ShowError("Ошибка вычисления!");
             }
             else
             {
@@ -51,7 +58,7 @@ namespace EducationalProject.Views
                     Console.WriteLine($"ОСТАТОК: {data.Remainder:F2}");
                 }
 
-                ConsoleHelper.ShowSuccess("Вычисление завершено успешно!");
+                _consoleHelper.ShowSuccess("Вычисление завершено успешно!");
             }
 
             Console.WriteLine(new string('=', 35));
@@ -60,7 +67,7 @@ namespace EducationalProject.Views
         // Показать меню операций
         public void ShowOperationsMenu()
         {
-            ConsoleHelper.ShowMenu(
+            _consoleHelper.ShowMenu(
                 "Выберите операцию",
                 AppConfig.CalculatorConfig.OperationsNames
             );
