@@ -1,23 +1,16 @@
 ﻿namespace EducationalProject.Core
 {
-    public static class ConsoleHelper
+    public class ConsoleHelper : IConsoleHelper
     {
-        // Очистка экрана и показ заголовка
-        public static void ClearAndShowHeader(string title)
-        {
-            Console.Clear();
-            ShowHeader(title);
-        }
-
-        // Перегруженный метод с подзаголовком
-        public static void ClearAndShowHeader(string title, string subtitle)
+        // Очистка экрана и показ заголовка и подзаголовка
+        public void ClearAndShowHeader(string title, string subtitle = null)
         {
             Console.Clear();
             ShowHeader(title, subtitle);
         }
 
         // Показ заголовка с рамкой
-        public static void ShowHeader(string title, string subtitle = null)
+        public void ShowHeader(string title, string subtitle = null)
         {
             int width = AppConfig.DisplayConfig.FrameWidth;
             string horizontalLine = new string(AppConfig.DisplayConfig.FrameHorizontal, width);
@@ -58,7 +51,7 @@
         }
 
         // Показать меню
-        public static void ShowMenu(string title, string[] items)
+        public void ShowMenu(string title, string[] items)
         {
             Console.WriteLine($"\n=== {title.ToUpper()} ===");
 
@@ -71,7 +64,7 @@
         }
 
         // Показать информационный блок
-        public static void ShowInfoBlock(string title, string[] lines)
+        public void ShowInfoBlock(string title, string[] lines)
         {
             ShowHeader(title);
 
@@ -84,7 +77,7 @@
         }
 
         // Показать ошибку
-        public static void ShowError(string message)
+        public void ShowError(string message)
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"[{AppConfig.MessagesConfig.ErrorTitle}] {message}");
@@ -92,7 +85,7 @@
         }
 
         // Показать информацию
-        public static void ShowInfo(string message)
+        public void ShowInfo(string message)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine(message);
@@ -100,7 +93,7 @@
         }
 
         // Показать успех
-        public static void ShowSuccess(string message)
+        public void ShowSuccess(string message)
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"[{AppConfig.MessagesConfig.SuccessTitle}] {message}");
@@ -108,7 +101,7 @@
         }
 
         // Ожидание нажатия клавиши
-        public static void WaitForAnyKey(string message = null)
+        public void WaitForAnyKey(string message = null)
         {
             Console.WriteLine("\n" + new string('-', AppConfig.DisplayConfig.FrameWidth));
             Console.WriteLine(message ?? AppConfig.MessagesConfig.PressAnyKey);
@@ -116,14 +109,14 @@
         }
 
         // Получить ввод от пользователя
-        public static string GetInput(string prompt = ">>> ")
+        public string GetInput(string prompt = ">>> ")
         {
             Console.Write(prompt);
             return Console.ReadLine()?.Trim() ?? "";
         }
 
         // Выровнять текст по центру
-        private static string CenterText(string text, int width)
+        private string CenterText(string text, int width)
         {
             if(text.Length >= width)
                 return text.Substring(0, width);
@@ -133,26 +126,26 @@
         }
 
         // Показать разделитель
-        public static void ShowSeparator(int length = 40)
+        public void ShowSeparator(int length = 40)
         {
             Console.WriteLine(new string('-', length));
         }
 
         // Показать заголовок раздела
-        public static void ShowSectionTitle(string title)
+        public void ShowSectionTitle(string title)
         {
             Console.WriteLine($"\n{title}");
             Console.WriteLine(new string('-', title.Length));
         }
 
         // Очистка экрана
-        public static void ClearScreen()
+        public void ClearScreen()
         {
             Console.Clear();
         }
 
         // Показать цветной текст
-        public static void WriteColor(string text, ConsoleColor color)
+        public void WriteColor(string text, ConsoleColor color)
         {
             Console.ForegroundColor = color;
             Console.Write(text);
@@ -160,7 +153,7 @@
         }
 
         // Показать цветную строку
-        public static void WriteLineColor(string text, ConsoleColor color)
+        public void WriteLineColor(string text, ConsoleColor color)
         {
             Console.ForegroundColor = color;
             Console.WriteLine(text);
@@ -168,7 +161,7 @@
         }
 
         // Запросить подтверждение
-        public static bool GetConfirmation(string question)
+        public bool GetConfirmation(string question)
         {
             Console.Write($"{question} (д/н): ");
             string response = Console.ReadLine()?.Trim().ToLower();
@@ -177,7 +170,7 @@
         }
 
         // Показать прогресс
-        public static void ShowProgress(int current, int total, string message = "Выполнение")
+        public void ShowProgress(int current, int total, string message = "Выполнение")
         {
             int percentage = (int)((double)current / total * 100);
             Console.Write($"\r{message}: [{new string('#', percentage / 2)}{new string('.', 50 - percentage / 2)}] {percentage}%");

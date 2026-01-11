@@ -3,27 +3,33 @@
     public static class InputValidator
     {
         // Проверка выбора в меню
-        public static int GetValidMenuChoice(int minValue, int maxValue, string prompt)
+        public static int GetValidMenuChoice(
+            int minValue,
+            int maxValue,
+            string prompt,
+            IConsoleHelper consoleHelper = null)
         {
+            consoleHelper ??= new ConsoleHelper(); // Используем экземпляр по умолчанию
+
             while(true)
             {
-                string input = ConsoleHelper.GetInput(prompt);
+                string input = consoleHelper.GetInput(prompt);
 
                 if(string.IsNullOrWhiteSpace(input))
                 {
-                    ConsoleHelper.ShowError("Пожалуйста, введите число!");
+                    consoleHelper.ShowError("Пожалуйста, введите число!");
                     continue;
                 }
 
                 if(!int.TryParse(input, out int number))
                 {
-                    ConsoleHelper.ShowError($"'{input}' - не число!");
+                    consoleHelper.ShowError($"'{input}' - не число!");
                     continue;
                 }
 
                 if(number < minValue || number > maxValue)
                 {
-                    ConsoleHelper.ShowError($"Неверный выбор {number}! Допустимо от {minValue} до {maxValue}.");
+                    consoleHelper.ShowError($"Неверный выбор {number}! Допустимо от {minValue} до {maxValue}.");
                     continue;
                 }
 
