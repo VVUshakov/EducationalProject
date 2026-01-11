@@ -1,6 +1,4 @@
-﻿using EducationalProject.Core;
-
-namespace EducationalProject.Controllers
+﻿namespace EducationalProject.Controllers
 {
     public class MainMenuController
     {
@@ -17,21 +15,21 @@ namespace EducationalProject.Controllers
                 new PasswordGeneratorController(),
                 new AssignmentDemoController(),
                 // Остальные контроллеры добавляются по мере включения новых программ в Меню
+
             };
         }
 
         public void Run()
         {
-            ConsoleHelper.ClearAndShowHeader("УЧЕБНЫЙ ПРОЕКТ C#");
-            Console.WriteLine(AppConfig.WelcomeMessage);
-            ConsoleHelper.WaitForAnyKey();
+            ShowWelcome();
 
             while(true)
             {
-                ConsoleHelper.ClearAndShowHeader("ГЛАВНОЕ МЕНЮ");
-                ShowMenu();
+                ShowMainMenu();
 
-                int choice = InputValidator.GetValidMenuChoice(0, _controllers.Count, ">>> Выберите программу (0 - выход): ");
+                int choice = InputValidator.GetValidMenuChoice(
+                    0, _controllers.Count,
+                    $">>> Выберите программу (0 - выход): ");
 
                 if(choice == 0)
                 {
@@ -40,14 +38,36 @@ namespace EducationalProject.Controllers
                 }
 
                 // Запускаем выбранный контроллер
-                _controllers[choice - 1].Run();
+                RunController(choice - 1);
             }
         }
 
-        private void ShowMenu()
+        private void ShowWelcome()
         {
-            Console.WriteLine("Доступные программы:");
-            Console.WriteLine(new string('=', 30));
+            ConsoleHelper.ClearAndShowHeader(
+                "УЧЕБНЫЙ ПРОЕКТ C#",
+                "Для школьников 7-9 классов"
+            );
+
+            Console.WriteLine("\nДобро пожаловать в учебный проект!");
+            Console.WriteLine("Здесь вы можете изучить основы программирования.");
+            Console.WriteLine("\nПроект включает 5 учебных программ:");
+
+            for(int i = 0; i < _controllers.Count; i++)
+            {
+                Console.WriteLine($"  {i + 1}. {_controllers[i].Name}");
+            }
+
+            ConsoleHelper.WaitForAnyKey();
+        }
+
+        private void ShowMainMenu()
+        {
+            ConsoleHelper.ClearAndShowHeader("ГЛАВНОЕ МЕНЮ");
+
+            Console.WriteLine("\n" + new string('=', 40));
+            Console.WriteLine("ВЫБЕРИТЕ ПРОГРАММУ:");
+            Console.WriteLine(new string('=', 40));
 
             for(int i = 0; i < _controllers.Count; i++)
             {
@@ -55,14 +75,32 @@ namespace EducationalProject.Controllers
             }
 
             Console.WriteLine("0. Выход из программы");
-            Console.WriteLine(new string('=', 30));
+            Console.WriteLine(new string('=', 40));
+        }
+
+        private void RunController(int index)
+        {
+            try
+            {
+                Console.Clear();
+                _controllers[index].Run();
+            }
+            catch(Exception ex)
+            {
+                ConsoleHelper.ShowError($"Ошибка: {ex.Message}");
+                ConsoleHelper.WaitForAnyKey();
+            }
         }
 
         private void ShowGoodbye()
         {
             ConsoleHelper.ClearAndShowHeader("ДО СВИДАНИЯ!");
-            Console.WriteLine(AppConfig.GoodbyeMessage);
-            ConsoleHelper.WaitForAnyKey();
+
+            Console.WriteLine("\nСпасибо за использование учебного проекта!");
+            Console.WriteLine("Надеемся, вы узнали что-то новое!");
+            Console.WriteLine("\nУдачи в изучении программирования! 🚀");
+
+            ConsoleHelper.WaitForAnyKey("Нажмите любую клавишу для выхода...");
         }
     }
 }
