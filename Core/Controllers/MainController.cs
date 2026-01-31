@@ -49,7 +49,7 @@ namespace EducationalProject.Core.Controllers
                 {
                     // Запуск выбранной программы
                     var program = _programs[choice - 1];
-                    program.Execute();
+                    program.Run();
                     _view.WaitForAnyKey();
                 }
                 else if(choice == _programs.Count + 1)
