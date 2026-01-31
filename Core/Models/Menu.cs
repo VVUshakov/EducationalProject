@@ -16,7 +16,16 @@
 
         public void RemoveItem(int id)
         {
-            Items.RemoveAll(item => item.Id == id);
+            int firstIndex = 0;
+            int lastIndex = Items.Count - 1;
+
+            for(int i = lastIndex; i >= firstIndex; i--)
+            {
+                if(Items[i].Id == id)
+                {
+                    Items.RemoveAt(i);
+                }
+            }
         }
     }
 }
