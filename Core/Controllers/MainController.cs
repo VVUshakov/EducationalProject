@@ -7,7 +7,13 @@ namespace EducationalProject.Core.Controllers
     {
         private readonly IView _view;
         private readonly List<BaseProgram> _programs;
-        private bool _isRunning;
+        private bool _isRunning; // флаг управления основным циклом программы (Run Loop)
+
+        // Константы для числовых значений
+        private const int ExitMenuOffset = 1;
+        private const int MinChoiceValue = 1;
+        private const int FirstProgramIndex = 0;
+        private const int MenuItemNumberOffset = 1;
 
         public MainController(IView view, List<BaseProgram> programs)
         {
@@ -31,41 +37,51 @@ namespace EducationalProject.Core.Controllers
             _view.ShowMessage("=== ГЛАВНОЕ МЕНЮ ===");
             _view.ShowMessage("Выберите программу для запуска:");
 
-            for(int i = 0; i < _programs.Count; i++)
+            for(int i = FirstProgramIndex; i < _programs.Count; i++)
             {
-                _view.ShowMessage($"{i + 1}. {_programs[i].Name}");
+                _view.ShowMessage($"{i + MenuItemNumberOffset}. {_programs[i].Name}");
             }
 
-            _view.ShowMessage($"{_programs.Count + 1}. Выход");
+            _view.ShowMessage($"{_programs.Count + ExitMenuOffset}. Выход");
         }
 
         private void ProcessChoice()
         {
             string input = _view.ReadInput("Ваш выбор: ");
 
-            if(int.TryParse(input, out int choice))
-            {
-                if(choice >= 1 && choice <= _programs.Count)
-                {
-                    // Запуск выбранной программы
-                    var program = _programs[choice - 1];
-                    program.Run();
-                    _view.WaitForAnyKey();
-                }
-                else if(choice == _programs.Count + 1)
-                {
-                    _isRunning = false;
-                    _view.ShowMessage("До свидания!");
-                }
-                else
-                {
-                    _view.ShowError("Неверный выбор!");
-                }
-            }
-            else
+            if(!int.TryParse(input, out int choice))
             {
                 _view.ShowError("Введите число!");
+                return;
             }
+
+            if(IsValidProgramChoice(choice))
+            {
+                // Запуск выбранной программы
+                BaseProgram program = _programs[choice - MenuItemNumberOffset];
+                program.Run();
+                _view.WaitForAnyKey();
+                return;
+            }
+
+            if(IsExitChoice(choice))
+            {
+                _isRunning = false;
+                _view.ShowMessage("До свидания!");
+                return;
+            }
+
+            _view.ShowError("Неверный выбор!");
+        }
+
+        private bool IsValidProgramChoice(int choice)
+        {
+            return choice >= MinChoiceValue && choice <= _programs.Count;
+        }
+
+        private bool IsExitChoice(int choice)
+        {
+            return choice == _programs.Count + ExitMenuOffset;
         }
     }
 }
