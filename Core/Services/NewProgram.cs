@@ -1,15 +1,15 @@
 ﻿using EducationalProject.Core.Views;
 
-namespace EducationalProject.Programs
+namespace EducationalProject.Core.Services
 {
-    public class MyNewProgram : BaseProgram
+    public class NewProgram : BaseProgram
     {
         public override string Name => "Моя новая программа";
         public override string Description => "Описание новой программы";
 
-        public MyNewProgram() : base(new ConsoleView()) { }
+        public NewProgram() : base(new ConsoleView()) { }
 
-        public override void Execute()
+        public override void Run()
         {
             ShowHeader();
             // Логика вашей программы здесь

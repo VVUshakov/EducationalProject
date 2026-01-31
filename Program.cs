@@ -1,4 +1,8 @@
-﻿namespace EducationalProject
+﻿using EducationalProject.Core.Controllers;
+using EducationalProject.Core.Services;
+using EducationalProject.Core.Views;
+
+namespace EducationalProject
 {
     class Program
     {
@@ -9,7 +13,10 @@
             var programs = new List<BaseProgram>
             {
                 new CalculatorProgram(),
-                new NameEncoderProgram()
+                new NameEncoderProgram(),
+                new NewProgram(),
+                new ReverseStringProgram(),
+
                 // Добавить новую программу можно просто создав новый экземпляр
             };
 

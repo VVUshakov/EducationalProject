@@ -1,6 +1,6 @@
 ﻿using EducationalProject.Core.Views;
 
-namespace EducationalProject.Programs
+namespace EducationalProject.Core.Services
 {
     public class NameEncoderProgram : BaseProgram
     {
@@ -9,7 +9,7 @@ namespace EducationalProject.Programs
 
         public NameEncoderProgram() : base(new ConsoleView()) { }
 
-        public override void Execute()
+        public override void Run()
         {
             ShowHeader();
 
@@ -35,7 +35,7 @@ namespace EducationalProject.Programs
                 if(char.IsLetter(chars[i]))
                 {
                     // Сдвигаем букву на 1 позицию в алфавите
-                    chars[i] = (char)(((chars[i] - 'A' + 1) % 26) + 'A');
+                    chars[i] = (char)((chars[i] - 'A' + 1) % 26 + 'A');
                 }
             }
 

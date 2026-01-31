@@ -1,6 +1,6 @@
 ﻿using EducationalProject.Core.Views;
 
-namespace EducationalProject.Programs
+namespace EducationalProject.Core.Services
 {
     public class CalculatorProgram : BaseProgram
     {
@@ -9,7 +9,7 @@ namespace EducationalProject.Programs
 
         public CalculatorProgram() : base(new ConsoleView()) { }
 
-        public override void Execute()
+        public override void Run()
         {
             ShowHeader();
 

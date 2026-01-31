@@ -1,7 +1,7 @@
 ﻿using EducationalProject.Core.Interfaces;
 using EducationalProject.Core.Views;
 
-namespace EducationalProject.Programs
+namespace EducationalProject.Core.Services
 {
     public abstract class BaseProgram : IProgram
     {
@@ -15,7 +15,7 @@ namespace EducationalProject.Programs
             _view = view ?? new ConsoleView();
         }
 
-        public abstract void Execute();
+        public abstract void Run();
 
         protected void ShowHeader()
         {
