@@ -5,25 +5,23 @@ namespace EducationalProject.Core.Controllers
 {
     public class MainController : IController
     {
-        private readonly IView _view;
-        private readonly List<BaseProgram> _programs;
+        private readonly List<IView> _views; // Список представлений (Консоль, запись в файл и т.п.)
+        private IView _currentView; // Текущее активное представление
+        private readonly List<BaseProgram> _programs; // Список программ
         private bool _isRunning; // флаг управления основным циклом программы (Run Loop)
+        private const int FIRST_MENU_ITEM = 1; // Номер первого элемента Меню
 
-        // Константы для числовых значений
-        private const int ExitMenuOffset = 1;
-        private const int MinChoiceValue = 1;
-        private const int FirstProgramIndex = 0;
-        private const int MenuItemNumberOffset = 1;
-
-        public MainController(IView view, List<BaseProgram> programs)
+        public MainController(List<IView> views, IView currentView, List<BaseProgram> programs)
         {
-            _view = view;
+            _views = views;
             _programs = programs;
-            _isRunning = true;
+            _currentView = currentView;
         }
 
         public void Run()
         {
+            _isRunning = true;
+
             while(_isRunning)
             {
                 ShowMainMenu();
@@ -33,55 +31,81 @@ namespace EducationalProject.Core.Controllers
 
         private void ShowMainMenu()
         {
-            _view.Clear();
-            _view.ShowMessage("=== ГЛАВНОЕ МЕНЮ ===");
-            _view.ShowMessage("Выберите программу для запуска:");
-
-            for(int i = FirstProgramIndex; i < _programs.Count; i++)
+            // Очищаем все представления
+            foreach(IView view in _views)
             {
-                _view.ShowMessage($"{i + MenuItemNumberOffset}. {_programs[i].Name}");
+                view.Clear();
             }
 
-            _view.ShowMessage($"{_programs.Count + ExitMenuOffset}. Выход");
+            // Выводим меню во все представления
+            foreach(IView view in _views)
+            {
+                view.ShowMessage("=== ГЛАВНОЕ МЕНЮ ===");
+                view.ShowMessage("Выберите программу для запуска:");
+            }
+
+            // Выводим список программ во все представления
+            for(int i = 0; i < _programs.Count; i++)
+            {
+                string menuItem = $"{i + FIRST_MENU_ITEM}. {_programs[i].Name}";
+                foreach(IView view in _views)
+                {
+                    view.ShowMessage(menuItem);
+                }
+            }
+
+            // Выводим пункт выхода во все представления
+            string exitItem = $"{_programs.Count + FIRST_MENU_ITEM}. Выход";
+            foreach(IView view in _views)
+            {
+                view.ShowMessage(exitItem);
+            }
         }
 
         private void ProcessChoice()
         {
-            string input = _view.ReadInput("Ваш выбор: ");
+            // Получаем ввод только из текущего (активного/главного) Представления
+            // (остальные представления могут быть только для вывода)
+            string input = _currentView.ReadInput("Ваш выбор: ");
 
             if(!int.TryParse(input, out int choice))
             {
-                _view.ShowError("Введите число!");
+                // Показываем ошибку во всех представлениях
+                foreach(IView view in _views)
+                {
+                    view.ShowError("Введите число!");
+                }
                 return;
             }
 
-            if(IsValidProgramChoice(choice))
-            {
-                // Запуск выбранной программы
-                BaseProgram program = _programs[choice - MenuItemNumberOffset];
-                program.Run();
-                _view.WaitForAnyKey();
-                return;
-            }
-
-            if(IsExitChoice(choice))
+            if(choice == _programs.Count + FIRST_MENU_ITEM)
             {
                 _isRunning = false;
-                _view.ShowMessage("До свидания!");
+                // Показываем сообщение о выходе во всех представлениях
+                foreach(IView view in _views)
+                {
+                    view.ShowMessage("До свидания!");
+                }
                 return;
             }
 
-            _view.ShowError("Неверный выбор!");
-        }
+            if(choice >= FIRST_MENU_ITEM && choice <= _programs.Count)
+            {
+                _programs[choice - FIRST_MENU_ITEM].Run();
 
-        private bool IsValidProgramChoice(int choice)
-        {
-            return choice >= MinChoiceValue && choice <= _programs.Count;
-        }
+                // Ждем клавишу во всех представлениях
+                foreach(IView view in _views)
+                {
+                    view.WaitForAnyKey();
+                }
+                return;
+            }
 
-        private bool IsExitChoice(int choice)
-        {
-            return choice == _programs.Count + ExitMenuOffset;
+            // Показываем ошибку неверного выбора во всех представлениях
+            foreach(IView view in _views)
+            {
+                view.ShowError("Неверный выбор!");
+            }
         }
     }
 }
