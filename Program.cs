@@ -13,9 +13,10 @@ namespace EducationalProject
             var views = new List<IView>
             {
                 new ConsoleView(), // Основное представление
+                new FileLogView("logs/app_log.txt"), // Логирование в файл
+
                 // Можно добавить другие представления, например:
                 // new WebView(),
-                // new FileView("output.txt"),
             };
 
             // Настройка текущего активного представления
